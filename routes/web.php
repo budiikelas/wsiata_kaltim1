@@ -1,46 +1,56 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DestinationController;
+use App\Http\Controllers\FacilityController;
+use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\ReviewController;
+
+use App\Http\Controllers\LandingController;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| Public Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
 */
-Route::resource('categories', CategoryController::class);
-Route::resource('destinations', DestinationController::class);
-Route::resource('facilities', FacilityController::class);
-Route::post('galleries', [GalleryController::class, 'store']);
-Route::delete('galleries/{id}', [GalleryController::class, 'destroy']);
-Route::post('reviews', [ReviewController::class, 'store'])->middleware('auth');
+Route::get('/', [LandingController::class, 'index']);
 
-
-use App\Http\Controllers\AuthController;
-
-Route::get('/', function () {
-    return view('landing');
-});
-
-Route::get('/packages', function () {
-    return view('packages');
-});
-
-Route::get('/detail', function () {
-    return view('detail');
-});
-
-// Authentication Routes
+// Authentication Access
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/admin', function () {
-    return view('admin');
-})->middleware(['auth', 'admin']);
+/*
+|--------------------------------------------------------------------------
+| Protected Routes (Login Required)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    
+    // Pages
+    Route::get('/packages', function () {
+        return view('packages');
+    });
+
+    Route::get('/detail', function () {
+        return view('detail');
+    });
+
+    // Resource Management
+    Route::resource('categories', CategoryController::class);
+    Route::resource('destinations', DestinationController::class);
+    Route::resource('facilities', FacilityController::class);
+    Route::post('galleries', [GalleryController::class, 'store']);
+    Route::delete('galleries/{id}', [GalleryController::class, 'destroy']);
+    Route::post('reviews', [ReviewController::class, 'store']);
+
+    // Admin Access
+    Route::prefix('admin')->middleware('admin')->group(function () {
+        Route::get('/', [\App\Http\Controllers\AdminController::class, 'index'])->name('admin.dashboard');
+        Route::get('/destinations', [\App\Http\Controllers\AdminController::class, 'destinations'])->name('admin.destinations');
+    });
+});
