@@ -12,7 +12,17 @@
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body class="landing-page">
+    <!-- Premium Preloader -->
+    <div class="preloader">
+        <div class="preloader-content">
+            <div class="preloader-logo">WISATA</div>
+            <div class="preloader-progress">
+                <div class="preloader-bar"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav class="main-nav">
         <div class="nav-logo">
@@ -35,8 +45,45 @@
                 <a href="#"><i class="fab fa-youtube"></i></a>
             </div>
             <div class="nav-auth">
-                <a href="{{ url('/login') }}" class="btn-auth btn-login">Masuk</a>
-                <a href="{{ url('/register') }}" class="btn-auth btn-register">Daftar</a>
+                @guest
+                    <a href="{{ url('/login') }}" class="btn-auth btn-login">Masuk</a>
+                    <a href="{{ url('/register') }}" class="btn-auth btn-register">Daftar</a>
+                @endguest
+
+                @auth
+                    <div class="nav-user-profile">
+                        <div class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
+                        <span class="user-name">{{ Auth::user()->name }}</span>
+                        <i class="fas fa-chevron-down" style="font-size: 10px; opacity: 0.5;"></i>
+                        
+                        <div class="user-dropdown">
+                            <div class="dropdown-header">
+                                <span class="header-name">{{ Auth::user()->name }}</span>
+                                <span class="header-email">{{ Auth::user()->email }}</span>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">
+                                <i class="fas fa-user-circle"></i> <span>Profil Saya</span>
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <i class="fas fa-heart"></i> <span>Favorit</span>
+                            </a>
+                            @if(Auth::user()->is_admin)
+                            <div class="dropdown-divider"></div>
+                            <a href="{{ url('/admin') }}" class="dropdown-item" style="color: var(--color-accent);">
+                                <i class="fas fa-crown"></i> <span>Dashboard Admin</span>
+                            </a>
+                            @endif
+                            <div class="dropdown-divider"></div>
+                            <form action="{{ route('logout') }}" method="POST" id="logout-form">
+                                @csrf
+                                <button type="submit" class="logout-btn">
+                                    <i class="fas fa-sign-out-alt"></i> Keluar & Hapus Sesi
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                @endauth
             </div>
         </div>
     </nav>
@@ -96,7 +143,7 @@
             
             <div class="wildlife-container">
                 <!-- Cinematic Content -->
-                <div class="wildlife-content">
+                <div class="wildlife-content reveal reveal-fade-up">
                     <!-- Small Label -->
                     <div class="wildlife-label">
                         <span class="label-line"></span>
@@ -121,7 +168,7 @@
                 </div>
 
                 <!-- Wildlife Info Cards -->
-                <div class="wildlife-info-grid">
+                <div class="wildlife-info-grid reveal reveal-fade-up reveal-delay-2">
                     <div class="wildlife-info-card">
                         <div class="info-icon">
                             <i class="fas fa-paw"></i>
@@ -167,7 +214,7 @@
                             <h2 class="gallery-title">KALIMANTAN TIMUR</h2>
                         </div>
                         
-                        <div class="destination-info" id="destination-info">
+                        <div class="destination-info reveal reveal-fade-up reveal-delay-2" id="destination-info">
                             <h3 class="active-dest-title">Kepulauan Derawan</h3>
                             <p class="active-dest-desc">Surga tropis dengan pantai pasir putih dan kehidupan laut yang memukau. Nikmati keindahan bawah laut yang tak tertandingi.</p>
                             <div class="active-dest-rating">
@@ -255,14 +302,8 @@
 
         <!-- Schedule Section - Modern Card Layout -->
         <section class="schedule-section">
-            <div class="schedule-bg-wrapper section-bg-wrapper">
-                <div class="schedule-bg section-parallax-bg" data-parallax="true">
-                    <img src="{{ asset('images/islandia.png') }}" alt="Schedule Section Background">
-                </div>
-                <div class="schedule-overlay section-overlay"></div>
-            </div>
             <div class="schedule-container">
-                <div class="schedule-header">
+                <div class="schedule-header reveal reveal-fade-up">
                     <span class="schedule-subtitle">Destinasi Pilihan</span>
                     <h2 class="schedule-title">Jadwal Perjalanan Tersedia</h2>
                     <p class="schedule-desc-text">
@@ -684,6 +725,25 @@
 
     <!-- JavaScript -->
     <script>
+        // Preloader & Pageload Animations
+        window.addEventListener('load', () => {
+            const preloader = document.querySelector('.preloader');
+            const preloaderBar = document.querySelector('.preloader-bar');
+            
+            // Progress bar animation
+            if (preloaderBar) preloaderBar.style.width = '100%';
+            
+            setTimeout(() => {
+                if (preloader) preloader.classList.add('fade-out');
+                
+                // Trigger page entrance animations
+                setTimeout(() => {
+                    document.querySelector('.main-nav')?.classList.add('is-visible');
+                    document.querySelector('.hero-section')?.classList.add('is-visible');
+                }, 300);
+            }, 1000);
+        });
+
         // Smooth Scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -693,6 +753,24 @@
                     target.scrollIntoView({ behavior: 'smooth' });
                 }
             });
+        });
+
+        // Intersection Observer for scroll reveals
+        const revealObserverOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, revealObserverOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            revealObserver.observe(el);
         });
 
         // Advanced Parallax Effect

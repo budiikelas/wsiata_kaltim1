@@ -24,21 +24,28 @@
                 <p>Mulai petualangan tak terlupakan bersama kami</p>
             </div>
 
-            <form action="#" method="POST" class="auth-form">
+            <form action="{{ url('/register') }}" method="POST" class="auth-form">
+                @csrf
                 <div class="form-group">
                     <label for="fullname">Nama Lengkap</label>
                     <div class="input-icon">
                         <i class="fas fa-user"></i>
-                        <input type="text" id="fullname" name="fullname" placeholder="Nama Anda" required>
+                        <input type="text" id="fullname" name="fullname" placeholder="Nama Anda" value="{{ old('fullname') }}" required>
                     </div>
+                    @error('fullname')
+                        <span class="error-msg" style="color: #ff4d4d; font-size: 12px; margin-top: 5px; display: block;">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email</label>
                     <div class="input-icon">
                         <i class="fas fa-envelope"></i>
-                        <input type="email" id="email" name="email" placeholder="nama@email.com" required>
+                        <input type="email" id="email" name="email" placeholder="nama@email.com" value="{{ old('email') }}" required>
                     </div>
+                    @error('email')
+                        <span class="error-msg" style="color: #ff4d4d; font-size: 12px; margin-top: 5px; display: block;">{{ $message }}</span>
+                    @enderror
                 </div>
                 
                 <div class="form-group">
@@ -47,13 +54,16 @@
                         <i class="fas fa-lock"></i>
                         <input type="password" id="password" name="password" placeholder="••••••••" required>
                     </div>
+                    @error('password')
+                        <span class="error-msg" style="color: #ff4d4d; font-size: 12px; margin-top: 5px; display: block;">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <div class="form-group">
-                    <label for="confirm_password">Konfirmasi Password</label>
+                    <label for="password_confirmation">Konfirmasi Password</label>
                     <div class="input-icon">
                         <i class="fas fa-lock"></i>
-                        <input type="password" id="confirm_password" name="confirm_password" placeholder="••••••••" required>
+                        <input type="password" id="password_confirmation" name="password_confirmation" placeholder="••••••••" required>
                     </div>
                 </div>
 

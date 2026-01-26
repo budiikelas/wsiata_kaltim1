@@ -353,12 +353,39 @@
             <li><a href="{{ url('/packages') }}" class="active">Packages</a></li>
         </ul>
         <div class="nav-items-right">
-            <div class="nav-info">
-                <a href="mailto:mail@nextrip.co"><i class="fas fa-envelope"></i> mail@nextrip.co</a>
+            <div class="nav-social">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
             </div>
             <div class="nav-auth">
-                <a href="{{ url('/login') }}" class="btn-auth btn-login">Masuk</a>
-                <a href="{{ url('/register') }}" class="btn-auth btn-register">Daftar</a>
+                @guest
+                    <a href="{{ url('/login') }}" class="btn-auth btn-login">Masuk</a>
+                    <a href="{{ url('/register') }}" class="btn-auth btn-register">Daftar</a>
+                @endguest
+
+                @auth
+                    <div class="nav-user-profile">
+                        <div class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
+                        <span class="user-name">{{ Auth::user()->name }}</span>
+                        <i class="fas fa-chevron-down" style="font-size: 10px; opacity: 0.5;"></i>
+                        
+                        <div class="user-dropdown">
+                            <a href="#" class="dropdown-item">
+                                <i class="fas fa-user-circle"></i> Profil Saya
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <i class="fas fa-heart"></i> Favorit
+                            </a>
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="dropdown-item logout">
+                                    <i class="fas fa-sign-out-alt"></i> Keluar
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                @endauth
             </div>
         </div>
     </nav>

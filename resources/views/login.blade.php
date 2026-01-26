@@ -22,15 +22,25 @@
                 </a>
                 <h2>Selamat Datang Kembali</h2>
                 <p>Masuk untuk melanjutkan petualangan Anda</p>
+                
+                @if(session('success'))
+                    <div class="alert alert-success" style="background: rgba(40, 167, 69, 0.1); border: 1px solid #28a745; color: #28a745; padding: 12px; border-radius: 8px; margin-top: 20px; font-size: 14px; text-align: center;">
+                        {{ session('success') }}
+                    </div>
+                @endif
             </div>
 
-            <form action="#" method="POST" class="auth-form">
+            <form action="{{ url('/login') }}" method="POST" class="auth-form">
+                @csrf
                 <div class="form-group">
                     <label for="email">Email</label>
                     <div class="input-icon">
                         <i class="fas fa-envelope"></i>
-                        <input type="email" id="email" name="email" placeholder="nama@email.com" required>
+                        <input type="email" id="email" name="email" placeholder="nama@email.com" value="{{ old('email') }}" required>
                     </div>
+                    @error('email')
+                        <span class="error-msg" style="color: #ff4d4d; font-size: 12px; margin-top: 5px; display: block;">{{ $message }}</span>
+                    @enderror
                 </div>
                 
                 <div class="form-group">
@@ -39,11 +49,14 @@
                         <i class="fas fa-lock"></i>
                         <input type="password" id="password" name="password" placeholder="••••••••" required>
                     </div>
+                    @error('password')
+                        <span class="error-msg" style="color: #ff4d4d; font-size: 12px; margin-top: 5px; display: block;">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <div class="form-options">
                     <label class="checkbox-container">
-                        <input type="checkbox">
+                        <input type="checkbox" name="remember">
                         <span class="checkmark"></span>
                         Ingat saya
                     </label>
