@@ -21,5 +21,25 @@ Route::post('reviews', [ReviewController::class, 'store'])->middleware('auth');
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('landing');
+});
+
+Route::get('/packages', function () {
+    return view('packages');
+});
+
+Route::get('/detail', function () {
+    return view('detail');
+});
+
+Route::get('/login', function () {
+    return view('login');
+});
+
+Route::get('/register', function () {
+    return view('register');
+});
+
+Route::get('/admin', function () {
+    return view('admin');
 });
