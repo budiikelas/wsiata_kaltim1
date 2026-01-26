@@ -312,161 +312,53 @@
                     </p>
                 </div>
                 
-                <div class="schedule-grid">
-                    <!-- Card 1: Island Hopping -->
-                    <div class="schedule-card">
-                        <div class="card-image-wrapper">
-                            <img src="{{ asset('images/maladewa.png') }}" alt="Derawan Island" class="card-image">
-                            <div class="card-badge">
-                                <i class="fas fa-star"></i> 4.9
-                            </div>
+                <div class="search-filter-wrapper reveal reveal-fade-up">
+                    <div class="search-container">
+                        <div class="search-input-group">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="dest-search" placeholder="Cari destinasi impian Anda...">
                         </div>
-                        <div class="card-content">
-                            <div class="card-location">
-                                <i class="fas fa-map-marker-alt"></i> Derawan & Maratua
-                            </div>
-                            <h3 class="card-title">Island Hopping Paradise</h3>
-                            <p class="card-desc">
-                                Nikmati keindahan 4 pulau eksotis dalam satu perjalanan. Snorkeling dengan penyu, 
-                                berenang dengan ubur-ubur tanpa sengat di Kakaban, dan foto di Laguna Kehe Daing.
-                            </p>
-                            <div class="card-footer">
-                                <span class="trip-duration">
-                                    <i class="far fa-clock"></i> 4 Hari 3 Malam
-                                </span>
-                                <a href="{{ url('/detail?id=derawan') }}" class="card-btn">Lihat Detail</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 2: River Safari -->
-                    <div class="schedule-card">
-                        <div class="card-image-wrapper">
-                            <img src="{{ asset('images/retreat.png') }}" alt="Mahakam River" class="card-image">
-                            <div class="card-badge">
-                                <i class="fas fa-fire"></i> Populer
-                            </div>
-                        </div>
-                        <div class="card-content">
-                            <div class="card-location">
-                                <i class="fas fa-water"></i> Sungai Mahakam
-                            </div>
-                            <h3 class="card-title">Mahakam River Safari</h3>
-                            <p class="card-desc">
-                                Susuri sungai Mahakam dengan kapal wisata. Kunjungi desa budaya Dayak, 
-                                saksikan kehidupan pesut Mahakam, dan nikmati tarian tradisional.
-                            </p>
-                            <div class="card-footer">
-                                <span class="trip-duration">
-                                    <i class="far fa-clock"></i> 3 Hari 2 Malam
-                                </span>
-                                <a href="{{ url('/detail?id=mahakam') }}" class="card-btn">Lihat Detail</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 3: Wildlife -->
-                    <div class="schedule-card">
-                        <div class="card-image-wrapper">
-                            <img src="{{ asset('images/orangutan-hero.png') }}" alt="Orangutan" class="card-image">
-                            <div class="card-badge">
-                                <i class="fas fa-leaf"></i> Eco-Tour
-                            </div>
-                        </div>
-                        <div class="card-content">
-                            <div class="card-location">
-                                <i class="fas fa-tree"></i> Taman Nasional Kutai
-                            </div>
-                            <h3 class="card-title">Borneo Wildlife Trek</h3>
-                            <p class="card-desc">
-                                Petualangan masuk ke habitat asli Orangutan liar. Trekking di hutan hujan tropis 
-                                yang masih asri dan pengamatan satwa liar endemik Kalimantan.
-                            </p>
-                            <div class="card-footer">
-                                <span class="trip-duration">
-                                    <i class="far fa-clock"></i> 2 Hari 1 Malam
-                                </span>
-                                <a href="{{ url('/detail?id=kutai') }}" class="card-btn">Lihat Detail</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 4: Hidden Gem -->
-                    <div class="schedule-card">
-                        <div class="card-image-wrapper">
-                            <img src="{{ asset('images/beach.jpeg') }}" alt="Labuan Cermin" class="card-image">
-                            <div class="card-badge">
-                                <i class="fas fa-camera"></i> Viral
-                            </div>
-                        </div>
-                        <div class="card-content">
-                            <div class="card-location">
-                                <i class="fas fa-mountain"></i> Biduk-Biduk
-                            </div>
-                            <h3 class="card-title">Crystal Lake Voyage</h3>
-                            <p class="card-desc">
-                                Menyelam di danau dua rasa Labuan Cermin yang sebening kristal. 
-                                Dilanjutkan dengan santai di pantai pasir putih Biduk-biduk.
-                            </p>
-                            <div class="card-footer">
-                                <span class="trip-duration">
-                                    <i class="far fa-clock"></i> 3 Hari 2 Malam
-                                </span>
-                                <a href="{{ url('/detail?id=biduk') }}" class="card-btn">Lihat Detail</a>
-                            </div>
-                        </div>
-                </div>
-            </div>
-
-            <div class="schedule-view-more">
-                <a href="{{ url('/packages') }}" class="view-more-btn">
-                    Tampilkan Lebih Banyak Wisata <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-
-            <!-- Reviews Section -->
-                <div class="reviews-grid">
-                    <div class="review-card">
-                        <div class="reviewer-profile">
-                            <img src="https://ui-avatars.com/api/?name=Sarah+J&background=random" alt="User" class="reviewer-img">
-                            <div class="reviewer-info">
-                                <h4>Sarah Jenkins</h4>
-                                <span>Traveller, USA</span>
-                            </div>
-                        </div>
-                        <p class="review-text">
-                            "Kalimantan Timur adalah permata tersembunyi! Derawan sangat menakjubkan, 
-                            seperti Maldives tapi lebih alami. Sangat merekomendasikan paket Island Hopping."
-                        </p>
-                    </div>
-
-                    <div class="review-card">
-                        <div class="reviewer-profile">
-                            <img src="https://ui-avatars.com/api/?name=Budi+S&background=random" alt="User" class="reviewer-img">
-                            <div class="reviewer-info">
-                                <h4>Budi Santoso</h4>
-                                <span>Photographer, Jakarta</span>
-                            </div>
-                        </div>
-                        <p class="review-text">
-                            "Sebagai fotografer, Mahakam River Safari memberikan banyak momen magis. 
-                            Budaya Dayak sangat kaya dan orang-orangnya ramah."
-                        </p>
                     </div>
                     
-                    <div class="review-card">
-                        <div class="reviewer-profile">
-                            <img src="https://ui-avatars.com/api/?name=Jessica+W&background=random" alt="User" class="reviewer-img">
-                            <div class="reviewer-info">
-                                <h4>Jessica Wong</h4>
-                                <span>Singapore</span>
+                    <div class="category-filters">
+                        <button class="filter-btn active" data-filter="all">Semua</button>
+                        @foreach($categories as $category)
+                            <button class="filter-btn" data-filter="{{ Str::slug($category->name) }}">{{ $category->name }}</button>
+                        @endforeach
+                    </div>
+                </div>
+                
+                <div class="schedule-grid" id="dest-grid">
+                    @forelse($destinations as $dest)
+                    <div class="schedule-card" data-category="{{ Str::slug($dest->category->name) }}" data-name="{{ strtolower($dest->name) }}">
+                        <div class="card-image-wrapper">
+                            <img src="{{ $dest->thumbnail ? asset($dest->thumbnail) : asset('images/beach.jpeg') }}" alt="{{ $dest->name }}" class="card-image">
+                            <div class="card-badge">
+                                <i class="fas fa-star"></i> {{ number_format($dest->rating ?? 4.8, 1) }}
                             </div>
                         </div>
-                        <p class="review-text">
-                            "Melihat orangutan liar di habitat aslinya adalah pengalaman seumur hidup. 
-                            Panduannya sangat profesional dan peduli lingkungan."
-                        </p>
+                        <div class="card-content">
+                            <div class="card-location">
+                                <i class="fas fa-map-marker-alt"></i> {{ $dest->location }}
+                            </div>
+                            <h3 class="card-title">{{ $dest->name }}</h3>
+                            <p class="card-desc">
+                                {{ Str::limit($dest->description, 80) }}
+                            </p>
+                            <div class="card-footer">
+                                <span class="trip-duration">
+                                    <i class="far fa-clock"></i> {{ $dest->duration ?? '2 Hari 1 Malam' }}
+                                </span>
+                                <a href="{{ url('/detail?id=' . $dest->id) }}" class="card-btn">Lihat Detail</a>
+                            </div>
+                        </div>
                     </div>
+                    @empty
+                    <div style="grid-column: 1/-1; text-align: center; padding: 50px; color: rgba(255,255,255,0.5);">
+                        <i class="fas fa-map-marked-alt" style="font-size: 40px; margin-bottom: 20px; display: block;"></i>
+                        <p>Belum ada destinasi yang tersedia. Silakan tambahkan melalui Dashboard Admin.</p>
+                    </div>
+                    @endforelse
                 </div>
             </div>
         </section>
@@ -742,6 +634,44 @@
                     document.querySelector('.hero-section')?.classList.add('is-visible');
                 }, 300);
             }, 1000);
+        });
+
+        // Search and Filter Logic
+        const searchInput = document.getElementById('dest-search');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const destCards = document.querySelectorAll('.schedule-card');
+
+        function filterDestinations() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+
+            destCards.forEach(card => {
+                const name = card.dataset.name;
+                const category = card.dataset.category;
+                
+                const matchesSearch = name.includes(searchTerm);
+                const matchesCategory = activeFilter === 'all' || category === activeFilter;
+
+                if (matchesSearch && matchesCategory) {
+                    card.style.display = 'block';
+                    setTimeout(() => card.style.opacity = '1', 10);
+                } else {
+                    card.style.opacity = '0';
+                    setTimeout(() => card.style.display = 'none', 400);
+                }
+            });
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('input', filterDestinations);
+        }
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                filterDestinations();
+            });
         });
 
         // Smooth Scroll

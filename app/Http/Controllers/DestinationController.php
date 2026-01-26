@@ -18,10 +18,22 @@ class DestinationController extends Controller
             'category_id' => 'required',
             'name' => 'required',
             'description' => 'required',
-            'location' => 'required'
+            'location' => 'required',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
         ]);
 
-        return Destination::create($request->all());
+        $data = $request->all();
+
+        if ($request->hasFile('thumbnail')) {
+            $file = $request->file('thumbnail');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/destinations'), $filename);
+            $data['thumbnail'] = 'uploads/destinations/' . $filename;
+        }
+
+        Destination::create($data);
+
+        return redirect()->back()->with('success', 'Destinasi berhasil ditambahkan!');
     }
 
     public function show($id)
@@ -32,14 +44,45 @@ class DestinationController extends Controller
     public function update(Request $request, $id)
     {
         $destination = Destination::findOrFail($id);
-        $destination->update($request->all());
 
-        return $destination;
+        $request->validate([
+            'category_id' => 'required',
+            'name' => 'required',
+            'description' => 'required',
+            'location' => 'required',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
+        ]);
+
+        $data = $request->all();
+
+        if ($request->hasFile('thumbnail')) {
+            // Delete old photo if exists
+            if ($destination->thumbnail && file_exists(public_path($destination->thumbnail))) {
+                unlink(public_path($destination->thumbnail));
+            }
+
+            $file = $request->file('thumbnail');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/destinations'), $filename);
+            $data['thumbnail'] = 'uploads/destinations/' . $filename;
+        }
+
+        $destination->update($data);
+
+        return redirect()->back()->with('success', 'Destinasi berhasil diperbarui!');
     }
 
     public function destroy($id)
     {
-        Destination::destroy($id);
-        return response()->json(['message' => 'Destinasi dihapus']);
+        $destination = Destination::findOrFail($id);
+        
+        // Delete photo if exists
+        if ($destination->thumbnail && file_exists(public_path($destination->thumbnail))) {
+            unlink(public_path($destination->thumbnail));
+        }
+
+        $destination->delete();
+        
+        return redirect()->back()->with('success', 'Destinasi berhasil dihapus!');
     }
 }
