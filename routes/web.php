@@ -20,6 +20,8 @@ Route::delete('galleries/{id}', [GalleryController::class, 'destroy']);
 Route::post('reviews', [ReviewController::class, 'store'])->middleware('auth');
 
 
+use App\Http\Controllers\AuthController;
+
 Route::get('/', function () {
     return view('landing');
 });
@@ -32,14 +34,13 @@ Route::get('/detail', function () {
     return view('detail');
 });
 
-Route::get('/login', function () {
-    return view('login');
-});
-
-Route::get('/register', function () {
-    return view('register');
-});
+// Authentication Routes
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/admin', function () {
     return view('admin');
-});
+})->middleware(['auth', 'admin']);
