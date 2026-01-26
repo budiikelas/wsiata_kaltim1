@@ -44,8 +44,11 @@
     <!-- Hero Section -->
     <section class="hero-section" id="beranda">
         <div class="hero-bg-wrapper">
-            <!-- Hero Background Image -->
-            <img src="https://images.unsplash.com/photo-1591129334586-da2a4bad50e3?w=1920&q=80" alt="Borneo Tropical Forest" class="hero-bg hero-bg-image" style="object-fit: cover; width: 100%; height: 100%;">
+            <!-- Hero Background Video -->
+            <video autoplay muted loop playsinline class="hero-bg hero-bg-video" style="object-fit: cover; width: 100%; height: 100%;">
+                <source src="{{ asset('images/video-bg.mp4') }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
             <div class="hero-overlay"></div>
         </div>
         
