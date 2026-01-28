@@ -21,7 +21,7 @@
                 <small style="color: var(--gold-accent)">{{ $stat['growth'] }} this month</small>
             </div>
         </div>
-        @endforeach
+       
     </div>
 
     <!-- Charts & Popular Destinations -->
