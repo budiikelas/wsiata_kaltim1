@@ -11,7 +11,9 @@ class LandingController extends Controller
     public function index()
     {
         $categories = Category::all();
-        $destinations = Destination::with(['category'])->get();
+        $destinations = Destination::with(['category'])
+            ->orderBy('rating', 'desc')
+            ->get();
         
         return view('landing', compact('categories', 'destinations'));
     }

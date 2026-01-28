@@ -35,7 +35,6 @@
             <li><a href="{{ url('/#beranda') }}">Beranda</a></li>
             <li><a href="{{ url('/#destinasi') }}">Destinasi</a></li>
             <li><a href="{{ url('/packages') }}">Packages</a></li>
-            <li><a href="{{ url('/#fasilitas') }}">Fasilitas</a></li>
             <li><a href="{{ url('/#contact') }}">Kontak</a></li>
         </ul>
         <div class="nav-items-right">
@@ -124,74 +123,78 @@
                 <span class="dot"></span>
                 <span class="dot"></span>
                 <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
             </div>
         </section>
 
-        <!-- Story Section - Wildlife Documentary Theme -->
-        <section class="story-section wildlife-section">
-            <!-- Wildlife Background with Parallax -->
-            <div class="wildlife-bg-wrapper">
-                <div class="wildlife-bg" data-parallax="true">
-                    <img src="{{ asset('images/orangutan-hero.png') }}" alt="Bornean Orangutan">
-                </div>
-                <!-- Smoke/Mist Overlay -->
-                <div class="smoke-overlay"></div>
-                <div class="dark-gradient-overlay"></div>
-            </div>
-            
-            <div class="wildlife-container">
-                <!-- Cinematic Content -->
-                <div class="wildlife-content reveal reveal-fade-up">
-                    <!-- Small Label -->
-                    <div class="wildlife-label">
-                        <span class="label-line"></span>
-                        <span class="label-text">KALIMANTAN TIMUR</span>
-                    </div>
-                    
-                    <!-- Main Headline - Bold & Minimal -->
-                    <h2 class="wildlife-title">
-                        LIAR
-                    </h2>
-                    
-                    <!-- Supporting Text -->
-                    <p class="wildlife-description">
-                        Orangutan Kalimantan, secara ilmiah dikenal sebagai Pongo pygmaeus, adalah spesies kera besar yang terancam punah<br>
-                        yang mendiami hutan hujan Kalimantan. Mereka adalah salah satu primata paling cerdas di dunia.
+
+
+
+        <!-- Schedule Section - Modern Card Layout -->
+        <section class="schedule-section">
+            <div class="schedule-container">
+                <div class="schedule-header reveal reveal-fade-up">
+                    <span class="schedule-subtitle"></span>
+                    <h2 class="schedule-title">Wisata Kaltim</h2>
+                    <p class="schedule-desc-text">
+                        Pilihlah destinasi yang sesuai dengan gaya petualangan Anda. 
+                        Dari pulau eksotis hingga hutan hujan tropis yang menakjubkan.
                     </p>
-
-                    <!-- Watch Trailer Button -->
-                    <a href="https://youtu.be/0fts6x_EE_E?si=hZhJ4FwWlq4Kei0J" class="watch-trailer-btn" target="_blank">
-                        <span>TONTON TRAILER</span>
-                    </a>
+                </div>
+                
+                <div class="search-filter-wrapper reveal reveal-fade-up">
+                    <div class="search-container">
+                        <div class="search-input-group">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="dest-search" placeholder="Cari destinasi impian Anda...">
+                        </div>
+                    </div>
+                    
+                    <div class="category-filters">
+                        <button class="filter-btn active" data-filter="all">Semua</button>
+                        @foreach($categories as $category)
+                            <button class="filter-btn" data-filter="{{ Str::slug($category->name) }}">{{ $category->name }}</button>
+                        @endforeach
+                    </div>
+                </div>
+                
+                <div class="schedule-grid" id="dest-grid">
+                    @forelse($destinations as $dest)
+                    <div class="schedule-card" data-category="{{ Str::slug($dest->category->name) }}" data-name="{{ strtolower($dest->name) }}">
+                        <div class="card-image-wrapper">
+                            <img src="{{ $dest->thumbnail ? asset($dest->thumbnail) : asset('images/beach.jpeg') }}" alt="{{ $dest->name }}" class="card-image">
+                            <div class="card-badge">
+                                <i class="fas fa-star"></i> {{ number_format($dest->rating ?? 4.8, 1) }}
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-location">
+                                <i class="fas fa-map-marker-alt"></i> {{ $dest->location }}
+                            </div>
+                            <h3 class="card-title">{{ $dest->name }}</h3>
+                            <p class="card-desc">
+                                {{ Str::limit($dest->description, 80) }}
+                            </p>
+                            <div class="card-footer">
+                                <span class="trip-duration">
+                                    <i class="far fa-clock"></i> {{ $dest->duration ?? '2 Hari 1 Malam' }}
+                                </span>
+                                <a href="{{ url('/detail?id=' . $dest->id) }}" class="card-btn">Lihat Detail</a>
+                            </div>
+                        </div>
+                    </div>
+                    @empty
+                    <div style="grid-column: 1/-1; text-align: center; padding: 50px; color: rgba(255,255,255,0.5);">
+                        <i class="fas fa-map-marked-alt" style="font-size: 40px; margin-bottom: 20px; display: block;"></i>
+                        <p>Belum ada destinasi yang tersedia. Silakan tambahkan melalui Dashboard Admin.</p>
+                    </div>
+                    @endforelse
                 </div>
 
-                <!-- Wildlife Info Cards -->
-                <div class="wildlife-info-grid reveal reveal-fade-up reveal-delay-2">
-                    <div class="wildlife-info-card">
-                        <div class="info-icon">
-                            <i class="fas fa-paw"></i>
-                        </div>
-                        <h4>Orangutan</h4>
-                        <p>Kera Besar Kalimantan</p>
-                    </div>
-                    
-                    <div class="wildlife-info-card">
-                        <div class="info-icon">
-                            <i class="fas fa-tree"></i>
-                        </div>
-                        <h4>Habitat</h4>
-                        <p>Hutan Hujan Tropis</p>
-                    </div>
-                    
-                    <div class="wildlife-info-card">
-                        <div class="info-icon">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </div>
-                        <h4>Status</h4>
-                        <p>Terancam Punah</p>
-                    </div>
+                <!-- More Destinations Button -->
+                <div class="more-dest-wrapper reveal reveal-fade-up" id="more-dest-btn-container" style="text-align: center; margin-top: 40px;">
+                    <a href="{{ url('/packages') }}" class="btn-more-dest">
+                        Wisata Lainnya <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
             </div>
         </section>
@@ -300,225 +303,7 @@
         </div>
         </section>
 
-        <!-- Schedule Section - Modern Card Layout -->
-        <section class="schedule-section">
-            <div class="schedule-container">
-                <div class="schedule-header reveal reveal-fade-up">
-                    <span class="schedule-subtitle">Destinasi Pilihan</span>
-                    <h2 class="schedule-title">Jadwal Perjalanan Tersedia</h2>
-                    <p class="schedule-desc-text">
-                        Pilihlah paket perjalanan yang sesuai dengan gaya petualangan Anda. 
-                        Dari pulau eksotis hingga hutan hujan tropis yang menakjubkan.
-                    </p>
-                </div>
-                
-                <div class="search-filter-wrapper reveal reveal-fade-up">
-                    <div class="search-container">
-                        <div class="search-input-group">
-                            <i class="fas fa-search"></i>
-                            <input type="text" id="dest-search" placeholder="Cari destinasi impian Anda...">
-                        </div>
-                    </div>
-                    
-                    <div class="category-filters">
-                        <button class="filter-btn active" data-filter="all">Semua</button>
-                        @foreach($categories as $category)
-                            <button class="filter-btn" data-filter="{{ Str::slug($category->name) }}">{{ $category->name }}</button>
-                        @endforeach
-                    </div>
-                </div>
-                
-                <div class="schedule-grid" id="dest-grid">
-                    @forelse($destinations as $dest)
-                    <div class="schedule-card" data-category="{{ Str::slug($dest->category->name) }}" data-name="{{ strtolower($dest->name) }}">
-                        <div class="card-image-wrapper">
-                            <img src="{{ $dest->thumbnail ? asset($dest->thumbnail) : asset('images/beach.jpeg') }}" alt="{{ $dest->name }}" class="card-image">
-                            <div class="card-badge">
-                                <i class="fas fa-star"></i> {{ number_format($dest->rating ?? 4.8, 1) }}
-                            </div>
-                        </div>
-                        <div class="card-content">
-                            <div class="card-location">
-                                <i class="fas fa-map-marker-alt"></i> {{ $dest->location }}
-                            </div>
-                            <h3 class="card-title">{{ $dest->name }}</h3>
-                            <p class="card-desc">
-                                {{ Str::limit($dest->description, 80) }}
-                            </p>
-                            <div class="card-footer">
-                                <span class="trip-duration">
-                                    <i class="far fa-clock"></i> {{ $dest->duration ?? '2 Hari 1 Malam' }}
-                                </span>
-                                <a href="{{ url('/detail?id=' . $dest->id) }}" class="card-btn">Lihat Detail</a>
-                            </div>
-                        </div>
-                    </div>
-                    @empty
-                    <div style="grid-column: 1/-1; text-align: center; padding: 50px; color: rgba(255,255,255,0.5);">
-                        <i class="fas fa-map-marked-alt" style="font-size: 40px; margin-bottom: 20px; display: block;"></i>
-                        <p>Belum ada destinasi yang tersedia. Silakan tambahkan melalui Dashboard Admin.</p>
-                    </div>
-                    @endforelse
-                </div>
-            </div>
-        </section>
 
-        <!-- Facilities Section -->
-        <section class="facilities-section" id="fasilitas">
-            <div id="paket"></div> <!-- Anchor for backward compatibility -->
-            
-            <div class="facilities-bg-wrapper section-bg-wrapper">
-                <div class="facilities-bg section-parallax-bg" data-parallax="true">
-                    <img src="{{ asset('images/retreat.png') }}" alt="Facilities Background">
-                </div>
-                <div class="facilities-overlay section-overlay"></div>
-            </div>
-
-            <div class="facilities-container">
-                <!-- Left Column: Hero-like Intro -->
-                <div class="facilities-left">
-                    <div class="facilities-hero-content">
-                        <span class="facilities-subtitle">KENYAMANAN ANDA</span>
-                        <h2 class="facilities-title">Fasilitas<br>Unggulan</h2>
-                        <p class="facilities-desc">
-                            Nikmati pengalaman wisata tanpa khawatir. Kami menyediakan akomodasi 
-                            dan transportasi terbaik untuk memastikan perjalanan Anda tak terlupakan.
-                        </p>
-                        
-                        <div class="facilities-widget glass-panel">
-                            <div class="widget-item">
-                                <i class="fas fa-temperature-high"></i>
-                                <div>
-                                    <span class="widget-value">28°C</span>
-                                    <span class="widget-label">Rata-rata Suhu</span>
-                                </div>
-                            </div>
-                            <div class="widget-line"></div>
-                            <div class="widget-item">
-                                <i class="fas fa-wind"></i>
-                                <div>
-                                    <span class="widget-value">12 km/h</span>
-                                    <span class="widget-label">Kecepatan Angin</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <a href="#contact" class="explore-facilities-btn">
-                            Info Selengkapnya <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Right Column: Glassmorphism List -->
-                <div class="facilities-right">
-                    <div class="facilities-sidebar glass-panel">
-                        <div class="sidebar-header">
-                            <div class="search-bar">
-                                <input type="text" placeholder="Cari fasilitas...">
-                                <i class="fas fa-search"></i>
-                            </div>
-                            <i class="fas fa-bars menu-icon"></i>
-                        </div>
-
-                        <h3 class="sidebar-title">Daftar Fasilitas</h3>
-
-                        <div class="facilities-list">
-                            <!-- Card 1 -->
-                            <div class="facility-card">
-                                <div class="facility-img">
-                                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500&q=80" alt="Hotel">
-                                </div>
-                                <div class="facility-info">
-                                    <h4>Akomodasi Premium</h4>
-                                    <div class="rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <p>Hotel bintang 4 dengan view laut</p>
-                                </div>
-                                <div class="facility-action">
-                                    <i class="far fa-heart"></i>
-                                </div>
-                            </div>
-
-                            <!-- Card 2 -->
-                            <div class="facility-card">
-                                <div class="facility-img">
-                                    <img src="https://images.unsplash.com/photo-1517153295259-74eb0b416cee?w=500&q=80" alt="Transport">
-                                </div>
-                                <div class="facility-info">
-                                    <h4>Transportasi VIP</h4>
-                                    <div class="rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                    </div>
-                                    <p>Antar jemput bandara & mobil pribadi</p>
-                                </div>
-                                <div class="facility-action">
-                                    <i class="far fa-heart"></i>
-                                </div>
-                            </div>
-
-                            <!-- Card 3 -->
-                            <div class="facility-card">
-                                <div class="facility-img">
-                                    <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=500&q=80" alt="Food">
-                                </div>
-                                <div class="facility-info">
-                                    <h4>Full Board Meals</h4>
-                                    <div class="rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <p>Sarapan, makan siang & malam</p>
-                                </div>
-                                <div class="facility-action">
-                                    <i class="far fa-heart"></i>
-                                </div>
-                            </div>
-                            
-                             <!-- Card 4 -->
-                            <div class="facility-card">
-                                <div class="facility-img">
-                                    <img src="https://images.unsplash.com/photo-1533613220915-609f661a6fe1?w=500&q=80" alt="Guide">
-                                </div>
-                                <div class="facility-info">
-                                    <h4>Pemandu Profesional</h4>
-                                    <div class="rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <p>Berlisensi & berpengalaman</p>
-                                </div>
-                                <div class="facility-action">
-                                    <i class="far fa-heart"></i>
-                                </div>
-                            </div>
-
-                            <!-- Pagination Mock -->
-                             <div class="sidebar-pagination">
-                                 <button class="page-btn prev"><i class="fas fa-chevron-left"></i></button>
-                                 <button class="page-btn next"><i class="fas fa-chevron-right"></i></button>
-                                 <span class="page-indicator">01 — 04</span>
-                             </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <!-- Contact Section - Airplane Split Layout with 3D Breakthrough -->
         <section class="contact-section" id="contact">
@@ -640,10 +425,12 @@
         const searchInput = document.getElementById('dest-search');
         const filterBtns = document.querySelectorAll('.filter-btn');
         const destCards = document.querySelectorAll('.schedule-card');
+        const moreDestBtn = document.getElementById('more-dest-btn-container');
 
         function filterDestinations() {
             const searchTerm = searchInput.value.toLowerCase();
             const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+            let visibleCount = 0;
 
             destCards.forEach(card => {
                 const name = card.dataset.name;
@@ -652,14 +439,37 @@
                 const matchesSearch = name.includes(searchTerm);
                 const matchesCategory = activeFilter === 'all' || category === activeFilter;
 
+                // Logic: If activeFilter is 'all', only show first 4 that match search
                 if (matchesSearch && matchesCategory) {
-                    card.style.display = 'block';
-                    setTimeout(() => card.style.opacity = '1', 10);
+                    if (activeFilter === 'all' && searchTerm === '') {
+                        if (visibleCount < 4) {
+                            card.style.display = 'block';
+                            setTimeout(() => card.style.opacity = '1', 10);
+                            visibleCount++;
+                        } else {
+                            card.style.opacity = '0';
+                            setTimeout(() => card.style.display = 'none', 400);
+                        }
+                    } else {
+                        // For specific category or searching, show all matches
+                        card.style.display = 'block';
+                        setTimeout(() => card.style.opacity = '1', 10);
+                        visibleCount++;
+                    }
                 } else {
                     card.style.opacity = '0';
                     setTimeout(() => card.style.display = 'none', 400);
                 }
             });
+
+            // Show 'Wisata Lainnya' button only on 'all' filter and empty search
+            if (activeFilter === 'all' && searchTerm === '') {
+                moreDestBtn.style.display = 'block';
+                setTimeout(() => moreDestBtn.style.opacity = '1', 10);
+            } else {
+                moreDestBtn.style.opacity = '0';
+                setTimeout(() => moreDestBtn.style.display = 'none', 400);
+            }
         }
 
         if (searchInput) {
@@ -792,7 +602,7 @@
             });
         }, observerOptions);
 
-        document.querySelectorAll('.story-section, .gallery-section, .schedule-section, .pricing-section, .facilities-section, .contact-section, .cta-section').forEach(el => {
+        document.querySelectorAll('.story-section, .gallery-section, .schedule-section, .pricing-section, .contact-section, .cta-section').forEach(el => {
             observer.observe(el);
         });
 
@@ -942,5 +752,61 @@
         // Init
         initCarousel();
     </script>
+
+    <!-- Enhanced Styles for Custom Buttons -->
+    <style>
+        .btn-more-dest {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 45px;
+            background: linear-gradient(135deg, #d4f05c 0%, #b8d64a 100%);
+            color: #050505;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 100px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 35px rgba(212, 240, 92, 0.25);
+            border: 2px solid transparent;
+        }
+
+        .btn-more-dest:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 25px 45px rgba(212, 240, 92, 0.4);
+            background: #ffffff;
+            color: #d4f05c;
+            border-color: #d4f05c;
+        }
+
+        .btn-more-dest i {
+            font-size: 16px;
+            transition: transform 0.4s ease;
+        }
+
+        .btn-more-dest:hover i {
+            transform: translateX(8px);
+        }
+
+        /* Pulsing effect for the button container to make it pop */
+        .more-dest-wrapper {
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .more-dest-wrapper::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+            opacity: 0.5;
+        }
+    </style>
 </body>
 </html>

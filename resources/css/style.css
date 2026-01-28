@@ -1122,9 +1122,9 @@ section {
 /* Schedule Grid */
 .schedule-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    /* 3 columns for better fit on most screens */
-    gap: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    /* 4 columns as requested */
+    gap: 30px;
     padding: 10px 0;
 }
 
