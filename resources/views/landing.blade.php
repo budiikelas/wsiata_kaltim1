@@ -159,7 +159,10 @@
                 
                 <div class="schedule-grid" id="dest-grid">
                     @forelse($destinations as $dest)
-                    <div class="schedule-card" data-category="{{ Str::slug($dest->category->name) }}" data-name="{{ strtolower($dest->name) }}">
+                    <div class="schedule-card" 
+                         data-category="{{ Str::slug($dest->category->name) }}" 
+                         data-name="{{ strtolower($dest->name) }}"
+                         @if($loop->iteration > 4) style="display: none; opacity: 0;" @endif>
                         <div class="card-image-wrapper">
                             <img src="{{ $dest->thumbnail ? asset($dest->thumbnail) : asset('images/beach.jpeg') }}" alt="{{ $dest->name }}" class="card-image">
                             <div class="card-badge">
@@ -217,17 +220,17 @@
                             <h2 class="gallery-title">KALIMANTAN TIMUR</h2>
                         </div>
                         
+                        @php $firstDest = $destinations->first(); @endphp
                         <div class="destination-info reveal reveal-fade-up reveal-delay-2" id="destination-info">
-                            <h3 class="active-dest-title">Kepulauan Derawan</h3>
-                            <p class="active-dest-desc">Surga tropis dengan pantai pasir putih dan kehidupan laut yang memukau. Nikmati keindahan bawah laut yang tak tertandingi.</p>
+                            <h3 class="active-dest-title">{{ $firstDest->name ?? 'Destinasi Populer' }}</h3>
+                            <p class="active-dest-desc">{{ Str::limit($firstDest->description ?? 'Jelajahi keindahan alam Kalimantan Timur.', 150) }}</p>
                             <div class="active-dest-rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
+                                @php $rating = $firstDest->rating ?? 5; @endphp
+                                @for($i=1; $i<=5; $i++)
+                                    <i class="{{ $i <= $rating ? 'fas' : 'far' }} fa-star"></i>
+                                @endfor
                             </div>
-                            <a href="{{ url('/detail?id=derawan') }}" class="explore-btn gallery-explore-btn">
+                            <a href="{{ url('/detail?id=' . ($firstDest->id ?? '')) }}" class="explore-btn gallery-explore-btn">
                                 Lihat Detail <i class="fas fa-arrow-right"></i>
                             </a>
                         </div>
@@ -247,55 +250,16 @@
                     <!-- Right Column: Carousel -->
                     <div class="gallery-visuals">
                         <div class="carousel-track">
-                            <!-- Slide 1 -->
-                            <div class="carousel-card active" 
-                                 data-id="derawan"
-                                 data-title="Kepulauan Derawan" 
-                                 data-desc="Surga tropis dengan pantai pasir putih dan kehidupan laut yang memukau. Nikmati keindahan bawah laut yang tak tertandingi."
-                                 data-rating="5">
-                                <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80" alt="Derawan">
+                            @foreach($destinations as $dest)
+                            <div class="carousel-card {{ $loop->first ? 'active' : '' }}" 
+                                 data-id="{{ $dest->id }}"
+                                 data-title="{{ $dest->name }}" 
+                                 data-desc="{{ Str::limit($dest->description, 150) }}"
+                                 data-rating="{{ $dest->rating ?? 5 }}">
+                                <img src="{{ $dest->thumbnail ? asset($dest->thumbnail) : asset('images/beach.jpeg') }}" alt="{{ $dest->name }}">
                                 <div class="card-overlay"></div>
                             </div>
-
-                            <!-- Slide 2: Kakaban -->
-                            <div class="carousel-card" 
-                                 data-id="kakaban"
-                                 data-title="Danau Kakaban" 
-                                 data-desc="Berenang bersama jutaan ubur-ubur tanpa sengat di danau purba yang magis. Pengalaman langka yang hanya ada di dua tempat di dunia."
-                                 data-rating="5">
-                                <img src="https://images.unsplash.com/photo-1516683667744-4a4205226c9f?w=1000&q=80" alt="Jellyfish at Kakaban">
-                                <div class="card-overlay"></div>
-                            </div>
-
-                            <!-- Slide 3: Maratua -->
-                            <div class="carousel-card" 
-                                 data-id="maratua"
-                                 data-title="Pantai Maratua" 
-                                 data-desc="Surga bahari dengan pasir putih selembut tepung dan air sebening kristal. Destinasi eksotis yang sering disebut sebagai Maldives-nya Indonesia."
-                                 data-rating="4.5">
-                                <img src="https://images.unsplash.com/photo-1596423238612-4cf30eba2523?w=1000&q=80" alt="Pantai Maratua">
-                                <div class="card-overlay"></div>
-                            </div>
-
-                            <!-- Slide 4 -->
-                            <div class="carousel-card" 
-                                 data-id="mahakam"
-                                 data-title="Sungai Mahakam" 
-                                 data-desc="Jantung Kalimantan dengan budaya Dayak yang kaya dan alam yang asri. Telusuri kehidupan sungai yang autentik."
-                                 data-rating="5">
-                                <img src="https://images.unsplash.com/photo-1551244072-5d12893278ab?w=800&q=80" alt="Mahakam">
-                                <div class="card-overlay"></div>
-                            </div>
-
-                            <!-- Slide 5 -->
-                            <div class="carousel-card" 
-                                 data-id="kutai"
-                                 data-title="Hutan Hujan Tropis" 
-                                 data-desc="Eksplorasi keanekaragaman hayati dan habitat orangutan Kalimantan. Paru-paru dunia yang menakjubkan."
-                                 data-rating="4.5">
-                                <img src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=800&q=80" alt="Rainforest">
-                                <div class="card-overlay"></div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -378,8 +342,8 @@
                         <div class="float-card-content">
                             <i class="fas fa-plane-departure"></i>
                             <div>
-                                <h4>Popular Destinations</h4>
-                                <p>Kepulauan Derawan & Maratua</p>
+                                <h4>Top Destination</h4>
+                                <p>{{ $firstDest->name ?? 'Explore Kaltim' }}</p>
                             </div>
                         </div>
                     </div>
@@ -417,6 +381,11 @@
                 setTimeout(() => {
                     document.querySelector('.main-nav')?.classList.add('is-visible');
                     document.querySelector('.hero-section')?.classList.add('is-visible');
+                    
+                    // Trigger initial destination filtering
+                    if (typeof filterDestinations === 'function') {
+                        filterDestinations();
+                    }
                 }, 300);
             }, 1000);
         });
@@ -474,6 +443,10 @@
 
         if (searchInput) {
             searchInput.addEventListener('input', filterDestinations);
+            searchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') e.preventDefault();
+            });
+            searchInput.addEventListener('click', (e) => e.stopPropagation());
         }
 
         filterBtns.forEach(btn => {

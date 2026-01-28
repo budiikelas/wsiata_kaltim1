@@ -44,4 +44,9 @@ class User extends Authenticatable
         'password' => 'hashed',
         'is_admin' => 'boolean',
     ];
+
+    public function favorites()
+    {
+        return $this->belongsToMany(Destination::class, 'favorites', 'user_id', 'destination_id')->withTimestamps();
+    }
 }

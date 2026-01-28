@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Pilihan Paket Wisata Terbaik di Kalimantan Timur dan Seluruh Indonesia.">
-    <title>NexTrip - Packages App</title>
+    <meta name="description" content="Destinasi Terpopuler dan Paling Banyak Dicari di Kalimantan Timur.">
+    <title>NexTrip - Trending Destinations</title>
     
     <!-- CSS -->
     @vite(['resources/css/style.css'])
@@ -157,7 +157,7 @@
             font-weight: 500;
             color: rgba(255,255,255,0.5);
             cursor: pointer;
-            padding: 8px 15px; /* Increased padding */
+            padding: 8px 15px;
             position: relative;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 1px solid transparent;
@@ -220,10 +220,13 @@
         .hero-label {
             font-size: 12px;
             font-weight: 700;
-            color: var(--color-accent);
+            color: #ffc107;
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .hero-title {
@@ -289,6 +292,9 @@
         .shelf-title {
             font-size: 20px;
             font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .shelf-grid {
@@ -321,6 +327,20 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        .trending-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 193, 7, 0.9);
+            color: #000;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            backdrop-filter: blur(5px);
         }
 
         .play-overlay {
@@ -379,10 +399,10 @@
                 <a href="{{ url('/') }}" class="nav-icon" title="Kembali ke Landing">
                     <i class="fas fa-home"></i>
                 </a>
-                <a href="{{ url('/packages') }}" class="nav-icon active" title="Packages Shelf">
+                <a href="{{ url('/packages') }}" class="nav-icon" title="Packages Shelf">
                     <i class="fas fa-th-large"></i>
                 </a>
-                <a href="{{ url('/trending') }}" class="nav-icon" title="Trending">
+                <a href="{{ url('/trending') }}" class="nav-icon active" title="Trending">
                     <i class="fas fa-fire"></i>
                 </a>
                 <a href="{{ url('/favorites') }}" class="nav-icon" title="Favorites">
@@ -405,11 +425,11 @@
             <div class="app-topbar">
                 <div class="app-search">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="pkg-search" placeholder="Search destinations, mountain, beach...">
+                    <input type="text" id="pkg-search" placeholder="Search trending destinations...">
                 </div>
 
                 <div class="app-categories">
-                    <div class="cat-pill active" data-filter="all">All Packages</div>
+                    <div class="cat-pill active" data-filter="all">All Trending</div>
                     @foreach($categories as $category)
                         <div class="cat-pill" data-filter="{{ Str::slug($category->name) }}">{{ $category->name }}</div>
                     @endforeach
@@ -418,11 +438,13 @@
 
             @php $featured = $destinations->first(); @endphp
             @if($featured)
-            <!-- Featured Hero -->
+            <!-- Trending Hero -->
             <div class="hero-featured" id="featured-hero-section">
                 <img src="{{ $featured->thumbnail ? asset($featured->thumbnail) : asset('images/beach.jpeg') }}" class="hero-featured-img" alt="Featured">
                 <div class="hero-featured-overlay">
-                    <div class="hero-label">Now Trending</div>
+                    <div class="hero-label">
+                        <i class="fas fa-chart-line"></i> #1 Most Popular
+                    </div>
                     <h2 class="hero-title search-title">{{ $featured->name }}</h2>
                     <p class="hero-desc">{{ Str::limit($featured->description, 200) }}</p>
                     <div class="hero-btns">
@@ -432,82 +454,58 @@
                         <a href="#" class="btn-sub">
                             <i class="fas fa-plus"></i>
                         </a>
-                        <a href="#" class="btn-sub" style="font-size: 14px; width: auto;">
-                            <i class="fas fa-ellipsis-h"></i>
-                        </a>
                     </div>
                 </div>
             </div>
             @endif
 
-            <!-- Destination Shelves -->
-            <div style="display: grid; grid-template-columns: 300px 1fr; gap: 40px;" id="main-shelves-container">
-                <!-- Left Shelf: Continue Browsing -->
-                <div class="continue-shelf" id="continue-browsing-shelf">
-                    <div class="shelf-header">
-                        <h3 class="shelf-title">Continue Browsing</h3>
-                    </div>
-                    <div style="display: flex; flex-direction: column; gap: 20px;" id="mini-cards-container">
-                        @foreach($destinations->take(3) as $dest)
-                        <div class="glass-mini-card" data-category="{{ Str::slug($dest->category->name ?? 'other') }}" style="display: flex; gap: 15px; align-items: center; padding: 10px; background: rgba(255,255,255,0.02); border-radius: 15px; border: 1px solid rgba(255,255,255,0.05);">
-                            <div style="width: 60px; height: 60px; border-radius: 10px; overflow: hidden; position: relative;">
-                                <img src="{{ $dest->thumbnail ? asset($dest->thumbnail) : asset('images/beach.jpeg') }}" style="width: 100%; height: 100%; object-fit: cover;">
-                            </div>
-                            <div style="flex: 1;">
-                                <div class="mini-card-title search-title" style="font-size: 13px; font-weight: 600; margin-bottom: 3px;">{{ $dest->name }}</div>
-                                <div style="font-size: 11px; color: rgba(255,255,255,0.4);">Session 01 • Trip 02</div>
-                            </div>
-                            <a href="{{ url('/detail?id='.$dest->id) }}" style="color: white; opacity: 0.5;"><i class="fas fa-play-circle" style="font-size: 20px;"></i></a>
-                        </div>
-                        @endforeach
-                    </div>
+            <!-- Trending Shelf -->
+            <div id="recommend-shelf-container">
+                <div class="shelf-header">
+                    <h3 class="shelf-title">
+                        <i class="fas fa-fire" style="color: #ff5722;"></i> 
+                        Popular Right Now
+                    </h3>
                 </div>
 
-                <!-- Right Shelf: You Might Like -->
-                <div class="recommend-shelf" id="recommend-shelf-container">
-                    <div class="shelf-header">
-                        <h3 class="shelf-title">You might like</h3>
-                        <a href="#" style="font-size: 13px; color: var(--color-accent); text-decoration: none; font-weight: 600;">See all</a>
-                    </div>
-
-                    <div class="shelf-grid" id="pkg-grid">
-                        @foreach($destinations as $dest)
-                        <div class="small-card package-item" data-category="{{ Str::slug($dest->category->name ?? 'other') }}">
-                            <div class="small-card-img-box">
-                                <img src="{{ $dest->thumbnail ? asset($dest->thumbnail) : asset('images/beach.jpeg') }}" alt="{{ $dest->name }}">
-                                <div class="play-overlay">
-                                    <i class="fas fa-play" style="font-size: 12px; margin-left: 3px;"></i>
-                                </div>
-                            </div>
-                            <div class="small-card-content" style="display: flex; flex-direction: column; gap: 8px;">
-                                <div class="small-card-title search-title" style="margin-bottom: 0;">{{ $dest->name }}</div>
-                                <div style="font-size: 11px; color: rgba(255,255,255,0.4); line-height: 1.4;">
-                                    {{ Str::limit($dest->description, 80) }}
-                                </div>
-                                <div class="small-card-meta">
-                                    <span style="color: var(--color-accent); font-weight: 700;">
-                                        <i class="fas fa-clock" style="font-size: 10px; margin-right: 5px;"></i>
-                                        {{ $dest->duration ?? rand(2, 7) . ' Days' }}
-                                    </span>
-                                    <span style="color: #ffc107; font-weight: 700; display: flex; align-items: center; gap: 4px;">
-                                        <i class="fas fa-star" style="font-size: 10px;"></i>
-                                        {{ number_format(rand(40, 50) / 10, 1) }}
-                                    </span>
-                                </div>
-                                <a href="{{ url('/detail?id='.$dest->id) }}" class="btn-detail" style="margin-top: 5px; background: rgba(255,255,255,0.05); color: #fff; text-decoration: none; padding: 8px; border-radius: 12px; font-size: 11px; font-weight: 600; text-align: center; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                                    Lihat Detail <i class="fas fa-arrow-right" style="font-size: 10px;"></i>
-                                </a>
+                <div class="shelf-grid" id="pkg-grid">
+                    @foreach($destinations as $index => $dest)
+                    <div class="small-card package-item" data-category="{{ Str::slug($dest->category->name ?? 'other') }}">
+                        <div class="small-card-img-box">
+                            <div class="trending-badge">#{{ $index + 1 }}</div>
+                            <img src="{{ $dest->thumbnail ? asset($dest->thumbnail) : asset('images/beach.jpeg') }}" alt="{{ $dest->name }}">
+                            <div class="play-overlay">
+                                <i class="fas fa-play" style="font-size: 12px; margin-left: 3px;"></i>
                             </div>
                         </div>
-                        @endforeach
+                        <div class="small-card-content" style="display: flex; flex-direction: column; gap: 8px;">
+                            <div class="small-card-title search-title" style="margin-bottom: 0;">{{ $dest->name }}</div>
+                            <div style="font-size: 11px; color: rgba(255,255,255,0.4); line-height: 1.4;">
+                                {{ Str::limit($dest->description, 80) }}
+                            </div>
+                            <div class="small-card-meta">
+                                <span style="color: var(--color-accent); font-weight: 700;">
+                                    <i class="fas fa-clock" style="font-size: 10px; margin-right: 5px;"></i>
+                                    {{ $dest->duration ?? rand(2, 7) . ' Days' }}
+                                </span>
+                                <span style="color: #ffc107; font-weight: 700; display: flex; align-items: center; gap: 4px;">
+                                    <i class="fas fa-star" style="font-size: 10px;"></i>
+                                    {{ number_format(rand(45, 50) / 10, 1) }} {{-- Slightly higher for trending --}}
+                                </span>
+                            </div>
+                            <a href="{{ url('/detail?id='.$dest->id) }}" class="btn-detail" style="margin-top: 5px; background: rgba(255,255,255,0.05); color: #fff; text-decoration: none; padding: 8px; border-radius: 12px; font-size: 11px; font-weight: 600; text-align: center; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                                Lihat Detail <i class="fas fa-arrow-right" style="font-size: 10px;"></i>
+                            </a>
+                        </div>
                     </div>
+                    @endforeach
+                </div>
 
-                    <!-- No Results Container -->
-                    <div id="no-results" style="display: none; text-align: center; padding: 100px 40px; color: rgba(255,255,255,0.3); grid-column: 1/-1;">
-                        <i class="fas fa-search" style="font-size: 50px; margin-bottom: 20px; display: block;"></i>
-                        <h3 style="color: #fff; margin-bottom: 10px;">No Results Found</h3>
-                        <p>We couldn't find any destinations matching your search or category.</p>
-                    </div>
+                <!-- No Results Container -->
+                <div id="no-results" style="display: none; text-align: center; padding: 100px 40px; color: rgba(255,255,255,0.3);">
+                    <i class="fas fa-search" style="font-size: 50px; margin-bottom: 20px; display: block;"></i>
+                    <h3 style="color: #fff; margin-bottom: 10px;">No Results Found</h3>
+                    <p>We couldn't find any trending destinations matching your filter.</p>
                 </div>
             </div>
         </main>
@@ -519,30 +517,25 @@
             const pkgSearch = document.getElementById('pkg-search');
             const catPills = document.querySelectorAll('.cat-pill');
             const gridItems = document.querySelectorAll('.package-item');
-            const miniCards = document.querySelectorAll('.glass-mini-card');
             const heroSection = document.getElementById('featured-hero-section');
             const noResults = document.getElementById('no-results');
-            const continueShelf = document.getElementById('continue-browsing-shelf');
             
             let currentFilter = 'all';
 
             function performFilter() {
                 const term = pkgSearch.value.toLowerCase().trim();
                 let foundInGrid = 0;
-                let foundInMini = 0;
-                const shelvesContainer = document.getElementById('main-shelves-container');
 
-                // 1. Filter Main Grid
+                // Filter Main Grid
                 gridItems.forEach(item => {
                     const title = item.querySelector('.search-title').innerText.toLowerCase();
-                    const category = item.getAttribute('data-category'); // Use getAttribute for consistency
+                    const category = item.getAttribute('data-category');
                     
                     const matchesSearch = title.includes(term);
                     const matchesCategory = currentFilter === 'all' || category === currentFilter;
 
                     if (matchesSearch && matchesCategory) {
                         item.style.display = 'block';
-                        // Use a slightly shorter timeout for better responsiveness
                         setTimeout(() => { 
                             if (item.style.display === 'block') {
                                 item.style.opacity = '1'; 
@@ -553,7 +546,6 @@
                     } else {
                         item.style.opacity = '0';
                         item.style.transform = 'scale(0.95)';
-                        // Match transition duration
                         setTimeout(() => { 
                             if (item.style.opacity === '0') {
                                 item.style.display = 'none'; 
@@ -562,53 +554,21 @@
                     }
                 });
 
-                // 2. Filter Sidebar Mini Cards
-                miniCards.forEach(card => {
-                    const title = card.querySelector('.search-title').innerText.toLowerCase();
-                    const category = card.getAttribute('data-category');
-                    
-                    const matchesSearch = title.includes(term);
-                    const matchesCategory = currentFilter === 'all' || category === currentFilter;
-
-                    if (matchesSearch && matchesCategory) {
-                        card.style.display = 'flex';
-                        setTimeout(() => {
-                           if (card.style.display === 'flex') card.style.opacity = '1';
-                        }, 50);
-                        foundInMini++;
-                    } else {
-                        card.style.opacity = '0';
-                        setTimeout(() => { if (card.style.opacity === '0') card.style.display = 'none'; }, 400);
-                    }
-                });
-
-                // 3. Handle Hero Section & Layout
+                // Handle Hero Section
                 if (term !== '' || currentFilter !== 'all') {
                     if (heroSection) {
                         heroSection.style.opacity = '0';
                         setTimeout(() => { if (heroSection.style.opacity === '0') heroSection.style.display = 'none'; }, 400);
-                    }
-                    
-                    if (continueShelf && foundInMini === 0) {
-                        continueShelf.style.display = 'none';
-                        if (shelvesContainer) shelvesContainer.style.gridTemplateColumns = '1fr';
-                    } else if (continueShelf) {
-                        continueShelf.style.display = 'block';
-                        if (shelvesContainer) shelvesContainer.style.gridTemplateColumns = '300px 1fr';
                     }
                 } else {
                     if (heroSection) {
                         heroSection.style.display = 'block';
                         setTimeout(() => { heroSection.style.opacity = '1'; }, 50);
                     }
-                    if (continueShelf) {
-                        continueShelf.style.display = 'block';
-                        if (shelvesContainer) shelvesContainer.style.gridTemplateColumns = '300px 1fr';
-                    }
                 }
 
-                // 4. Show/Hide No Results Message
-                if (foundInGrid === 0 && foundInMini === 0) {
+                // Show/Hide No Results Message
+                if (foundInGrid === 0) {
                     noResults.style.display = 'block';
                 } else {
                     noResults.style.display = 'none';
@@ -624,14 +584,13 @@
                         performFilter();
                     }
                 });
-                pkgSearch.addEventListener('click', (e) => e.stopPropagation());
             }
 
             catPills.forEach(pill => {
                 pill.addEventListener('click', () => {
                     catPills.forEach(p => p.classList.remove('active'));
                     pill.classList.add('active');
-                    currentFilter = pill.dataset.filter;
+                    currentFilter = pill.getAttribute('data-filter');
                     performFilter();
                 });
             });

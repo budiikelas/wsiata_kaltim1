@@ -1,155 +1,9 @@
-<?php
-// Data Source
-$destinations = [
-    'derawan' => [
-        'title' => 'Kepulauan Derawan',
-        'subtitle' => 'Surga tropis dengan pantai pasir putih.',
-        'desc' => 'Kepulauan Derawan adalah surga tropis yang menawarkan pesona bawah laut tak tertandingi. Rumah bagi penyu hijau raksasa, pari manta, dan terumbu karang yang masih sangat alami.',
-        'image' => 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1920&q=80',
-        'map_image' => 'images/gps-map-final.jpg',
-        'map_url' => 'https://www.google.com/maps/search/?api=1&query=Kepulauan+Derawan+Berau',
-        'stats' => [
-            'popularity' => 5,    // 1-5 dots
-            'access' => 3,        // Aksesibilitas (Aggressiveness map)
-            'area' => 4           // Size map
-        ],
-        'bottom_stats' => [ // The 4 columns at bottom
-            ['label' => 'Wisatawan', 'value' => '15k / thn', 'sub' => 'Domestik & Asing'],
-            ['label' => 'Lokasi', 'value' => 'Kab. Berau', 'sub' => 'Kalimantan Timur'],
-            ['label' => 'Biaya', 'value' => '$$$', 'sub' => 'Paket Premium'],
-            ['label' => 'Status', 'value' => 'Aman', 'sub' => 'Ramah Keluarga'],
-        ],
-        'next_id' => 'kakaban',
-        'next_img' => 'https://images.unsplash.com/photo-1516683667744-4a4205226c9f?w=600&q=80',
-        'next_name' => 'Kakaban'
-    ],
-    'kakaban' => [
-        'title' => 'Danau Kakaban',
-        'subtitle' => 'Danau ubur-ubur purba tanpa sengat.',
-        'desc' => 'Danau Kakaban adalah fenomena alam langka, danau air payau purba yang terperangkap di tengah pulau karang. Berenang bersama jutaan ubur-ubur endemik yang tidak menyengat.',
-        'image' => 'https://images.unsplash.com/photo-1516683667744-4a4205226c9f?w=1920&q=80',
-        'map_image' => 'images/gps-map-final.jpg',
-        'map_url' => 'https://www.google.com/maps/search/?api=1&query=Danau+Kakaban',
-        'stats' => [
-            'popularity' => 5,
-            'access' => 4,
-            'area' => 2
-        ],
-        'bottom_stats' => [
-            ['label' => 'Wisatawan', 'value' => '10k / thn', 'sub' => 'Pengunjung Terbatasi'],
-            ['label' => 'Lokasi', 'value' => 'P. Kakaban', 'sub' => 'Dekat Derawan'],
-            ['label' => 'Biaya', 'value' => '$$', 'sub' => 'Tiket Masuk'],
-            ['label' => 'Status', 'value' => 'Unik', 'sub' => 'Situs Warisan'],
-        ],
-        'next_id' => 'maratua',
-        'next_img' => 'https://images.unsplash.com/photo-1596423238612-4cf30eba2523?w=600&q=80',
-        'next_name' => 'Maratua'
-    ],
-    'maratua' => [
-        'title' => 'Pantai Maratua',
-        'subtitle' => 'Maldives-nya Indonesia.',
-        'desc' => 'Maratua sering disebut sebagai Maldives-nya Indonesia. Resort terapung di atas air sebening kristal, tempat sempurna untuk relaksasi total and honeymoon.',
-        'image' => 'https://images.unsplash.com/photo-1596423238612-4cf30eba2523?w=1920&q=80',
-        'map_image' => 'images/gps-map-final.jpg',
-        'map_url' => 'https://www.google.com/maps/search/?api=1&query=Pulau+Maratua',
-        'stats' => [
-            'popularity' => 4,
-            'access' => 3,
-            'area' => 5
-        ],
-        'bottom_stats' => [
-            ['label' => 'Wisatawan', 'value' => '8k / thn', 'sub' => 'Eksklusif'],
-            ['label' => 'Lokasi', 'value' => 'P. Maratua', 'sub' => 'Kepulauan Derawan'],
-            ['label' => 'Biaya', 'value' => '$$$$', 'sub' => 'Luxury Resort'],
-            ['label' => 'Status', 'value' => 'Tenang', 'sub' => 'Private Vibes'],
-        ],
-        'next_id' => 'mahakam',
-        'next_img' => 'https://images.unsplash.com/photo-1551244072-5d12893278ab?w=600&q=80',
-        'next_name' => 'Mahakam'
-    ],
-    'mahakam' => [
-        'title' => 'Sungai Mahakam',
-        'subtitle' => 'Nadi kehidupan Kalimantan.',
-        'desc' => 'Sungai Mahakam menghubungkan pedalaman Kalimantan dengan dunia luar. Selami budaya Dayak, desa terapung, dan habitat Pesut Mahakam yang langka.',
-        'image' => 'https://images.unsplash.com/photo-1551244072-5d12893278ab?w=1920&q=80',
-        'map_image' => 'images/gps-map-final.jpg',
-        'map_url' => 'https://www.google.com/maps/search/?api=1&query=Sungai+Mahakam+Samarinda',
-        'stats' => [
-            'popularity' => 4,
-            'access' => 4,
-            'area' => 5
-        ],
-        'bottom_stats' => [
-            ['label' => 'Panjang', 'value' => '920 km', 'sub' => 'Sungai Terpanjang ke-2'],
-            ['label' => 'Lokasi', 'value' => 'Samarinda', 'sub' => 'Hulu Mahakam'],
-            ['label' => 'Biaya', 'value' => '$$', 'sub' => 'Sewa Kapal'],
-            ['label' => 'Status', 'value' => 'Kultur', 'sub' => 'Wisata Budaya'],
-        ],
-        'next_id' => 'kutai',
-        'next_img' => 'https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=600&q=80',
-        'next_name' => 'Kutai'
-    ],
-    'kutai' => [
-        'title' => 'Hutan Tropis Kutai',
-        'subtitle' => 'Habitat asli Orangutan Kalimantan.',
-        'desc' => 'Taman Nasional Kutai, benteng terakhir hutan hujan dataran rendah. Saksikan Orangutan liar di habitat aslinya dan nikmati udara murni hutan Kalimantan.',
-        'image' => 'https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=1920&q=80',
-        'map_image' => 'images/gps-map-final.jpg',
-        'map_url' => 'https://www.google.com/maps/search/?api=1&query=Taman+Nasional+Kutai',
-        'stats' => [
-            'popularity' => 3,
-            'access' => 2,
-            'area' => 5
-        ],
-        'bottom_stats' => [
-            ['label' => 'Luas', 'value' => '198k Ha', 'sub' => 'Area Konservasi'],
-            ['label' => 'Lokasi', 'value' => 'Kutai Timur', 'sub' => 'Jalan Poros'],
-            ['label' => 'Biaya', 'value' => '$', 'sub' => 'Tiket Masuk'],
-            ['label' => 'Status', 'value' => 'Liar', 'sub' => 'Eco-Tourism'],
-        ],
-        'next_id' => 'biduk',
-        'next_img' => 'images/beach.jpeg',
-        'next_name' => 'Biduk'
-    ],
-    'biduk' => [
-        'title' => 'Labuan Cermin',
-        'subtitle' => 'Danau dua rasa sebening kaca.',
-        'desc' => 'Fenomena unik pertemuan air tawar dan asin. Airnya begitu jernih hingga perahu terlihat melayang. Keajaiban alam di ujung timur Kalimantan.',
-        'image' => 'images/beach.jpeg',
-        'map_image' => 'images/gps-map-final.jpg',
-        'map_url' => 'https://www.google.com/maps/search/?api=1&query=Labuan+Cermin+Biduk+Biduk',
-        'stats' => [
-            'popularity' => 5,
-            'access' => 2,
-            'area' => 1
-        ],
-        'bottom_stats' => [
-            ['label' => 'Kedalaman', 'value' => '4-5 m', 'sub' => 'Dua Lapisan Air'],
-            ['label' => 'Lokasi', 'value' => 'Biduk-Biduk', 'sub' => 'Berau Pesisir'],
-            ['label' => 'Biaya', 'value' => '$', 'sub' => 'Sewa Perahu'],
-            ['label' => 'Status', 'value' => 'Viral', 'sub' => 'Photography'],
-        ],
-        'next_id' => 'derawan',
-        'next_img' => 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600&q=80',
-        'next_name' => 'Derawan'
-    ]
-];
-
-// Get ID from URL, default to 'derawan'
-$id = isset($_GET['id']) ? $_GET['id'] : 'derawan';
-
-if (!array_key_exists($id, $destinations)) {
-    $id = 'derawan';
-}
-
-$data = $destinations[$id];
-?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $data['title']; ?> - Detail Wisata</title>
+    <title>{{ $destination->name }} - Detail Wisata</title>
     
     <!-- CSS -->
     @vite(['resources/css/style.css', 'resources/css/detail.css'])
@@ -159,6 +13,257 @@ $data = $destinations[$id];
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
+    <style>
+        .btn-favorite {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            margin-right: 15px;
+        }
+        .btn-favorite:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+        .btn-favorite.active {
+            color: #ff4757;
+            background: rgba(255, 71, 87, 0.1);
+            border-color: #ff4757;
+        }
+
+        /* Review Section Refinements */
+        .reviews-container {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 50px;
+            padding: 30px 0;
+            margin-top: 30px;
+        }
+
+        .review-list-side {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .reviews-header-summary {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .avg-rating-box {
+            background: var(--color-accent);
+            color: black;
+            padding: 15px 20px;
+            border-radius: 18px;
+            text-align: center;
+        }
+
+        .avg-value { font-size: 28px; font-weight: 800; display: block; line-height: 1; }
+        .avg-label { font-size: 10px; font-weight: 700; text-transform: uppercase; opacity: 0.7; }
+
+        .summary-info h4 { font-size: 18px; margin-bottom: 5px; }
+        .summary-info p { font-size: 13px; color: rgba(255,255,255,0.5); }
+
+        .review-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-height: 450px;
+            overflow-y: auto;
+            padding-right: 15px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.1) transparent;
+        }
+
+        .review-list::-webkit-scrollbar { width: 4px; }
+        .review-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+
+        .review-item {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 22px;
+            padding: 20px;
+            display: flex;
+            gap: 18px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .review-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .reviewer-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, var(--color-accent), #ffd700);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-weight: 800;
+            font-size: 18px;
+            flex-shrink: 0;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+        }
+
+        .review-content { flex: 1; }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .reviewer-name { font-weight: 700; font-size: 15px; color: white; }
+        .review-stars { color: #ffc107; font-size: 11px; display: flex; gap: 2px; }
+        .review-text { 
+            font-size: 14px; 
+            color: rgba(255,255,255,0.7); 
+            line-height: 1.6; 
+            margin-bottom: 10px;
+        }
+        .review-date { font-size: 11px; color: rgba(255,255,255,0.3); font-weight: 500; }
+
+        .review-form-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 35px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: sticky;
+            top: 20px;
+        }
+
+        .form-title { font-size: 22px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }
+        .form-subtitle { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 25px; display: block; }
+        
+        .rating-input {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 20px;
+        }
+        .rating-input input { display: none; }
+        .rating-input label {
+            font-size: 32px;
+            color: rgba(255,255,255,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .rating-input label:hover,
+        .rating-input label:hover ~ label,
+        .rating-input input:checked ~ label {
+            color: #ffc107;
+            transform: scale(1.2);
+            text-shadow: 0 0 15px rgba(255, 193, 7, 0.4);
+        }
+
+        .comment-wrapper { position: relative; margin-bottom: 20px; }
+        .comment-textarea {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 2px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 20px;
+            color: white;
+            font-family: inherit;
+            font-size: 15px;
+            resize: none;
+            transition: all 0.3s ease;
+        }
+        .comment-textarea:focus {
+            outline: none;
+            border-color: var(--color-accent);
+            background: rgba(0,0,0,0.4);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.05);
+        }
+
+        .btn-submit-review {
+            width: 100%;
+            background: linear-gradient(135deg, var(--color-accent), #ffd700);
+            color: black;
+            border: none;
+            padding: 16px;
+            border-radius: 18px;
+            font-weight: 800;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn-submit-review:hover { 
+            transform: scale(1.02) translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+        }
+        .btn-submit-review:active { transform: scale(0.98); }
+
+        .success-alert {
+            background: linear-gradient(135deg, rgba(46, 213, 115, 0.2), rgba(46, 213, 115, 0.1));
+            border: 1px solid rgba(46, 213, 115, 0.4);
+            color: #2ed573;
+            padding: 18px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .empty-reviews {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 30px;
+            border: 2px dashed rgba(255, 255, 255, 0.05);
+        }
+        .empty-reviews i { font-size: 50px; color: rgba(255, 255, 255, 0.1); margin-bottom: 20px; }
+        .empty-reviews p { color: rgba(255, 255, 255, 0.4); font-size: 15px; }
+
+        .auth-lock-card {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
 </head>
 <body>
     
@@ -167,7 +272,7 @@ $data = $destinations[$id];
         
         <!-- Background Image -->
         <div class="bg-layer">
-            <img src="{{ str_starts_with($data['image'], 'http') ? $data['image'] : asset($data['image']) }}" alt="Background">
+            <img src="{{ $destination->thumbnail ? asset($destination->thumbnail) : asset('images/beach.jpeg') }}" alt="Background">
             <div class="bg-overlay"></div>
         </div>
 
@@ -184,7 +289,7 @@ $data = $destinations[$id];
             <ul class="nav-links">
                 <li><a href="{{ url('/#beranda') }}">Beranda</a></li>
                 <li><a href="{{ url('/#destinasi') }}">Destinasi</a></li>
-                <li><a href="{{ url('/#paket') }}">Paket Wisata</a></li>
+                <li><a href="{{ url('/packages') }}">Packages</a></li>
             </ul>
             <div class="nav-items-right">
                 <div class="nav-social">
@@ -227,38 +332,44 @@ $data = $destinations[$id];
         <main class="main-content">
             
             <div class="content-left">
-                <h1 class="hero-title"><?php echo $data['title']; ?></h1>
-                <p class="hero-desc"><?php echo $data['desc']; ?></p>
+                <h1 class="hero-title">{{ $destination->name }}</h1>
+                <p class="hero-desc">{{ $destination->description }}</p>
                 
                 <!-- Stats Bars -->
                 <div class="stats-row">
                     <div class="stat-item">
                         <span class="stat-label">Popularitas</span>
                         <div class="stat-dots">
-                            <?php for($i=0; $i<5; $i++): ?>
-                                <span class="dot <?php echo $i < $data['stats']['popularity'] ? 'filled' : ''; ?>"></span>
-                            <?php endfor; ?>
+                            @for($i=0; $i<5; $i++)
+                                <span class="dot {{ $i < ($destination->rating ?? 4) ? 'filled' : '' }}"></span>
+                            @endfor
                         </div>
                     </div>
                     <div class="stat-item">
                         <span class="stat-label">Aksesibilitas</span>
                         <div class="stat-dots">
-                            <?php for($i=0; $i<5; $i++): ?>
-                                <span class="dot <?php echo $i < $data['stats']['access'] ? 'filled' : ''; ?>"></span>
-                            <?php endfor; ?>
+                            @for($i=0; $i<5; $i++)
+                                <span class="dot {{ $i < 4 ? 'filled' : '' }}"></span>
+                            @endfor
                         </div>
                     </div>
                     <div class="stat-item">
                         <span class="stat-label">Luas Area</span>
                         <div class="stat-dots">
-                            <?php for($i=0; $i<5; $i++): ?>
-                                <span class="dot <?php echo $i < $data['stats']['area'] ? 'filled' : ''; ?>"></span>
-                            <?php endfor; ?>
+                            @for($i=0; $i<5; $i++)
+                                <span class="dot {{ $i < 3 ? 'filled' : '' }}"></span>
+                            @endfor
                         </div>
                     </div>
                 </div>
 
-                <div class="action-buttons">
+                <div class="action-buttons" style="display: flex; align-items: center;">
+                    @auth
+                        @php $isFavorited = Auth::user()->favorites()->where('destination_id', $destination->id)->exists(); @endphp
+                        <button class="btn-favorite {{ $isFavorited ? 'active' : '' }}" id="fav-btn" data-id="{{ $destination->id }}">
+                            <i class="{{ $isFavorited ? 'fas' : 'far' }} fa-heart"></i>
+                        </button>
+                    @endauth
                     <a href="#" class="btn-learn-more">Learn more</a>
                 </div>
             </div>
@@ -268,9 +379,15 @@ $data = $destinations[$id];
                 <div class="location-card">
                     <!-- Top Map View -->
                     <div class="map-view-container">
-                        <img src="{{ asset($data['map_image']) }}" alt="Location Map Aesthetic" class="map-img-rect">
+                        <img src="{{ asset('images/gps-map-final.jpg') }}" alt="Location Map Aesthetic" class="map-img-rect">
                         <div class="map-pin-pulse"></div>
-                        <a href="<?php echo $data['map_url']; ?>" target="_blank" class="btn-play-mini" style="text-decoration:none;">
+                        @php
+                            $mapUrl = "https://www.google.com/maps/search/?api=1&query=" . urlencode($destination->name . ' ' . $destination->location);
+                            if($destination->latitude && $destination->longitude) {
+                                $mapUrl = "https://www.google.com/maps/search/?api=1&query={$destination->latitude},{$destination->longitude}";
+                            }
+                        @endphp
+                        <a href="{{ $mapUrl }}" target="_blank" class="btn-play-mini" style="text-decoration:none;">
                             <i class="fas fa-location-arrow"></i>
                         </a>
                     </div>
@@ -279,10 +396,10 @@ $data = $destinations[$id];
                     <div class="location-details">
                         <div class="loc-header">
                             <span class="loc-subtitle">EXPLORE AREA</span>
-                            <h3><?php echo $data['title']; ?></h3>
+                            <h3>{{ $destination->name }}</h3>
                         </div>
                         <p class="loc-desc">
-                            <?php echo $data['subtitle']; ?> Terletak strategis dengan akses mudah ke spot utama.
+                            {{ $destination->location }}. Terletak strategis dengan akses mudah ke spot utama.
                         </p>
                         
                         <div class="mini-stats-grid">
@@ -300,7 +417,7 @@ $data = $destinations[$id];
                             </div>
                         </div>
 
-                        <a href="<?php echo $data['map_url']; ?>" target="_blank" class="btn-open-map">
+                        <a href="{{ $mapUrl }}" target="_blank" class="btn-open-map">
                             Open Full Map <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
@@ -312,35 +429,120 @@ $data = $destinations[$id];
         <!-- Bottom Panel -->
         <footer class="bottom-panel">
             
-            <!-- Info Columns -->
-            <div class="info-grid">
-                <?php foreach($data['bottom_stats'] as $index => $stat): ?>
-                <div class="info-col">
-                    <span class="info-num">0<?php echo $index + 1; ?></span>
-                    <h4 class="info-label"><?php echo $stat['label']; ?></h4>
-                    <p class="info-desc">
-                        <?php echo $stat['sub']; ?><br>
-                        <strong><?php echo $stat['value']; ?></strong>
-                    </p>
-                    <a href="#" class="info-link">Learn more <i class="fas fa-arrow-right"></i></a>
+            <!-- Reviews Section -->
+            <div class="reviews-container">
+                <div class="review-list-side">
+                    @php
+                        $avgRating = $destination->reviews->avg('rating');
+                        $reviewCount = $destination->reviews->count();
+                    @endphp
+                    
+                    <div class="reviews-header-summary">
+                        <div class="avg-rating-box">
+                            <span class="avg-value">{{ number_format($avgRating ?: 5.0, 1) }}</span>
+                            <span class="avg-label">RATING</span>
+                        </div>
+                        <div class="summary-info">
+                            <h4>Suara Pengunjung</h4>
+                            <p>Berdasarkan {{ $reviewCount }} ulasan dari para traveler.</p>
+                        </div>
+                    </div>
+                    
+                    @if(session('success'))
+                        <div class="success-alert">
+                            <i class="fas fa-check-circle"></i>
+                            <span>{{ session('success') }}</span>
+                        </div>
+                    @endif
+
+                    <div class="review-list">
+                        @forelse($destination->reviews()->latest()->get() as $review)
+                            <div class="review-item">
+                                <div class="reviewer-avatar">
+                                    {{ strtoupper(substr($review->user->name, 0, 1)) }}
+                                </div>
+                                <div class="review-content">
+                                    <div class="review-header">
+                                        <span class="reviewer-name">{{ $review->user->name }}</span>
+                                        <div class="review-stars">
+                                            @for($i=0; $i<5; $i++)
+                                                <i class="{{ $i < $review->rating ? 'fas' : 'far' }} fa-star"></i>
+                                            @endfor
+                                        </div>
+                                    </div>
+                                    <p class="review-text">{{ $review->comment }}</p>
+                                    <div class="review-date">
+                                        <i class="far fa-clock" style="margin-right: 5px;"></i>
+                                        {{ $review->created_at->diffForHumans() }}
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="empty-reviews">
+                                <i class="far fa-comment-dots"></i>
+                                <p>Belum ada ulasan. Jadilah yang pertama memberikan kesan!</p>
+                            </div>
+                        @endforelse
+                    </div>
                 </div>
-                <?php endforeach; ?>
+
+                <div class="review-form-side">
+                    @auth
+                        <div class="review-form-card">
+                            <span class="form-subtitle">BERIKAN PENILAIAN</span>
+                            <h4 class="form-title">Bagikan Pengalaman</h4>
+                            
+                            <form action="{{ route('reviews.store') }}" method="POST" id="review-form">
+                                @csrf
+                                <input type="hidden" name="destination_id" value="{{ $destination->id }}">
+                                
+                                <div class="rating-input">
+                                    <input type="radio" id="star5" name="rating" value="5" required /><label for="star5" title="Sempurna"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="Bagus"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="Cukup"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="Buruk"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="Sangat Buruk"><i class="fas fa-star"></i></label>
+                                </div>
+
+                                <div class="comment-wrapper">
+                                    <textarea name="comment" class="comment-textarea" rows="5" placeholder="Apa yang membuat kunjungan Anda berkesan?" required></textarea>
+                                </div>
+                                
+                                <button type="submit" class="btn-submit-review">
+                                    <span>Kirim Ulasan Sekarang</span>
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        </div>
+                    @else
+                        <div class="auth-lock-card">
+                            <div style="background: rgba(255,255,255,0.05); width: 70px; height: 70px; border-radius: 25px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                                <i class="fas fa-lock" style="font-size: 28px; color: var(--color-accent);"></i>
+                            </div>
+                            <h4 style="margin-bottom: 10px;">Ingin Memberi Ulasan?</h4>
+                            <p style="font-size: 14px; color: rgba(255,255,255,0.4); margin-bottom: 25px;">Silakan masuk ke akun Anda untuk berbagi pengalaman bersama kami.</p>
+                            <a href="{{ url('/') }}" class="btn-submit-review" style="text-decoration: none;">
+                                <i class="fas fa-sign-in-alt"></i> Login Sekarang
+                            </a>
+                        </div>
+                    @endauth
+                </div>
             </div>
 
             <!-- Navigation Controls -->
             <div class="nav-controls">
                 
-                <a href="{{ url('/detail?id=' . $data['next_id']) }}" class="nav-arrow prev">
+                <a href="{{ url('/detail?id=' . $nextDestination->id) }}" class="nav-arrow prev">
                     <i class="fas fa-arrow-left"></i>
                 </a>
                 
-                <a href="{{ url('/detail?id=' . $data['next_id']) }}" class="nav-arrow next">
+                <a href="{{ url('/detail?id=' . $nextDestination->id) }}" class="nav-arrow next">
                     <i class="fas fa-arrow-right"></i>
                 </a>
 
                 <!-- Next Preview -->
                 <div class="next-preview">
-                    <img src="{{ str_starts_with($data['next_img'], 'http') ? $data['next_img'] : asset($data['next_img']) }}" alt="Next">
+                    <img src="{{ $nextDestination->thumbnail ? asset($nextDestination->thumbnail) : asset('images/beach.jpeg') }}" alt="Next">
                 </div>
             </div>
 
@@ -348,5 +550,45 @@ $data = $destinations[$id];
 
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const favBtn = document.getElementById('fav-btn');
+            if (favBtn) {
+                favBtn.addEventListener('click', async function() {
+                    const destId = this.dataset.id;
+                    const icon = this.querySelector('i');
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+                    try {
+                        const response = await fetch('{{ route('favorites.toggle') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrfToken,
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({ destination_id: destId })
+                        });
+
+                        const data = await response.json();
+                        if (data.success) {
+                            if (data.status === 'added') {
+                                this.classList.add('active');
+                                icon.classList.replace('far', 'fas');
+                            } else {
+                                this.classList.remove('active');
+                                icon.classList.replace('fas', 'far');
+                            }
+                        } else {
+                            alert(data.message || 'Something went wrong');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Error toggling favorite');
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

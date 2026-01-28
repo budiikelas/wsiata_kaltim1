@@ -19,6 +19,8 @@ class DestinationController extends Controller
             'name' => 'required',
             'description' => 'required',
             'location' => 'required',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
         ]);
 
@@ -50,6 +52,8 @@ class DestinationController extends Controller
             'name' => 'required',
             'description' => 'required',
             'location' => 'required',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
         ]);
 

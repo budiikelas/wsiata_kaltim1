@@ -21,6 +21,7 @@
                 <small style="color: var(--gold-accent)">{{ $stat['growth'] }} this month</small>
             </div>
         </div>
+        @endforeach
        
     </div>
 
@@ -48,24 +49,17 @@
                 <h4>Most Visited</h4>
             </div>
             <div class="popular-list" style="display: flex; flex-direction: column; gap: 15px;">
+                @forelse($popularDestinations as $dest)
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-size: 13px;">Kep. Derawan</span>
+                    <span style="font-size: 13px;">{{ $dest->name }}</span>
                     <div style="width: 100px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;">
-                        <div style="width: 90%; height: 100%; background: var(--gold-accent);"></div>
+                        @php $progress = ($dest->rating ?? 0) * 20; @endphp
+                        <div style="width: {{ $progress }}%; height: 100%; background: var(--gold-accent);"></div>
                     </div>
                 </div>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-size: 13px;">Labuan Cermin</span>
-                    <div style="width: 100px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;">
-                        <div style="width: 75%; height: 100%; background: var(--gold-accent);"></div>
-                    </div>
-                </div>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-size: 13px;">P. Maratua</span>
-                    <div style="width: 100px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;">
-                        <div style="width: 60%; height: 100%; background: var(--gold-accent);"></div>
-                    </div>
-                </div>
+                @empty
+                <p style="font-size: 12px; color: var(--text-dim);">Belum ada data destinasi.</p>
+                @endforelse
             </div>
         </div>
     </div>

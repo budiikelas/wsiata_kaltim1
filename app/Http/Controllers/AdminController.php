@@ -11,20 +11,25 @@ class AdminController extends Controller
     public function index()
     {
         $stats = [
-            ['label' => 'Total Users', 'value' => '1,284', 'icon' => 'fas fa-users', 'growth' => '+12%'],
-            ['label' => 'Total Bookings', 'value' => '856', 'icon' => 'fas fa-ticket-alt', 'growth' => '+5%'],
-            ['label' => 'Revenue', 'value' => '$12,450', 'icon' => 'fas fa-wallet', 'growth' => '+18%'],
-            ['label' => 'Active Trips', 'value' => '42', 'icon' => 'fas fa-plane', 'growth' => '+2%'],
+            ['label' => 'Total Users', 'value' => \App\Models\User::count(), 'icon' => 'fas fa-users', 'growth' => '+0%'],
+            ['label' => 'Total Destinations', 'value' => Destination::count(), 'icon' => 'fas fa-map-marker-alt', 'growth' => '+0%'],
+            ['label' => 'Categories', 'value' => Category::count(), 'icon' => 'fas fa-list', 'growth' => '+0%'],
+            ['label' => 'Reviews', 'value' => \App\Models\Review::count(), 'icon' => 'fas fa-star', 'growth' => '+0%'],
         ];
 
-        $consumers = [
-            ['name' => 'Aditya Pratama', 'email' => 'aditya@example.com', 'destination' => 'Derawan', 'status' => 'Success', 'date' => '24 Jan 2026'],
-            ['name' => 'Siti Aminah', 'email' => 'siti@example.com', 'destination' => 'Kakaban', 'status' => 'Pending', 'date' => '25 Jan 2026'],
-            ['name' => 'Budi Santoso', 'email' => 'budi@example.com', 'destination' => 'Maratua', 'status' => 'Success', 'date' => '23 Jan 2026'],
-            ['name' => 'Dewi Lestari', 'email' => 'dewi@example.com', 'destination' => 'Labuan Cermin', 'status' => 'Success', 'date' => '22 Jan 2026'],
-        ];
+        $consumers = \App\Models\User::latest()->take(5)->get()->map(function($user) {
+            return [
+                'name' => $user->name,
+                'email' => $user->email,
+                'destination' => 'Recently Joined',
+                'status' => 'Success',
+                'date' => $user->created_at->format('d M Y')
+            ];
+        });
 
-        return view('admin', compact('stats', 'consumers'));
+        $popularDestinations = Destination::orderBy('rating', 'desc')->take(3)->get();
+
+        return view('admin', compact('stats', 'consumers', 'popularDestinations'));
     }
 
     public function destinations()

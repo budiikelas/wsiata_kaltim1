@@ -32,13 +32,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     
     // Pages
-    Route::get('/packages', function () {
-        return view('packages');
-    });
+    Route::get('/packages', [LandingController::class, 'packages']);
+    Route::get('/trending', [LandingController::class, 'trending'])->name('trending');
+    Route::get('/favorites', [LandingController::class, 'favorites'])->name('favorites');
+    Route::get('/detail', [LandingController::class, 'detail']);
 
-    Route::get('/detail', function () {
-        return view('detail');
-    });
+    // Action Logic
+    Route::post('favorites/toggle', [\App\Http\Controllers\FavoriteController::class, 'toggle'])->name('favorites.toggle');
+    Route::post('reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
     // Resource Management
     Route::resource('categories', CategoryController::class);
@@ -46,7 +47,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('facilities', FacilityController::class);
     Route::post('galleries', [GalleryController::class, 'store']);
     Route::delete('galleries/{id}', [GalleryController::class, 'destroy']);
-    Route::post('reviews', [ReviewController::class, 'store']);
 
     // Admin Access
     Route::prefix('admin')->middleware('admin')->group(function () {
