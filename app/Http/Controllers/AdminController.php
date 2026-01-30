@@ -4,20 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\Destination;
 use App\Models\Category;
+use App\Models\User;
+use App\Models\Facility;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
     public function index()
     {
         $stats = [
-            ['label' => 'Total Users', 'value' => \App\Models\User::count(), 'icon' => 'fas fa-users', 'growth' => '+0%'],
+            ['label' => 'Total Users', 'value' => User::count(), 'icon' => 'fas fa-users', 'growth' => '+0%'],
             ['label' => 'Total Destinations', 'value' => Destination::count(), 'icon' => 'fas fa-map-marker-alt', 'growth' => '+0%'],
             ['label' => 'Categories', 'value' => Category::count(), 'icon' => 'fas fa-list', 'growth' => '+0%'],
             ['label' => 'Reviews', 'value' => \App\Models\Review::count(), 'icon' => 'fas fa-star', 'growth' => '+0%'],
         ];
 
-        $consumers = \App\Models\User::latest()->take(5)->get()->map(function($user) {
+        $consumers = User::latest()->take(5)->get()->map(function($user) {
             return [
                 'name' => $user->name,
                 'email' => $user->email,
@@ -37,5 +40,125 @@ class AdminController extends Controller
         $destinations = Destination::with('category')->get();
         $categories = Category::all();
         return view('admin.destinations', compact('destinations', 'categories'));
+    }
+
+    public function consumers()
+    {
+        // Get only non-admin users (customers)
+        $consumers = User::where('is_admin', false)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        
+        return view('admin.consumers', compact('consumers'));
+    }
+
+    public function updateConsumer(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'password' => 'nullable|min:6',
+        ]);
+
+        $consumer = User::findOrFail($id);
+        
+        $consumer->name = $request->name;
+        $consumer->email = $request->email;
+        
+        if ($request->filled('password')) {
+            $consumer->password = Hash::make($request->password);
+        }
+        
+        $consumer->save();
+
+        return redirect()->route('admin.consumers')->with('success', 'Data konsumen berhasil diperbarui!');
+    }
+
+    public function deleteConsumer($id)
+    {
+        $consumer = User::findOrFail($id);
+        
+        // Prevent deleting admin users
+        if ($consumer->is_admin) {
+            return redirect()->route('admin.consumers')->with('error', 'Tidak dapat menghapus akun admin!');
+        }
+        
+        $consumer->delete();
+
+        return redirect()->route('admin.consumers')->with('success', 'Konsumen berhasil dihapus!');
+    }
+
+    // ====== FACILITIES MANAGEMENT ======
+    
+    public function facilities()
+    {
+        $facilities = Facility::orderBy('created_at', 'desc')->get();
+        return view('admin.facilities', compact('facilities'));
+    }
+
+    public function storeFacility(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('uploads/facilities'), $imageName);
+            $imagePath = 'uploads/facilities/' . $imageName;
+        }
+
+        Facility::create([
+            'name' => $request->name,
+            'description' => $request->description ?? '',
+            'image' => $imagePath,
+        ]);
+
+        return redirect()->route('admin.facilities')->with('success', 'Fasilitas berhasil ditambahkan!');
+    }
+
+    public function updateFacility(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $facility = Facility::findOrFail($id);
+        $facility->name = $request->name;
+        $facility->description = $request->description ?? '';
+
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($facility->image && file_exists(public_path($facility->image))) {
+                @unlink(public_path($facility->image));
+            }
+
+            $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('uploads/facilities'), $imageName);
+            $facility->image = 'uploads/facilities/' . $imageName;
+        }
+
+        $facility->save();
+
+        return redirect()->route('admin.facilities')->with('success', 'Fasilitas berhasil diperbarui!');
+    }
+
+    public function deleteFacility($id)
+    {
+        $facility = Facility::findOrFail($id);
+        
+        // Delete image if exists
+        if ($facility->image && file_exists(public_path($facility->image))) {
+            @unlink(public_path($facility->image));
+        }
+
+        $facility->delete();
+
+        return redirect()->route('admin.facilities')->with('success', 'Fasilitas berhasil dihapus!');
     }
 }

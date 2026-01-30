@@ -364,13 +364,108 @@
         .package-item, .glass-mini-card {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        /* MOBILE RESPONSIVE STYLES */
+        .mobile-header {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky;
+            top: 0;
+            z-index: 2000;
+        }
+
+        .burger-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .sidebar-close {
+            display: none;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 1024px) {
+            body { 
+                display: block; 
+                height: auto; 
+                overflow-y: auto; 
+            }
+            .app-window { 
+                width: 100%; 
+                height: auto; 
+                min-height: 100vh; 
+                border-radius: 0; 
+                border: none; 
+                margin: 0;
+                display: block;
+            }
+            .app-sidebar {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                height: 100vh;
+                width: 280px;
+                z-index: 5000;
+                background: rgba(15, 17, 19, 0.98);
+                backdrop-filter: blur(20px);
+                transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+            }
+            .app-sidebar.active { left: 0; }
+            .sidebar-close { display: block; }
+            .mobile-header { display: flex; }
+            .app-main { padding: 20px; width: 100%; }
+            .app-topbar { flex-direction: column; gap: 20px; align-items: stretch; }
+            .app-search { width: 100%; }
+            .app-categories { overflow-x: auto; padding-bottom: 10px; }
+            .cat-pill { white-space: nowrap; }
+            .hero-featured { height: 350px; padding: 20px; }
+            .hero-featured-overlay { padding: 30px; }
+            .hero-title { font-size: 32px; }
+            .shelf-grid { grid-template-columns: repeat(2, 1fr); }
+            #main-shelves-container { grid-template-columns: 1fr !important; }
+        }
+
+        @media (max-width: 600px) {
+            .shelf-grid { grid-template-columns: 1fr; }
+            .hero-btns { flex-direction: column; }
+            .btn-main { width: 100%; justify-content: center; }
+        }
     </style>
 </head>
 <body>
 
+    <div class="mobile-header">
+        <div class="sidebar-logo" style="margin-bottom: 0;">
+            <i class="fas fa-mountain"></i>
+        </div>
+        <button class="burger-btn" id="burger-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
     <div class="app-window">
         <!-- Sidebar -->
-        <aside class="app-sidebar">
+        <aside class="app-sidebar" id="app-sidebar">
+            <button class="sidebar-close" id="sidebar-close">
+                <i class="fas fa-times"></i>
+            </button>
+            
             <div class="sidebar-logo">
                 <i class="fas fa-mountain"></i>
             </div>
@@ -391,8 +486,6 @@
             </div>
 
             <div class="sidebar-footer">
-                <a href="#" class="nav-icon"><i class="fas fa-bell"></i></a>
-                <a href="#" class="nav-icon"><i class="fas fa-cog"></i></a>
                 <div style="width: 35px; height: 35px; border-radius: 12px; overflow: hidden; border: 2px solid var(--color-accent);">
                     <img src="https://ui-avatars.com/api/?name={{ Auth::check() ? Auth::user()->name : 'Guest' }}&background=d4f05c&color=000" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
@@ -633,6 +726,33 @@
                     pill.classList.add('active');
                     currentFilter = pill.dataset.filter;
                     performFilter();
+                });
+            });
+
+            // Sidebar Toggle Logic
+            const sidebar = document.getElementById('app-sidebar');
+            const burgerBtn = document.getElementById('burger-toggle');
+            const closeBtn = document.getElementById('sidebar-close');
+
+            if (burgerBtn && sidebar) {
+                burgerBtn.addEventListener('click', () => {
+                    sidebar.classList.add('active');
+                });
+            }
+
+            if (closeBtn && sidebar) {
+                closeBtn.addEventListener('click', () => {
+                    sidebar.classList.remove('active');
+                });
+            }
+
+            // Close sidebar on nav link click (mobile)
+            const navLinks = sidebar.querySelectorAll('.nav-icon');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 1024) {
+                        sidebar.classList.remove('active');
+                    }
                 });
             });
         });

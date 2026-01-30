@@ -19,7 +19,15 @@ class GalleryController extends Controller
 
     public function destroy($id)
     {
-        Gallery::destroy($id);
-        return response()->json(['message' => 'Foto dihapus']);
+        $gallery = Gallery::findOrFail($id);
+        
+        // Delete physical file
+        if ($gallery->image && file_exists(public_path($gallery->image))) {
+            @unlink(public_path($gallery->image));
+        }
+
+        $gallery->delete();
+        
+        return response()->json(['success' => true, 'message' => 'Foto berhasil dihapus']);
     }
 }

@@ -285,6 +285,9 @@
                 <a href="{{ url('/favorites') }}" class="nav-icon active" title="Favorites">
                     <i class="fas fa-heart"></i>
                 </a>
+                <a href="{{ url('/fasilitas') }}" class="nav-icon" title="Fasilitas">
+                    <i class="fas fa-list-check"></i>
+                </a>
             </div>
 
             <div class="sidebar-footer">

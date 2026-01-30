@@ -108,9 +108,18 @@
                         <input type="hidden" name="longitude" id="in_longitude">
                     </div>
                     <div class="form-group" style="grid-column: span 2;">
-                        <label>Foto Destinasi</label>
+                        <label>Foto Utama (Thumbnail)</label>
                         <input type="file" name="thumbnail" accept="image/*">
-                        <small style="color: var(--text-dim); font-size: 11px;">Format: JPG, PNG, WEBP (Maks: 2MB). Kosongkan jika tidak ingin mengubah foto.</small>
+                        <small style="color: var(--text-dim); font-size: 11px;">Format: JPG, PNG, WEBP (Maks: 2MB). Foto ini akan muncul di daftar wisata.</small>
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>Galeri Wisata (Maks 3 Foto Tambahan)</label>
+                        <input type="file" name="gallery_images[]" accept="image/*" multiple id="in_gallery">
+                        <small style="color: var(--text-dim); font-size: 11px;">Pilih hingga 3 foto sekaligus. Foto ini akan muncul di slider detail wisata.</small>
+                        <div id="existingGallery" class="existing-gallery-preview" style="display: none; margin-top: 15px;">
+                            <label style="font-size: 12px; margin-bottom: 8px;">Foto Galeri Saat Ini:</label>
+                            <div class="gallery-grid" id="galleryGrid"></div>
+                        </div>
                     </div>
                     <div class="form-group" style="grid-column: span 2;">
                         <label>Deskripsi Singkat</label>
@@ -176,6 +185,8 @@
     .modal-content {
         width: 100%;
         max-width: 600px;
+        max-height: 90vh;
+        overflow-y: auto;
         background: #111;
         border: 1px solid var(--glass-border);
         border-radius: 24px;
@@ -247,6 +258,52 @@
         border-radius: 12px;
         font-weight: 700;
         cursor: pointer;
+    }
+
+    /* EXISTING GALLERY PREVIEW */
+    .existing-gallery-preview {
+        background: rgba(255,255,255,0.03);
+        padding: 15px;
+        border-radius: 15px;
+        border: 1px solid var(--glass-border);
+    }
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+    .gallery-item-admin {
+        position: relative;
+        height: 80px;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid var(--glass-border);
+    }
+    .gallery-item-admin img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .btn-del-gallery {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        width: 24px;
+        height: 24px;
+        background: rgba(231, 76, 60, 0.9);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        transition: all 0.3s ease;
+    }
+    .btn-del-gallery:hover {
+        background: #e74c3c;
+        transform: scale(1.1);
     }
 </style>
 @endpush
@@ -320,12 +377,59 @@
                 if (mainMarker) map.removeLayer(mainMarker);
                 mainMarker = null;
             }
+
+            // Fetch Galleries for Preview
+            const existingGallery = document.getElementById('existingGallery');
+            const galleryGrid = document.getElementById('galleryGrid');
+            galleryGrid.innerHTML = '<div style="grid-column: span 3; color: var(--text-dim); font-size: 12px;">Memuat galeri...</div>';
+            existingGallery.style.display = 'block';
+
+            fetch(`/destinations/${id}`)
+                .then(res => res.json())
+                .then(dest => {
+                    galleryGrid.innerHTML = '';
+                    if (dest.galleries && dest.galleries.length > 0) {
+                        dest.galleries.forEach(g => {
+                            galleryGrid.innerHTML += `
+                                <div class="gallery-item-admin" id="gallery-node-${g.id}">
+                                    <img src="/${g.image}" alt="Gallery">
+                                    <button type="button" class="btn-del-gallery" onclick="deleteGalleryNode(${g.id})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            `;
+                        });
+                    } else {
+                        galleryGrid.innerHTML = '<div style="grid-column: span 3; color: var(--text-dim); font-size: 12px;">Belum ada foto galeri.</div>';
+                    }
+                });
             
             modal.classList.add('active');
             // Refresh map layout inside modal
             setTimeout(() => map.invalidateSize(), 300);
         };
     });
+
+    function deleteGalleryNode(id) {
+        if (!confirm('Hapus foto ini dari galeri?')) return;
+        
+        fetch(`/galleries/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById(`gallery-node-${id}`).remove();
+                if (document.getElementById('galleryGrid').children.length === 0) {
+                    document.getElementById('galleryGrid').innerHTML = '<div style="grid-column: span 3; color: var(--text-dim); font-size: 12px;">Belum ada foto galeri.</div>';
+                }
+            }
+        });
+    }
 
     btnClose.onclick = () => modal.classList.remove('active');
     btnCancel.onclick = () => modal.classList.remove('active');

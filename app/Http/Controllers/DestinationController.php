@@ -21,7 +21,8 @@ class DestinationController extends Controller
             'location' => 'required',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'gallery_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
         ]);
 
         $data = $request->all();
@@ -33,9 +34,26 @@ class DestinationController extends Controller
             $data['thumbnail'] = 'uploads/destinations/' . $filename;
         }
 
-        Destination::create($data);
+        $destination = Destination::create($data);
 
-        return redirect()->back()->with('success', 'Destinasi berhasil ditambahkan!');
+        // Handle Gallery Images
+        if ($request->hasFile('gallery_images')) {
+            $galleryFiles = $request->file('gallery_images');
+            // Max 3 images
+            $galleryFiles = array_slice($galleryFiles, 0, 3);
+            
+            foreach ($galleryFiles as $file) {
+                $filename = time() . '_gallery_' . $file->getClientOriginalName();
+                $file->move(public_path('uploads/galleries'), $filename);
+                
+                \App\Models\Gallery::create([
+                    'destination_id' => $destination->id,
+                    'image' => 'uploads/galleries/' . $filename
+                ]);
+            }
+        }
+
+        return redirect()->back()->with('success', 'Destinasi dan galeri berhasil ditambahkan!');
     }
 
     public function show($id)
@@ -54,7 +72,8 @@ class DestinationController extends Controller
             'location' => 'required',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'gallery_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
         ]);
 
         $data = $request->all();
@@ -72,6 +91,27 @@ class DestinationController extends Controller
         }
 
         $destination->update($data);
+
+        // Handle Gallery Images Update (Append up to 3 total)
+        if ($request->hasFile('gallery_images')) {
+            $existingCount = $destination->galleries()->count();
+            $availableSlots = 3 - $existingCount;
+
+            if ($availableSlots > 0) {
+                $galleryFiles = $request->file('gallery_images');
+                $galleryFiles = array_slice($galleryFiles, 0, $availableSlots);
+                
+                foreach ($galleryFiles as $file) {
+                    $filename = time() . '_gallery_' . $file->getClientOriginalName();
+                    $file->move(public_path('uploads/galleries'), $filename);
+                    
+                    \App\Models\Gallery::create([
+                        'destination_id' => $destination->id,
+                        'image' => 'uploads/galleries/' . $filename
+                    ]);
+                }
+            }
+        }
 
         return redirect()->back()->with('success', 'Destinasi berhasil diperbarui!');
     }
