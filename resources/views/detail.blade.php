@@ -5,588 +5,751 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $destination->name }} - Detail Wisata</title>
     
-    <!-- CSS -->
-    @vite(['resources/css/style.css', 'resources/css/detail.css'])
-    
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    
+    <!-- Spotify Premium Theme (Fail-safe Inline) -->
     <style>
-        .btn-favorite {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            margin-right: 15px;
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+        :root {
+            --spotify-black: #121212; --spotify-dark-grey: #181818; --spotify-grey: #282828;
+            --spotify-light-grey: #b3b3b3; --spotify-green: #1db954; --spotify-white: #ffffff;
+            --accent-yellow: #fdbc3b; --transition-standard: all 0.3s cubic-bezier(0.3, 0, 0.4, 1);
         }
-        .btn-favorite:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
-        }
-        .btn-favorite.active {
-            color: #ff4757;
-            background: rgba(255, 71, 87, 0.1);
-            border-color: #ff4757;
-        }
-
-        /* Review Section Refinements */
-        .reviews-container {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 50px;
-            padding: 30px 0;
-            margin-top: 30px;
-        }
-
-        .review-list-side {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        .reviews-header-summary {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            margin-bottom: 10px;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 20px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .avg-rating-box {
-            background: var(--color-accent);
-            color: black;
-            padding: 15px 20px;
-            border-radius: 18px;
-            text-align: center;
-        }
-
-        .avg-value { font-size: 28px; font-weight: 800; display: block; line-height: 1; }
-        .avg-label { font-size: 10px; font-weight: 700; text-transform: uppercase; opacity: 0.7; }
-
-        .summary-info h4 { font-size: 18px; margin-bottom: 5px; }
-        .summary-info p { font-size: 13px; color: rgba(255,255,255,0.5); }
-
-        .review-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            max-height: 450px;
-            overflow-y: auto;
-            padding-right: 15px;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(255,255,255,0.1) transparent;
-        }
-
-        .review-list::-webkit-scrollbar { width: 4px; }
-        .review-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
-
-        .review-item {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 22px;
-            padding: 20px;
-            display: flex;
-            gap: 18px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .review-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-            transform: translateY(-3px);
-            border-color: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        .reviewer-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 15px;
-            background: linear-gradient(135deg, var(--color-accent), #ffd700);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: black;
-            font-weight: 800;
-            font-size: 18px;
-            flex-shrink: 0;
-            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
-        }
-
-        .review-content { flex: 1; }
-        .review-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .reviewer-name { font-weight: 700; font-size: 15px; color: white; }
-        .review-stars { color: #ffc107; font-size: 11px; display: flex; gap: 2px; }
-        .review-text { 
-            font-size: 14px; 
-            color: rgba(255,255,255,0.7); 
-            line-height: 1.6; 
-            margin-bottom: 10px;
-        }
-        .review-date { font-size: 11px; color: rgba(255,255,255,0.3); font-weight: 500; }
-
-        .review-form-card {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(20px);
-            border-radius: 30px;
-            padding: 35px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            position: sticky;
-            top: 20px;
-        }
-
-        .form-title { font-size: 22px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }
-        .form-subtitle { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 25px; display: block; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        body { font-family: 'Outfit', sans-serif; background-color: #000; color: var(--spotify-white); overflow: hidden; height: 100vh; position: relative; }
+        .page-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .page-bg img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.3) blur(15px); scale: 1.1; }
         
-        .rating-input {
-            display: flex;
-            flex-direction: row-reverse;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 30px;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 15px;
-            border-radius: 20px;
+        
+        /* Link & Text Reset */
+        a, a:visited, a:hover, a:active { text-decoration: none !important; color: inherit; }
+        
+        .spotify-layout { 
+            display: grid; 
+            grid-template-columns: 240px 1fr; 
+            grid-template-rows: 1fr; 
+            height: 100vh; 
+            width: 100vw; 
+            position: relative; 
+            z-index: 10; 
+            padding: 20px 40px; 
+            gap: 20px; 
+            max-width: 1800px;
+            margin: 0 auto;
         }
-        .rating-input input { display: none; }
-        .rating-input label {
-            font-size: 32px;
-            color: rgba(255,255,255,0.1);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .rating-input label:hover,
-        .rating-input label:hover ~ label,
-        .rating-input input:checked ~ label {
-            color: #ffc107;
-            transform: scale(1.2);
-            text-shadow: 0 0 15px rgba(255, 193, 7, 0.4);
+        .sidebar-left { grid-row: 1/2; background-color: rgba(0, 0, 0, 0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; flex-direction: column; padding: 24px 12px; gap: 24px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.1); }
+        .brand-link { display: flex; align-items: center; gap: 12px; padding: 0 12px; font-size: 20px; font-weight: 800; margin-bottom: 8px; color: white !important; }
+        .brand-link i { color: var(--accent-yellow); }
+        .side-nav ul { list-style: none; }
+        .side-nav li a { display: flex; align-items: center; gap: 16px; padding: 10px 12px; color: var(--spotify-light-grey) !important; font-size: 14px; font-weight: 700; border-radius: 4px; transition: 0.2s; }
+        .side-nav li.active a, .side-nav li a:hover { color: white !important; background-color: var(--spotify-grey); }
+        .side-nav-group ul { list-style: none; }
+        .side-nav-group li a { display: flex; align-items: center; gap: 16px; padding: 8px 12px; color: var(--spotify-light-grey) !important; font-size: 13px; font-weight: 700; transition: 0.2s; }
+        .side-nav-group li a:hover { color: white !important; }
+        .section-title { font-size: 11px; font-weight: 800; letter-spacing: 1px; color: var(--spotify-light-grey); margin: 20px 12px 10px; text-transform: uppercase; }
+        .install-app-link { display: flex; align-items: center; gap: 12px; color: var(--spotify-light-grey) !important; font-size: 13px; font-weight: 700; padding: 12px; }
+        .install-app-link:hover { color: white !important; }
+        
+        .content-wrapper { grid-row: 1/2; grid-column: 2/3; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; flex-direction: column; position: relative; overflow: hidden; border-radius: 24px; border: 1px solid rgba(255,255,255,0.1); }
+        .spotify-header { height: 64px; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; background-color: rgba(18, 18, 18, 0.7); backdrop-filter: blur(20px); }
+        .header-nav { display: flex; align-items: center; gap: 24px; }
+        .nav-arrows { display: flex; align-items: center; gap: 8px; }
+        .nav-btn-circle { width: 32px; height: 32px; border-radius: 50%; background-color: rgba(0,0,0,0.7); border: none; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
+        .nav-btn-circle:hover { background-color: rgba(0,0,0,0.9); transform: scale(1.05); }
+        .nav-btn-circle i { font-size: 14px; }
+        .breadcrumb-text { font-size: 13px; font-weight: 700; color: var(--spotify-light-grey); display: flex; align-items: center; gap: 8px; }
+        .breadcrumb-text span:last-child { color: white; }
+        .breadcrumb-text i { font-size: 10px; opacity: 0.6; }
+        .header-user { display: flex; align-items: center; gap: 16px; }
+        .user-pill { background-color: rgba(0,0,0,0.7); padding: 2px 8px 2px 2px; border-radius: 20px; display: flex; align-items: center; gap: 8px; cursor: pointer; border: none; font-family: inherit; color: white; transition: 0.2s; }
+        .user-pill:hover { background-color: #282828; }
+        .user-avatar { width: 28px; height: 28px; border-radius: 50%; background-color: #535353; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; }
+        .scroll-area { flex: 1; overflow-y: auto; padding: 24px 32px; }
+        .top-row-grid { display: grid; grid-template-columns: 1.2fr 300px; gap: 24px; margin-bottom: 32px; align-items: stretch; }
+        
+        /* Banner Card Style */
+        .banner-card { position: relative; height: 380px; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; justify-content: center; padding: 50px; background: #282828; }
+        .banner-bg { position: absolute; top:0; left:0; width:100%; height:100%; z-index: 1; }
+        .banner-bg img { width:100%; height:100%; object-fit:cover; filter: brightness(0.6); }
+        .banner-bg::after { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, transparent 100%); z-index: 2; }
+        
+        .banner-content { position: relative; z-index: 10; max-width: 85%; }
+        .verified-badge { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; margin-bottom: 12px; color: white; }
+        .verified-badge i { color: #4cb3ff; font-size: 20px; }
+        .destination-title { font-size: 64px; font-weight: 900; margin-bottom: 8px; letter-spacing: -2px; line-height: 1; color: white; text-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+        .destination-description { font-size: 14px; color: #b3b3b3; margin-bottom: 24px; max-width: 600px; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; font-weight: 500; }
+        .destination-stats { font-size: 16px; font-weight: 700; margin-bottom: 32px; color: white; display: flex; align-items: center; gap: 12px; }
+        
+        .banner-actions { display: flex; align-items: center; gap: 20px; }
+        .btn-play-large { width: 56px; height: 56px; border-radius: 50%; background-color: var(--spotify-green); border: none; display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; color: black !important; transition: 0.2s; box-shadow: 0 8px 16px rgba(0,0,0,0.3); }
+        .btn-play-large:hover { transform: scale(1.05); background-color: #1ed760; }
+        .btn-outline-text { background: transparent; border: 1px solid rgba(255,255,255,0.4); color: white !important; padding: 8px 20px; border-radius: 20px; font-size: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: 0.2s; letter-spacing: 1px; }
+        .btn-outline-text:hover { border-color: white; transform: scale(1.05); }
+
+        /* Map Card Style (Right Side) */
+        .popular-card { background: #181818; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; position: relative; }
+        .popular-card h3 { font-size: 14px; font-weight: 800; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .popular-card h3::after { content: '\f00d'; font-family: "Font Awesome 6 Free"; font-weight: 900; color: var(--spotify-light-grey); cursor: pointer; }
+        .map-preview-spotify { position: relative; flex: 1; border-radius: 8px; overflow: hidden; background: #282828; }
+        .map-preview-spotify img { width: 100%; height: 100%; object-fit: cover; }
+        .btn-open-spotify-map { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); background: #1db954; color: black !important; padding: 6px 16px; border-radius: 20px; font-size: 10px; font-weight: 800; display: block; }
+        
+        .main-body-grid { display: grid; grid-template-columns: 1fr 340px; gap: 32px; align-items: start; }
+        .area-title { font-size: 20px; font-weight: 800; margin-bottom: 16px; }
+        .spotify-table { display: flex; flex-direction: column; }
+        .table-header { display: grid; grid-template-columns: 40px 1.2fr 1.5fr 100px; padding: 0 16px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--spotify-light-grey); font-size: 10px; font-weight: 700; letter-spacing: 1.5px; margin-bottom: 12px; }
+        .table-row { display: grid; grid-template-columns: 40px 1.2fr 1.5fr 100px; padding: 10px 16px; border-radius: 4px; transition: 0.2s; align-items: center; cursor: pointer; }
+        .table-row:hover { background: rgba(255,255,255,0.1); }
+        .row-avatar { width: 40px; height: 40px; border-radius: 4px; background: #282828; display: flex; align-items: center; justify-content: center; color: var(--accent-yellow); font-weight: 700; font-size: 16px; }
+        .row-username { color: white; font-weight: 700; font-size: 14px; }
+        .row-rating-stars { color: var(--accent-yellow); font-size: 10px; }
+        .col-comment { color: var(--spotify-light-grey); font-size: 13px; }
+        .col-date { color: var(--spotify-light-grey); font-size: 12px; }
+        .empty-state { padding: 40px; text-align: center; color: var(--spotify-light-grey); font-size: 14px; background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px dashed rgba(255,255,255,0.1); }
+        .side-panel { display: flex; flex-direction: column; gap: 24px; }
+        .panel-card { background: #1a1a1a; border-radius: 12px; padding: 20px; transition: 0.3s; }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .panel-header h3 { font-size: 14px; font-weight: 800; }
+        .player-bar { grid-row: 2/3; grid-column: 1/3; background: #000; border-top: 1px solid #121212; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; z-index: 1000; }
+        .playing-info img { width: 56px; height: 56px; border-radius: 4px; }
+        .song-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+        .song-artist { font-size: 11px; color: var(--spotify-light-grey); }
+        .btn-spotify-submit { background: var(--spotify-green); border: none; padding: 12px; width: 100%; border-radius: 30px; font-weight: 800; font-size: 13px; cursor: pointer; transition: 0.2s; color: black !important; }
+        .btn-spotify-submit:hover { transform: scale(1.02); background: #1ed760; }
+        .spotify-form textarea { width: 100%; background: #2a2a2a; border: none; border-radius: 8px; padding: 12px; color: white !important; font-family: inherit; font-size: 13px; margin-bottom: 12px; resize: none; border: 1px solid transparent; }
+        .spotify-form textarea:focus { outline: none; border-color: #444; }
+        .rating-selector { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: 8px; margin-bottom: 16px; }
+        .rating-selector input { display: none; }
+        .rating-selector label { font-size: 24px; color: #333; cursor: pointer; }
+        .rating-selector input:checked ~ label, .rating-selector label:hover, .rating-selector label:hover ~ label { color: var(--accent-yellow); }
+        .queue-item { display: flex; align-items: center; gap: 12px; background: #282828; padding: 10px; border-radius: 6px; transition: 0.2s; }
+        .queue-item:hover { background: #333; }
+        .queue-item img { width: 48px; height: 48px; border-radius: 4px; object-fit: cover; }
+
+        /* Mobile Responsive */
+        .mobile-menu-btn { display: none; width: 32px; height: 32px; border-radius: 50%; background-color: rgba(0,0,0,0.7); border: none; color: white; align-items: center; justify-content: center; cursor: pointer; }
+        .sidebar-close { display: none; position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+
+        @media (max-width: 1024px) {
+            .spotify-layout { padding: 12px; grid-template-columns: 1fr; }
+            .sidebar-left { 
+                position: fixed; top: 0; left: -280px; height: 100vh; width: 260px; z-index: 1000;
+                transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .sidebar-left.active { left: 0; }
+            .mobile-menu-btn { display: flex; }
+            .sidebar-close { display: block; }
+            .top-row-grid { grid-template-columns: 1fr; }
+            .main-body-grid { grid-template-columns: 1fr; }
+            .breadcrumb-text { display: none; }
         }
 
-        .comment-wrapper { position: relative; margin-bottom: 20px; }
-        .comment-textarea {
-            width: 100%;
-            background: rgba(0,0,0,0.3);
-            border: 2px solid rgba(255,255,255,0.05);
-            border-radius: 20px;
-            padding: 20px;
-            color: white;
-            font-family: inherit;
-            font-size: 15px;
-            resize: none;
-            transition: all 0.3s ease;
-        }
-        .comment-textarea:focus {
-            outline: none;
-            border-color: var(--color-accent);
-            background: rgba(0,0,0,0.4);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.05);
+        @media (max-width: 768px) {
+            .destination-title { font-size: 36px; }
+            .banner-card { height: auto; padding: 24px; }
+            .banner-actions { flex-wrap: wrap; }
+            .spotify-header { padding: 16px; }
         }
 
-        .btn-submit-review {
+        /* PREMIUM FACILITIES SLIDER (SYNCED FROM LANDING) */
+        .facility-immersive-section {
+            position: relative;
+            min-height: 700px;
+            margin: 32px 0;
+            border-radius: 24px;
+            overflow: hidden;
+            color: #fff;
+            background: #000;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .facility-bg-layer {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+        }
+
+        .bg-img {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 8s linear;
+            transform: scale(1.1);
+        }
+
+        .bg-img.active {
+            opacity: 1;
+            transform: scale(1);
+            z-index: 2;
+        }
+
+        .bg-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%);
+            z-index: 3;
+        }
+
+        .facility-container {
+            position: relative;
+            z-index: 10;
+            height: 100%;
             width: 100%;
-            background: linear-gradient(135deg, var(--color-accent), #ffd700);
-            color: black;
-            border: none;
-            padding: 16px;
-            border-radius: 18px;
-            font-weight: 800;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding: 60px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
+            min-height: 700px;
         }
-        .btn-submit-review:hover { 
-            transform: scale(1.02) translateY(-2px);
-            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
-        }
-        .btn-submit-review:active { transform: scale(0.98); }
 
-        .success-alert {
-            background: linear-gradient(135deg, rgba(46, 213, 115, 0.2), rgba(46, 213, 115, 0.1));
-            border: 1px solid rgba(46, 213, 115, 0.4);
-            color: #2ed573;
-            padding: 18px;
-            border-radius: 20px;
-            margin-bottom: 25px;
+        .facility-text-content {
+            flex: 1;
+            max-width: 550px;
+        }
+
+        .facility-label {
+            display: inline-block;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 700;
+            letter-spacing: 5px;
+            color: #d4f05c;
+            margin-bottom: 30px;
+            position: relative;
+            padding-left: 50px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .facility-label::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 50%;
+            width: 35px; height: 2px;
+            background: #d4f05c;
+        }
+
+        .active-facility-info {
+            position: relative;
+            height: 250px;
+        }
+
+        .facility-info-item {
+            position: absolute;
+            top: 0; left: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+            transform: translateY(30px);
+        }
+
+        .facility-info-item.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .facility-big-title {
+            font-size: clamp(40px, 5vw, 80px);
+            line-height: 0.95;
+            margin-bottom: 30px;
+            text-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            letter-spacing: -2px;
+            font-weight: 900;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .facility-description {
+            font-size: 15px;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.7);
+            max-width: 450px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .facility-visual-slider {
+            width: 400px;
+            height: 400px;
+            position: relative;
+        }
+
+        .card-stack {
+            position: relative;
+            width: 100%; height: 100%;
             display: flex;
             align-items: center;
-            gap: 12px;
-            animation: slideDown 0.5s ease-out;
         }
 
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .facility-card {
+            position: absolute;
+            width: 280px;
+            height: 420px;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
         }
 
-        .empty-reviews {
-            text-align: center;
-            padding: 60px 20px;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 30px;
-            border: 2px dashed rgba(255, 255, 255, 0.05);
+        .facility-card.active {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-150px) scale(0.8);
         }
-        .empty-reviews i { font-size: 50px; color: rgba(255, 255, 255, 0.1); margin-bottom: 20px; }
-        .empty-reviews p { color: rgba(255, 255, 255, 0.4); font-size: 15px; }
 
-        .auth-lock-card {
-            text-align: center;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        .facility-card.visible-1 { z-index: 5; transform: translateX(0) scale(1); opacity: 1; }
+        .facility-card.visible-2 { z-index: 4; transform: translateX(100px) scale(0.9); opacity: 0.7; }
+        .facility-card.visible-3 { z-index: 3; transform: translateX(200px) scale(0.8); opacity: 0.4; }
+
+        .card-inner { position: relative; width: 100%; height: 100%; }
+        .card-inner img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease; }
+        .facility-card:hover img { transform: scale(1.1); }
+
+        .card-text {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%; padding: 30px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+        }
+
+        .card-subtitle { display: block; font-size: 11px; font-weight: 700; color: #d4f05c; margin-bottom: 8px; }
+        .card-title { font-size: 18px; font-weight: 700; color: white; }
+
+        .facility-controls {
+            position: absolute;
+            bottom: 40px; left: 60px; right: 60px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .nav-arrows-facil { display: flex; gap: 15px; }
+        .control-btn-facil {
+            width: 45px; height: 45px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: transparent;
+            color: white;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .control-btn-facil:hover { background: #fff; color: #000; }
+
+        .progress-wrapper-facil { flex: 1; display: flex; align-items: center; gap: 20px; }
+        .progress-bar-facil { flex: 1; height: 2px; background: rgba(255,255,255,0.1); position: relative; }
+        .progress-line-facil { position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: #d4f05c; transition: width 0.8s ease; }
+        
+        .slide-count-facil { font-size: 24px; font-weight: 900; display: flex; align-items: baseline; gap: 8px; font-family: 'Poppins', sans-serif; }
+        .total-num-facil { font-size: 14px; opacity: 0.5; }
+
+        @media (max-width: 1100px) {
+            .facility-immersive-section { min-height: auto; padding: 60px 0; }
+            .facility-container { flex-direction: column; padding: 20px; min-height: auto; }
+            .facility-visual-slider { display: none; }
+            .facility-text-content { text-align: center; max-width: 100%; }
+            .active-facility-info { height: auto; position: relative; display: block; margin-bottom: 40px; }
+            .facility-info-item { position: relative; width: 100%; }
+            .facility-controls { position: relative; bottom: 0; left: 0; right: 0; justify-content: center; margin-top: 30px; }
         }
     </style>
+    
+    <!-- External Libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    @vite(['resources/css/detail.css'])
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
-    
-    <!-- App Container (The "Screen" look) -->
-    <div class="app-container">
-        
-        <!-- Background Image -->
-        <div class="bg-layer">
-            <img src="{{ $destination->thumbnail ? asset($destination->thumbnail) : asset('images/beach.jpeg') }}" alt="Background">
-            <div class="bg-overlay"></div>
-        </div>
+    <div class="page-bg">
+        <img src="{{ $destination->thumbnail ? asset($destination->thumbnail) : asset('images/beach.jpeg') }}" alt="">
+    </div>
 
-        <!-- Navigation (Standard with Integrated Back Button) -->
-        <nav class="main-nav" style="position: absolute; top: 0; left: 0; width: 100%; z-index: 100;">
-            <div class="nav-logo">
-                <a href="{{ url('/') }}" class="nav-back-arrow" style="margin-right: 15px; text-decoration: none; color: white;">
-                    <i class="fas fa-arrow-left"></i>
-                </a>
-                <i class="fas fa-mountain"></i>
-                <span>Wisata</span>
-            </div>
-
-            <ul class="nav-links">
-                <li><a href="{{ url('/#beranda') }}">Beranda</a></li>
-                <li><a href="{{ url('/#destinasi') }}">Destinasi</a></li>
-                <li><a href="{{ url('/packages') }}">Packages</a></li>
-            </ul>
-            <div class="nav-items-right">
-                <div class="nav-social">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
+    <div class="spotify-layout">
+        <!-- Sidebar Left -->
+        <aside class="sidebar-left" id="sidebar">
+            <button class="sidebar-close" id="sidebarClose"><i class="fas fa-times"></i></button>
+            <div class="sidebar-top">
+                <div class="sidebar-nav-header" style="padding: 0 12px 20px; display: flex; align-items: center; gap: 12px;">
+                    <button class="nav-btn-circle" onclick="window.location.href='{{ url('/packages') }}'" style="background: rgba(255,255,255,0.1); width: 32px; height: 32px;"><i class="fas fa-chevron-left"></i></button>
+                    <a href="{{ url('/') }}" class="brand-link" style="margin-bottom: 0; padding: 0;">
+                        <i class="fas fa-mountain"></i>
+                        <span>Wisata Kaltim</span>
+                    </a>
                 </div>
-                <div class="nav-auth">
-                    @guest
-                        <a href="{{ url('/') }}" class="btn-auth btn-login">Kembali</a>
-                    @endguest
+                
+                <nav class="side-nav">
+                    <ul>
+                        <li class="active"><a href="{{ url('/') }}"><i class="fas fa-home"></i> Beranda</a></li>
+                        <li><a href="{{ url('/fasilitas') }}"><i class="fas fa-list-check"></i> Fasilitas</a></li>
+                        <li><a href="{{ url('/packages') }}"><i class="fas fa-cube"></i> Paket Wisata</a></li>
+                    </ul>
+                </nav>
 
-                    @auth
-                        <div class="nav-user-profile">
-                            <div class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
-                            <span class="user-name">{{ Auth::user()->name }}</span>
-                            <i class="fas fa-chevron-down" style="font-size: 10px; opacity: 0.5;"></i>
-                            
-                            <div class="user-dropdown">
-                                <a href="#" class="dropdown-item">
-                                    <i class="fas fa-user-circle"></i> Profil Saya
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <i class="fas fa-heart"></i> Favorit
-                                </a>
-                                <form action="{{ route('logout') }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="dropdown-item logout">
-                                        <i class="fas fa-sign-out-alt"></i> Keluar
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    @endauth
-                </div>
             </div>
-        </nav>
+        </aside>
 
         <!-- Main Content Area -->
-        <main class="main-content">
-            
-            <div class="content-left">
-                <h1 class="hero-title">{{ $destination->name }}</h1>
-                <p class="hero-desc">{{ $destination->description }}</p>
+        <main class="content-wrapper">
+            <!-- Header -->
+            <header class="spotify-header">
+                <div class="header-nav">
+                    <button class="mobile-menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+                    <div class="breadcrumb-text">
+                        <span>Packages</span> <i class="fas fa-chevron-right"></i> <span>Popular Destination</span>
+                    </div>
+                </div>
                 
-                <!-- Stats Bars -->
-                <div class="stats-row">
-                    <div class="stat-item">
-                        <span class="stat-label">Popularitas</span>
-                        <div class="stat-dots">
-                            @for($i=0; $i<5; $i++)
-                                <span class="dot {{ $i < ($destination->rating ?? 4) ? 'filled' : '' }}"></span>
-                            @endfor
-                        </div>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Aksesibilitas</span>
-                        <div class="stat-dots">
-                            @for($i=0; $i<5; $i++)
-                                <span class="dot {{ $i < 4 ? 'filled' : '' }}"></span>
-                            @endfor
-                        </div>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Luas Area</span>
-                        <div class="stat-dots">
-                            @for($i=0; $i<5; $i++)
-                                <span class="dot {{ $i < 3 ? 'filled' : '' }}"></span>
-                            @endfor
-                        </div>
-                    </div>
-                </div>
-
-                <div class="action-buttons" style="display: flex; align-items: center;">
+                <div class="header-user">
                     @auth
-                        @php $isFavorited = Auth::user()->favorites()->where('destination_id', $destination->id)->exists(); @endphp
-                        <button class="btn-favorite {{ $isFavorited ? 'active' : '' }}" id="fav-btn" data-id="{{ $destination->id }}">
-                            <i class="{{ $isFavorited ? 'fas' : 'far' }} fa-heart"></i>
-                        </button>
-                    @endauth
-                    <a href="#" class="btn-learn-more">Learn more</a>
-                </div>
-            </div>
-
-            <!-- Right Content: Detailed Location Card -->
-            <div class="content-right">
-                <div class="location-card">
-                    <!-- Top Map View -->
-                    <div class="map-view-container">
-                        <img src="{{ asset('images/gps-map-final.jpg') }}" alt="Location Map Aesthetic" class="map-img-rect">
-                        <div class="map-pin-pulse"></div>
-                        @php
-                            $mapUrl = "https://www.google.com/maps/search/?api=1&query=" . urlencode($destination->name . ' ' . $destination->location);
-                            if($destination->latitude && $destination->longitude) {
-                                $mapUrl = "https://www.google.com/maps/search/?api=1&query={$destination->latitude},{$destination->longitude}";
-                            }
-                        @endphp
-                        <a href="{{ $mapUrl }}" target="_blank" class="btn-play-mini" style="text-decoration:none;">
-                            <i class="fas fa-location-arrow"></i>
-                        </a>
-                    </div>
-
-                    <!-- Bottom Details -->
-                    <div class="location-details">
-                        <div class="loc-header">
-                            <span class="loc-subtitle">EXPLORE AREA</span>
-                            <h3>{{ $destination->name }}</h3>
-                        </div>
-                        <p class="loc-desc">
-                            {{ $destination->location }}. Terletak strategis dengan akses mudah ke spot utama.
-                        </p>
-                        
-                        <div class="mini-stats-grid">
-                            <div class="mini-stat">
-                                <i class="fas fa-temperature-high"></i>
-                                <span>28°C</span>
-                            </div>
-                            <div class="mini-stat">
-                                <i class="fas fa-wind"></i>
-                                <span>12 km/h</span>
-                            </div>
-                            <div class="mini-stat">
-                                <i class="fas fa-compass"></i>
-                                <span>NE</span>
-                            </div>
-                        </div>
-
-                        <a href="{{ $mapUrl }}" target="_blank" class="btn-open-map">
-                            Open Full Map <i class="fas fa-external-link-alt"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-        </main>
-
-        <!-- Bottom Panel -->
-        <footer class="bottom-panel">
-            
-            <!-- Reviews Section -->
-            <div class="reviews-container">
-                <div class="review-list-side">
-                    @php
-                        $avgRating = $destination->reviews->avg('rating');
-                        $reviewCount = $destination->reviews->count();
-                    @endphp
-                    
-                    <div class="reviews-header-summary">
-                        <div class="avg-rating-box">
-                            <span class="avg-value">{{ number_format($avgRating ?: 5.0, 1) }}</span>
-                            <span class="avg-label">RATING</span>
-                        </div>
-                        <div class="summary-info">
-                            <h4>Suara Pengunjung</h4>
-                            <p>Berdasarkan {{ $reviewCount }} ulasan dari para traveler.</p>
-                        </div>
-                    </div>
-                    
-                    @if(session('success'))
-                        <div class="success-alert">
-                            <i class="fas fa-check-circle"></i>
-                            <span>{{ session('success') }}</span>
-                        </div>
-                    @endif
-
-                    <div class="review-list">
-                        @forelse($destination->reviews()->latest()->get() as $review)
-                            <div class="review-item">
-                                <div class="reviewer-avatar">
-                                    {{ strtoupper(substr($review->user->name, 0, 1)) }}
-                                </div>
-                                <div class="review-content">
-                                    <div class="review-header">
-                                        <span class="reviewer-name">{{ $review->user->name }}</span>
-                                        <div class="review-stars">
-                                            @for($i=0; $i<5; $i++)
-                                                <i class="{{ $i < $review->rating ? 'fas' : 'far' }} fa-star"></i>
-                                            @endfor
-                                        </div>
-                                    </div>
-                                    <p class="review-text">{{ $review->comment }}</p>
-                                    <div class="review-date">
-                                        <i class="far fa-clock" style="margin-right: 5px;"></i>
-                                        {{ $review->created_at->diffForHumans() }}
-                                    </div>
-                                </div>
-                            </div>
-                        @empty
-                            <div class="empty-reviews">
-                                <i class="far fa-comment-dots"></i>
-                                <p>Belum ada ulasan. Jadilah yang pertama memberikan kesan!</p>
-                            </div>
-                        @endforelse
-                    </div>
-                </div>
-
-                <div class="review-form-side">
-                    @auth
-                        <div class="review-form-card">
-                            <span class="form-subtitle">BERIKAN PENILAIAN</span>
-                            <h4 class="form-title">Bagikan Pengalaman</h4>
-                            
-                            <form action="{{ route('reviews.store') }}" method="POST" id="review-form">
-                                @csrf
-                                <input type="hidden" name="destination_id" value="{{ $destination->id }}">
-                                
-                                <div class="rating-input">
-                                    <input type="radio" id="star5" name="rating" value="5" required /><label for="star5" title="Sempurna"><i class="fas fa-star"></i></label>
-                                    <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="Bagus"><i class="fas fa-star"></i></label>
-                                    <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="Cukup"><i class="fas fa-star"></i></label>
-                                    <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="Buruk"><i class="fas fa-star"></i></label>
-                                    <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="Sangat Buruk"><i class="fas fa-star"></i></label>
-                                </div>
-
-                                <div class="comment-wrapper">
-                                    <textarea name="comment" class="comment-textarea" rows="5" placeholder="Apa yang membuat kunjungan Anda berkesan?" required></textarea>
-                                </div>
-                                
-                                <button type="submit" class="btn-submit-review">
-                                    <span>Kirim Ulasan Sekarang</span>
-                                    <i class="fas fa-paper-plane"></i>
-                                </button>
-                            </form>
+                        <div class="user-pill">
+                            <div class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
+                            <span>{{ Auth::user()->name }}</span>
+                            <i class="fas fa-caret-down"></i>
                         </div>
                     @else
-                        <div class="auth-lock-card">
-                            <div style="background: rgba(255,255,255,0.05); width: 70px; height: 70px; border-radius: 25px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
-                                <i class="fas fa-lock" style="font-size: 28px; color: var(--color-accent);"></i>
-                            </div>
-                            <h4 style="margin-bottom: 10px;">Ingin Memberi Ulasan?</h4>
-                            <p style="font-size: 14px; color: rgba(255,255,255,0.4); margin-bottom: 25px;">Silakan masuk ke akun Anda untuk berbagi pengalaman bersama kami.</p>
-                            <a href="{{ url('/') }}" class="btn-submit-review" style="text-decoration: none;">
-                                <i class="fas fa-sign-in-alt"></i> Login Sekarang
-                            </a>
-                        </div>
+                        <a href="{{ url('/') }}" class="btn-login-round">Masuk</a>
                     @endauth
                 </div>
-            </div>
+            </header>
 
-            <!-- Navigation Controls -->
-            <div class="nav-controls">
-                
-                <a href="{{ url('/detail?id=' . $nextDestination->id) }}" class="nav-arrow prev">
-                    <i class="fas fa-arrow-left"></i>
-                </a>
-                
-                <a href="{{ url('/detail?id=' . $nextDestination->id) }}" class="nav-arrow next">
-                    <i class="fas fa-arrow-right"></i>
-                </a>
+            <!-- Scrollable Area -->
+            <div class="scroll-area">
+                <!-- Top Row: Banner Card + Map Card -->
+                <div class="top-row-grid">
+                    <!-- Hero Banner Card -->
+                    <div class="banner-card">
+                        <div class="banner-bg">
+                            <img src="{{ $destination->thumbnail ? asset($destination->thumbnail) : asset('images/beach.jpeg') }}" alt="Background">
+                        </div>
+                        <div class="banner-content">
+                            <div class="verified-badge">
+                                <i class="fas fa-check-circle"></i> Destination Verified
+                            </div>
+                            <h1 class="destination-title text-truncate">{{ $destination->name }}</h1>
+                            <p class="destination-description">{{ Str::limit($destination->description ?? 'Nikmati pesona alam Kalimantan Timur yang memukau. Destinasi ini menawarkan perpaduan sempurna antara ketenangan alam, petualangan seru, dan keindahan visual yang tak terlupakan bagi setiap pengunjung.', 180) }}</p>
+                            <p class="destination-stats">
+                                <i class="fas fa-star"></i> {{ number_format($destination->reviews->avg('rating') ?: 5.0, 1) }} 
+                                • {{ $destination->reviews->count() }} ulasan
+                            </p>
+                            <div class="banner-actions">
+                                @auth
+                                    @php $isFavorited = Auth::user()->favorites()->where('destination_id', $destination->id)->exists(); @endphp
+                                    <button class="btn-play-large" id="love-btn-main"><i class="{{ $isFavorited ? 'fas' : 'far' }} fa-heart"></i></button>
+                                @else
+                                    <button class="btn-play-large" id="love-btn-main"><i class="far fa-heart"></i></button>
+                                @endauth
+                                <button class="btn-outline-text" id="fav-btn" data-id="{{ $destination->id }}">
+                                    @auth
+                                        @php $isFavorited = Auth::user()->favorites()->where('destination_id', $destination->id)->exists(); @endphp
+                                        {{ $isFavorited ? 'DIFAVORITKAN' : 'FAVORITKAN' }}
+                                    @else
+                                        FAVORITKAN
+                                    @endauth
+                                </button>
+                            </div>
+                        </div>
+                    </div>
 
-                <!-- Next Preview -->
-                <div class="next-preview">
-                    <img src="{{ $nextDestination->thumbnail ? asset($nextDestination->thumbnail) : asset('images/beach.jpeg') }}" alt="Next">
+                    <!-- Popular Card (Map) -->
+                    <div class="popular-card">
+                        <h3>Popular Location</h3>
+                        <div class="map-preview-spotify">
+                            <img src="{{ asset('images/gps-map-final.jpg') }}" alt="Map">
+                            <div class="map-pulse"></div>
+                            @php
+                                $mapUrl = "https://www.google.com/maps/search/?api=1&query=" . urlencode($destination->name . ' ' . $destination->location);
+                                if($destination->latitude && $destination->longitude) {
+                                    $mapUrl = "https://www.google.com/maps/search/?api=1&query={$destination->latitude},{$destination->longitude}";
+                                }
+                            @endphp
+                            <a href="{{ $mapUrl }}" target="_blank" class="btn-open-spotify-map">BUKA PETA</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DESTINATION PHOTOS GALLERY (REPLACED FACILITIES) -->
+                @php 
+                    $galleryImages = $destination->galleries->isEmpty() ? collect([
+                        (object)[ 'id' => 1, 'image' => $destination->thumbnail ?: 'images/beach.jpeg', 'caption' => 'Pemandangan Utama' ],
+                        (object)[ 'id' => 2, 'image' => 'images/islandia.png', 'caption' => 'Sudut Panorama' ],
+                        (object)[ 'id' => 3, 'image' => 'images/kyoto.png', 'caption' => 'Suasana Destinasi' ],
+                        (object)[ 'id' => 4, 'image' => 'images/retreat.png', 'caption' => 'Keindahan Alam' ]
+                    ]) : $destination->galleries;
+                @endphp
+
+                <section class="facility-immersive-section" id="fasilitas">
+                    <div class="facility-bg-layer">
+                        @foreach($galleryImages as $index => $item)
+                            @php
+                                $img = asset($item->image ?? 'images/beach.jpeg');
+                            @endphp
+                        <div class="bg-img {{ $loop->first ? 'active' : '' }}" data-id="{{ $item->id }}" style="background-image: url('{{ $img }}')"></div>
+                        @endforeach
+                        <div class="bg-overlay"></div>
+                    </div>
+
+                    <div class="facility-container">
+                        <div class="facility-text-content">
+                            <span class="facility-label">GALERI WISATA</span>
+                            <div class="active-facility-info">
+                                @foreach($galleryImages as $index => $item)
+                                <div class="facility-info-item {{ $loop->first ? 'active' : '' }}" data-id="{{ $item->id }}">
+                                    <h2 class="facility-big-title">{{ strtoupper($destination->name) }}</h2>
+                                    <p class="facility-description">{{ $item->caption ?? "Jelajahi keindahan visual dari destinasi " . $destination->name . " melalui lensa kamera kami." }}</p>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="facility-visual-slider">
+                            <div class="card-stack">
+                                @foreach($galleryImages as $index => $item)
+                                    @php
+                                        $img = asset($item->image ?? 'images/beach.jpeg');
+                                    @endphp
+                                <div class="facility-card {{ $loop->first ? 'active' : '' }}" data-id="{{ $item->id }}">
+                                    <div class="card-inner">
+                                        <img src="{{ $img }}" alt="{{ $destination->name }}">
+                                        <div class="card-text">
+                                            <span class="card-subtitle">Foto {{ $index + 1 }}</span>
+                                            <h4 class="card-title">{{ $item->caption ?? $destination->name }}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="facility-controls">
+                            <div class="nav-arrows-facil">
+                                <button class="control-btn-facil prev"><i class="fas fa-chevron-left"></i></button>
+                                <button class="control-btn-facil next"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                            <div class="progress-wrapper-facil">
+                                <div class="progress-bar-facil">
+                                    <div class="progress-line-facil"></div>
+                                </div>
+                                <div class="slide-count-facil">
+                                    <span class="current-num-facil">01</span>
+                                    <span class="total-num-facil">/ {{ str_pad($galleryImages->count(), 2, '0', STR_PAD_LEFT) }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Grid: Reviews Area vs Form Sidebar -->
+                <div class="main-body-grid">
+                    <!-- Left: Popular Content (Reviews) -->
+                    <div class="popular-list-area">
+                        <h2 class="area-title">Popular Reviews</h2>
+                        <div class="spotify-table">
+                            <div class="table-header">
+                                <div class="col-index">#</div>
+                                <div class="col-user">USER</div>
+                                <div class="col-comment">KOMENTAR</div>
+                                <div class="col-date"><i class="far fa-clock"></i></div>
+                            </div>
+                            
+                            <div class="table-body">
+                                @forelse($destination->reviews()->latest()->limit(5)->get() as $review)
+                                    <div class="table-row">
+                                        <div class="col-index">{{ $loop->iteration }}</div>
+                                        <div class="col-user">
+                                            <div class="row-user-info">
+                                                <div class="row-avatar">{{ strtoupper(substr($review->user->name, 0, 1)) }}</div>
+                                                <div class="row-names">
+                                                    <span class="row-username text-truncate">{{ $review->user->name }}</span>
+                                                    <span class="row-rating-stars">
+                                                        @for($i=0; $i<5; $i++)
+                                                            <i class="{{ $i < $review->rating ? 'fas' : 'far' }} fa-star"></i>
+                                                        @endfor
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-comment text-truncate">{{ $review->comment }}</div>
+                                        <div class="col-date">{{ $review->created_at->diffForHumans() }}</div>
+                                    </div>
+                                @empty
+                                    <div class="empty-state">Belum ada ulasan populer.</div>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Sidebar: Rating Form -->
+                    <div class="side-panel">
+                        <!-- Rating Form -->
+
+                        <!-- Rating Form -->
+                        @auth
+                            <div class="panel-card rating-panel">
+                                <h3>Tulis Rating</h3>
+                                <form action="{{ route('reviews.store') }}" method="POST" class="spotify-form">
+                                    @csrf
+                                    <input type="hidden" name="destination_id" value="{{ $destination->id }}">
+                                    <div class="rating-selector">
+                                        @for($i=5; $i>=1; $i--)
+                                            <input type="radio" id="star{{$i}}" name="rating" value="{{$i}}" required><label for="star{{$i}}"><i class="fas fa-star"></i></label>
+                                        @endfor
+                                    </div>
+                                    <textarea name="comment" placeholder="Bagikan kesan Anda..." rows="3" required></textarea>
+                                    <button type="submit" class="btn-spotify-submit">KIRIM ULASAN</button>
+                                </form>
+                            </div>
+                        @endauth
+                        
+                        <!-- Next Destination Mini Card -->
+                        <div class="panel-card next-queue">
+                            <div class="queue-header">
+                                <span>Rekomendasi Berikutnya</span>
+                                <a href="#">Buka Antrean</a>
+                            </div>
+                            <a href="{{ url('/detail?id=' . $nextDestination->id) }}" class="queue-item">
+                                <img src="{{ $nextDestination->thumbnail ? asset($nextDestination->thumbnail) : asset('images/beach.jpeg') }}" alt="">
+                                <div class="queue-info">
+                                    <span class="queue-name text-truncate">{{ $nextDestination->name }}</span>
+                                    <span class="queue-sub text-truncate">{{ $nextDestination->location }}</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </main>
 
-        </footer>
 
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const favBtn = document.getElementById('fav-btn');
-            if (favBtn) {
-                favBtn.addEventListener('click', async function() {
-                    const destId = this.dataset.id;
-                    const icon = this.querySelector('i');
-                    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+            const loveBtnMain = document.getElementById('love-btn-main');
+            
+            const toggleFavorite = async () => {
+                if (!favBtn) return;
+                const destId = favBtn.dataset.id;
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
-                    try {
-                        const response = await fetch('{{ route('favorites.toggle') }}', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': csrfToken,
-                                'Accept': 'application/json'
-                            },
-                            body: JSON.stringify({ destination_id: destId })
-                        });
+                try {
+                    const response = await fetch('{{ route('favorites.toggle') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken,
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({ destination_id: destId })
+                    });
 
-                        const data = await response.json();
-                        if (data.success) {
-                            if (data.status === 'added') {
-                                this.classList.add('active');
-                                icon.classList.replace('far', 'fas');
+                    const data = await response.json();
+                    if (data.success) {
+                        const isFavorited = data.status === 'added';
+                        favBtn.innerText = isFavorited ? 'DIFAVORITKAN' : 'FAVORITKAN';
+                        
+                        // Update heart icon in main button
+                        if (loveBtnMain) {
+                            const heartIcon = loveBtnMain.querySelector('i');
+                            if (isFavorited) {
+                                heartIcon.classList.remove('far');
+                                heartIcon.classList.add('fas');
                             } else {
-                                this.classList.remove('active');
-                                icon.classList.replace('fas', 'far');
+                                heartIcon.classList.remove('fas');
+                                heartIcon.classList.add('far');
                             }
-                        } else {
-                            alert(data.message || 'Something went wrong');
                         }
-                    } catch (error) {
-                        console.error('Error:', error);
-                        alert('Error toggling favorite');
+                    } else if (response.status === 401) {
+                        window.location.href = '{{ url('/') }}';
                     }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            };
+
+            if (favBtn) favBtn.addEventListener('click', toggleFavorite);
+            if (loveBtnMain) loveBtnMain.addEventListener('click', toggleFavorite);
+
+            // Responsive Sidebar Logic
+            const menuBtn = document.getElementById('menuBtn');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarClose = document.getElementById('sidebarClose');
+
+            if (menuBtn && sidebar) {
+                menuBtn.addEventListener('click', () => {
+                    sidebar.classList.add('active');
                 });
+            }
+
+            if (sidebarClose && sidebar) {
+                sidebarClose.addEventListener('click', () => {
+                    sidebar.classList.remove('active');
+                });
+            }
+
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', (e) => {
+                if (sidebar.classList.contains('active')) {
+                    if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+                        sidebar.classList.remove('active');
+                    }
+                }
+            });
+
+            // Premium Facilities Slider Logic
+            const facilitySection = document.getElementById('fasilitas');
+            if (facilitySection) {
+                const bgImages = facilitySection.querySelectorAll('.bg-img');
+                const infoItems = facilitySection.querySelectorAll('.facility-info-item');
+                const facilityCards = facilitySection.querySelectorAll('.facility-card');
+                const prevControl = facilitySection.querySelector('.control-btn-facil.prev');
+                const nextControl = facilitySection.querySelector('.control-btn-facil.next');
+                const progressLine = facilitySection.querySelector('.progress-line-facil');
+                const currentNum = facilitySection.querySelector('.current-num-facil');
+                
+                let curIndex = 0;
+                const total = facilityCards.length;
+                let isMoving = false;
+
+                function updateFacilitySlider(index) {
+                    if (isMoving) return;
+                    isMoving = true;
+
+                    bgImages.forEach(img => img.classList.remove('active'));
+                    bgImages[index].classList.add('active');
+
+                    infoItems.forEach(item => item.classList.remove('active'));
+                    infoItems[index].classList.add('active');
+
+                    facilityCards.forEach((card, i) => {
+                        card.classList.remove('active', 'visible-1', 'visible-2', 'visible-3');
+                        if (i === index) {
+                            card.classList.add('active');
+                        } else {
+                            let pos = (i - index + total) % total;
+                            if (pos > 0 && pos <= 3) {
+                                card.classList.add(`visible-${pos}`);
+                            }
+                        }
+                    });
+
+                    if (currentNum) currentNum.textContent = String(index + 1).padStart(2, '0');
+                    if (progressLine) {
+                        const progress = ((index + 1) / total) * 100;
+                        progressLine.style.width = `${progress}%`;
+                    }
+
+                    setTimeout(() => { isMoving = false; }, 1000);
+                }
+
+                if (nextControl) nextControl.addEventListener('click', () => { curIndex = (curIndex + 1) % total; updateFacilitySlider(curIndex); });
+                if (prevControl) prevControl.addEventListener('click', () => { curIndex = (curIndex - 1 + total) % total; updateFacilitySlider(curIndex); });
+
+                facilityCards.forEach((card, i) => {
+                    card.addEventListener('click', () => { if (i !== curIndex) { curIndex = i; updateFacilitySlider(curIndex); } });
+                });
+
+                if (progressLine) progressLine.style.width = `${(1 / total) * 100}%`;
             }
         });
     </script>

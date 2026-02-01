@@ -716,301 +716,393 @@ section {
     }
 }
 
-.gallery-glass-card {
-    max-width: 1400px;
-    width: 95%;
-    margin: 0 auto;
-    background: rgba(255, 255, 255, 0.05);
-    /* Match global glass */
-    backdrop-filter: blur(25px) saturate(160%);
-    -webkit-backdrop-filter: blur(25px) saturate(160%);
-    border-radius: 40px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    border-left: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+/* Immersive Facilities Section */
+.facility-immersive-section {
+    position: relative;
+    height: 100vh;
+    min-height: 800px;
     overflow: hidden;
-    position: relative;
-    z-index: 10;
-    padding: 60px;
-}
-
-/* Gallery Section - Background for Glass Effect */
-.gallery-section {
-    padding: 100px 0;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Gallery Section Background handled by global parallax system */
-/* Removed old ::after overlay as it's now in .section-overlay */
-
-/* Gallery Container - Reset */
-.gallery-container {
-    max-width: 100%;
-    margin: 0 auto;
-    width: 100%;
-    position: relative;
-    z-index: 2;
-    padding: 0;
-}
-
-.gallery-layout {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: 80px;
-    align-items: center;
-}
-
-/* Left Column: Content */
-.gallery-content {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.gallery-subtitle {
-    display: block;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 4px;
-    color: var(--color-accent);
-    margin-bottom: 24px;
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.gallery-subtitle::before {
-    content: '';
-    display: block;
-    width: 40px;
-    height: 1px;
-    background: var(--color-accent);
-}
-
-.gallery-title {
-    font-family: var(--font-display);
-    font-size: 90px;
-    font-weight: 400;
-    line-height: 0.9;
     color: var(--color-white);
-    margin-bottom: 50px;
-    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    letter-spacing: 2px;
-}
-
-/* Destination Info Transition Box */
-.destination-info {
-    margin-bottom: 50px;
-    transition: all 0.5s ease;
-    padding-left: 30px;
-    border-left: 2px solid rgba(255, 255, 255, 0.1);
-}
-
-.active-dest-title {
-    font-family: var(--font-body);
-    font-size: 36px;
-    font-weight: 700;
-    color: var(--color-white);
-    margin-bottom: 20px;
-}
-
-.active-dest-desc {
-    font-family: var(--font-body);
-    font-size: 13px;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.6);
-    margin-bottom: 30px;
-    max-width: 400px;
-}
-
-.active-dest-rating {
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.active-dest-rating i {
-    color: var(--color-accent);
-    font-size: 14px;
-}
-
-.gallery-nav {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-top: 40px;
-}
-
-.nav-btn {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--color-white);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-    outline: none;
-}
-
-.nav-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: var(--color-white);
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.2);
-    transform: scale(1.1);
-    color: var(--color-white);
-}
-
-.nav-btn:active {
-    transform: scale(0.95);
-}
-
-.slide-counter {
-    font-family: var(--font-display);
-    font-size: 24px;
-    letter-spacing: 2px;
-    color: rgba(255, 255, 255, 0.5);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-left: 20px;
-}
-
-.slide-counter .current {
-    font-size: 36px;
-    color: var(--color-white);
-}
-
-.slide-counter .divider {
-    font-size: 20px;
-    opacity: 0.5;
-    transform: rotate(20deg);
-}
-
-/* Explore Button - Modern Glass */
-.explore-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    padding: 18px 45px;
-    border-radius: 100px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--color-white);
-    text-decoration: none;
-    font-size: 14px;
-    letter-spacing: 1px;
-    font-weight: 600;
-    text-transform: uppercase;
-    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.explore-btn:hover {
-    background: var(--color-white);
-    color: var(--color-black);
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-
-/* Right Column: Visuals */
-.gallery-visuals {
-    position: relative;
-    height: 600px;
-    perspective: 1200px;
-}
-
-.carousel-track {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-}
-
-.carousel-card {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    /* Start from center for cleaner calc */
-    width: 380px;
-    height: 520px;
-    border-radius: 30px;
-    overflow: hidden;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-    z-index: 1;
-    cursor: pointer;
     background: #000;
 }
 
-/* Active Slide */
-.carousel-card.active {
-    opacity: 1;
-    transform: translate(-50%, -50%) translateZ(0) scale(1);
-    z-index: 10;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+/* Background Layer Styling */
+.facility-bg-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
 }
 
-/* Next Slide */
-.carousel-card.next {
-    opacity: 0.6;
-    transform: translate(-20%, -50%) translateZ(-100px) rotateY(-5deg);
-    z-index: 5;
-    filter: brightness(0.6) blur(2px);
-}
-
-/* Next + 1 Slide */
-.carousel-card.next-2 {
-    opacity: 0.3;
-    transform: translate(10%, -50%) translateZ(-200px) rotateY(-10deg);
-    z-index: 2;
-    filter: brightness(0.4) blur(5px);
-}
-
-/* Previous Slide - Hidden or styled delicately */
-.carousel-card.prev {
+.bg-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
     opacity: 0;
-    transform: translate(-150%, -50%) translateZ(100px) rotateY(20deg);
-    z-index: 0;
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 8s linear;
+    transform: scale(1.1);
+}
+
+.bg-img.active {
+    opacity: 1;
+    transform: scale(1);
+    z-index: 2;
+}
+
+.bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            rgba(0, 0, 0, 0.85) 0%,
+            rgba(0, 0, 0, 0.4) 50%,
+            rgba(0, 0, 0, 0.2) 100%);
+    z-index: 3;
+}
+
+/* Main Container Layout */
+.facility-container {
+    position: relative;
+    z-index: 10;
+    height: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 60px;
+    display: flex;
+    align-items: center;
+}
+
+/* Left Content: Typography */
+.facility-text-content {
+    flex: 1;
+    max-width: 650px;
+    padding-bottom: 50px;
+}
+
+.facility-label {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 5px;
+    color: var(--color-accent);
+    margin-bottom: 30px;
+    position: relative;
+    padding-left: 50px;
+}
+
+.facility-label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 35px;
+    height: 2px;
+    background: var(--color-accent);
+}
+
+.active-facility-info {
+    position: relative;
+    height: 350px;
+    /* Buffer for transitions */
+}
+
+.facility-info-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+    transform: translateY(30px);
+}
+
+.facility-info-item.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.facility-big-title {
+    font-family: var(--font-display);
+    font-size: clamp(60px, 8vw, 110px);
+    line-height: 0.95;
+    margin-bottom: 40px;
+    text-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    letter-spacing: -2px;
+}
+
+.facility-description {
+    font-size: 16px;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 500px;
+    margin-bottom: 50px;
+}
+
+.btn-discover {
+    display: inline-flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 40px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 100px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-size: 13px;
+    transition: all 0.4s ease;
+}
+
+.btn-discover:hover {
+    background: var(--color-white);
+    color: var(--color-black);
+    border-color: var(--color-white);
+    transform: translateY(-5px);
+}
+
+/* Right Content: Card Carousel Styling */
+.facility-visual-slider {
+    width: 500px;
+    height: 500px;
+    position: relative;
+}
+
+.card-stack {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.facility-card {
+    position: absolute;
+    width: 320px;
+    height: 480px;
+    border-radius: 25px;
+    overflow: hidden;
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: pointer;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Card States Mapping the Reference Image */
+.facility-card.active {
+    z-index: 10;
+    transform: translateX(0) scale(1);
+    opacity: 0;
+    /* Active card is hidden in this specific layout if background is the main visual */
+    visibility: hidden;
+}
+
+.facility-card:nth-child(n+1) {
+    z-index: 5;
+    transform: translateX(0) scale(1);
+}
+
+.facility-card:nth-child(n+2) {
+    z-index: 4;
+    transform: translateX(350px) scale(1);
+    opacity: 1;
+}
+
+.facility-card:nth-child(n+3) {
+    z-index: 3;
+    transform: translateX(700px) scale(0.9);
+    opacity: 0.6;
+}
+
+.facility-card.active {
+    transform: translateX(-150px) scale(0.8);
+    opacity: 0;
     pointer-events: none;
 }
 
-.carousel-card img {
+/* Custom CSS to handle the stack more robustly in JS later */
+.facility-card.visible-1 {
+    z-index: 5;
+    transform: translateX(0) scale(1);
+    opacity: 1;
+}
+
+.facility-card.visible-2 {
+    z-index: 4;
+    transform: translateX(350px) scale(0.9);
+    opacity: 0.7;
+}
+
+.facility-card.visible-3 {
+    z-index: 3;
+    transform: translateX(700px) scale(0.8);
+    opacity: 0.4;
+}
+
+.card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.card-inner img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 1.2s ease;
 }
 
-.carousel-card:hover img {
+.facility-card:hover img {
     transform: scale(1.1);
 }
 
-.card-overlay {
+.card-text {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
+    padding: 40px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+}
+
+.card-subtitle {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--color-accent);
+    margin-bottom: 10px;
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+}
+
+/* Bottom Controls */
+.facility-controls {
+    position: absolute;
+    bottom: 80px;
+    left: 60px;
+    right: 60px;
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+.nav-arrows {
+    display: flex;
+    gap: 15px;
+}
+
+.control-btn {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: transparent;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.control-btn:hover {
+    background: white;
+    color: black;
+    border-color: white;
+}
+
+.progress-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+.progress-line {
+    position: absolute;
+    left: 0;
+    top: 0;
     height: 100%;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 60%);
-    pointer-events: none;
+    width: 20%;
+    background: var(--color-accent);
+    transition: width 0.8s ease;
+}
+
+.slide-count {
+    font-family: var(--font-display);
+    font-size: 32px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+
+.total-num {
+    font-size: 16px;
+    opacity: 0.5;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+    .facility-container {
+        flex-direction: column;
+        justify-content: center;
+        padding-top: 100px;
+    }
+
+    .facility-text-content {
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .facility-label {
+        padding-left: 0;
+    }
+
+    .facility-label::before {
+        display: none;
+    }
+
+    .facility-description {
+        margin: 0 auto 50px;
+    }
+
+    .facility-visual-slider {
+        display: none;
+    }
+
+    .active-facility-info {
+        height: auto;
+        padding-bottom: 100px;
+    }
+
+    .facility-info-item {
+        position: relative;
+    }
+
+    .facility-big-title {
+        font-size: 60px;
+    }
 }
 
 /* Global Background Fixed */
@@ -1037,36 +1129,6 @@ section {
     width: 100%;
     height: 100%;
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
-}
-
-/* Active State: Center Focus */
-.carousel-card.active {
-    opacity: 1;
-    transform: translateY(-50%) translateX(0) translateZ(0) rotateY(0deg);
-    z-index: 20;
-    width: 320px;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-}
-
-/* Next State: Stacked Right 1 - Visible like cards in reference */
-.carousel-card.next {
-    transform: translateY(-50%) translateX(120px) scale(0.9);
-    /* Stacked visually */
-    opacity: 0.8;
-    z-index: 15;
-    filter: brightness(0.8);
-}
-
-/* Next State: Stacked Right 2 */
-.carousel-card.next-2 {
-    transform: translateY(-50%) translateX(220px) scale(0.8);
-    opacity: 0.6;
-    z-index: 10;
-    filter: blur(1px) brightness(0.6);
-}
-
-.carousel-card:hover img {
-    transform: scale(1.1);
 }
 
 

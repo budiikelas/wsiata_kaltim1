@@ -9,6 +9,400 @@
     <!-- CSS -->
     @vite(['resources/css/style.css'])
     
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Immersive Facilities Section Wrapper */
+        .facility-immersive-section {
+            position: relative;
+            height: 100vh;
+            min-height: 800px;
+            overflow: hidden;
+            color: #fff;
+            background: #000;
+        }
+
+        .facility-bg-layer {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+        }
+
+        .bg-img {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 8s linear;
+            transform: scale(1.1);
+        }
+
+        .bg-img.active {
+            opacity: 1;
+            transform: scale(1);
+            z-index: 2;
+        }
+
+        .bg-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%);
+            z-index: 3;
+        }
+
+        .facility-container {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 60px;
+            display: flex;
+            align-items: center;
+        }
+
+        .facility-text-content {
+            flex: 1;
+            max-width: 650px;
+            padding-bottom: 50px;
+        }
+
+        .facility-label {
+            display: inline-block;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 5px;
+            color: #d4f05c; /* Gold/Accent */
+            margin-bottom: 30px;
+            position: relative;
+            padding-left: 50px;
+        }
+
+        .facility-label::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 50%;
+            width: 35px; height: 2px;
+            background: #d4f05c;
+        }
+
+        .active-facility-info {
+            position: relative;
+            height: 350px;
+        }
+
+        .facility-info-item {
+            position: absolute;
+            top: 0; left: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+            transform: translateY(30px);
+        }
+
+        .facility-info-item.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .facility-big-title {
+            font-size: clamp(60px, 8vw, 110px);
+            line-height: 0.95;
+            margin-bottom: 40px;
+            text-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            letter-spacing: -2px;
+            font-weight: 900;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .facility-description {
+            font-size: 16px;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.7);
+            max-width: 500px;
+            margin-bottom: 50px;
+        }
+
+        .btn-discover {
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px 40px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 100px;
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            letter-spacing: 2px;
+            font-size: 13px;
+            transition: all 0.4s ease;
+        }
+
+        .btn-discover:hover {
+            background: #fff;
+            color: #000;
+            transform: translateY(-5px);
+        }
+
+        .facility-visual-slider {
+            width: 500px;
+            height: 500px;
+            position: relative;
+        }
+
+        .card-stack {
+            position: relative;
+            width: 100%; height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .facility-card {
+            position: absolute;
+            width: 320px;
+            height: 480px;
+            border-radius: 25px;
+            overflow: hidden;
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
+
+        .facility-card.active {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-150px) scale(0.8);
+        }
+
+        .facility-card.visible-1 { z-index: 5; transform: translateX(0) scale(1); opacity: 1; }
+        .facility-card.visible-2 { z-index: 4; transform: translateX(350px) scale(0.9); opacity: 0.7; }
+        .facility-card.visible-3 { z-index: 3; transform: translateX(700px) scale(0.8); opacity: 0.4; }
+
+        .card-inner { position: relative; width: 100%; height: 100%; }
+        .card-inner img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease; }
+        .facility-card:hover img { transform: scale(1.1); }
+
+        .card-text {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%; padding: 40px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+        }
+
+        .card-subtitle { display: block; font-size: 12px; font-weight: 700; color: #d4f05c; margin-bottom: 10px; }
+        .card-title { font-size: 20px; font-weight: 700; color: white; }
+
+        .facility-controls {
+            position: absolute;
+            bottom: 80px; left: 60px; right: 60px;
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .nav-arrows { display: flex; gap: 15px; }
+        .control-btn {
+            width: 55px; height: 55px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: transparent;
+            color: white;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .control-btn:hover { background: #fff; color: #000; }
+
+        .progress-wrapper { flex: 1; display: flex; align-items: center; gap: 30px; }
+        .progress-bar { flex: 1; height: 2px; background: rgba(255,255,255,0.1); position: relative; }
+        .progress-line { position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: #d4f05c; transition: width 0.8s ease; }
+        
+        .slide-count { font-size: 32px; font-weight: 900; display: flex; align-items: baseline; gap: 10px; }
+        .total-num { font-size: 16px; opacity: 0.5; }
+
+        @media (max-width: 1100px) {
+            .facility-immersive-section { height: auto; padding: 100px 0; }
+            .facility-container { flex-direction: column; padding: 0 20px; }
+            .facility-visual-slider { display: none; }
+            .facility-text-content { text-align: center; max-width: 100%; }
+            .active-facility-info { height: auto; position: relative; display: block; margin-bottom: 50px; }
+            .facility-info-item { position: relative; width: 100%; }
+            .facility-controls { position: relative; bottom: 0; left: 0; right: 0; justify-content: center; margin-top: 40px; }
+        }
+
+        /* Restored destination button styles */
+        .btn-more-dest {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 45px;
+            background: linear-gradient(135deg, #d4f05c 0%, #b8d64a 100%);
+            color: #050505;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 100px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 35px rgba(212, 240, 92, 0.25);
+            border: 2px solid transparent;
+        }
+        .btn-more-dest:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 25px 45px rgba(212, 240, 92, 0.4);
+            background: #ffffff;
+            color: #d4f05c;
+            border-color: #d4f05c;
+        }
+        .btn-more-dest i { font-size: 16px; transition: transform 0.4s ease; }
+        .btn-more-dest:hover i { transform: translateX(8px); }
+        .more-dest-wrapper { position: relative; padding-bottom: 20px; }
+        .more-dest-wrapper::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 100px; height: 2px;
+            background: linear-gradient(90deg, transparent, #d4f05c, transparent);
+            opacity: 0.5;
+        }
+        .rating-stars {
+            display: flex;
+            gap: 5px;
+            color: #ffcc00;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .info-item div {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .info-item strong {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--color-accent);
+            opacity: 0.8;
+        }
+        
+        .contact-main-title span {
+            color: var(--color-accent);
+        }
+        
+        .airplane-float-card.glass-panel {
+            min-width: 250px;
+        }
+
+        /* Interactive Star Rating */
+        .star-rating-input {
+            display: flex;
+            gap: 10px;
+            padding: 10px 0;
+        }
+
+        .star-item {
+            font-size: 28px;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .star-item:hover {
+            transform: scale(1.2);
+            color: #ffcc00;
+            -webkit-text-stroke: 0;
+        }
+
+        .star-item.active {
+            color: #ffcc00;
+            -webkit-text-stroke: 0;
+            text-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+            animation: starPulse 0.4s ease;
+        }
+
+        @keyframes starPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.4); }
+            100% { transform: scale(1); }
+        }
+
+        .rating-label-hint {
+            font-size: 12px;
+            color: rgba(255,255,255,0.5);
+            margin-top: 5px;
+            display: block;
+        }
+
+        }
+
+        /* Rating Toast Notification Wrapper */
+        .rating-toast-container {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 500px;
+            height: 200px;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        #rating-toast {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            border-left: 4px solid #ffcc00;
+            color: white;
+            padding: 20px 25px;
+            border-radius: 12px;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 9999;
+            transform: translateY(150%);
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+
+        #rating-toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        #rating-toast i {
+            font-size: 24px;
+            color: #ffcc00;
+        }
+
+        .toast-content h5 {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffcc00;
+        }
+
+        .toast-content p {
+            margin: 5px 0 0;
+            font-size: 13px;
+            color: rgba(255,255,255,0.8);
+        }
+    </style>
+    
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -33,8 +427,8 @@
         </div>
         <ul class="nav-links">
             <li><a href="{{ url('/#beranda') }}">Beranda</a></li>
-            <li><a href="{{ url('/#destinasi') }}">Destinasi</a></li>
-            <li><a href="{{ url('/packages') }}">Packages</a></li>
+            <li><a href="{{ url('/#wisata') }}">Destinasi</a></li>
+            <li><a href="{{ url('/#fasilitas') }}">Fasilitas</a></li>
             <li><a href="{{ url('/#contact') }}">Kontak</a></li>
         </ul>
         <div class="nav-items-right">
@@ -130,7 +524,7 @@
 
 
         <!-- Schedule Section - Modern Card Layout -->
-        <section class="schedule-section">
+        <section class="schedule-section" id="wisata">
             <div class="schedule-container">
                 <div class="schedule-header reveal reveal-fade-up">
                     <span class="schedule-subtitle"></span>
@@ -202,69 +596,86 @@
             </div>
         </section>
 
-        <!-- Gallery Section - East Kalimantan Tourism Carousel -->
-        <section class="gallery-section" id="destinasi">
-            <div class="gallery-bg-wrapper section-bg-wrapper">
-                <div class="gallery-bg section-parallax-bg" data-parallax="true">
-                    <img src="{{ asset('images/beach.jpeg') }}" alt="Gallery Section Background">
-                </div>
-                <div class="gallery-overlay section-overlay"></div>
-            </div>
-            <div class="gallery-container">
-                <div class="gallery-glass-card">
-                    <div class="gallery-layout">
-                    <!-- Left Column: Content -->
-                    <div class="gallery-content">
-                        <div class="content-header">
-                            <span class="gallery-subtitle">DESTINASI POPULER</span>
-                            <h2 class="gallery-title">KALIMANTAN TIMUR</h2>
-                        </div>
-                        
-                        @php $firstDest = $destinations->first(); @endphp
-                        <div class="destination-info reveal reveal-fade-up reveal-delay-2" id="destination-info">
-                            <h3 class="active-dest-title">{{ $firstDest->name ?? 'Destinasi Populer' }}</h3>
-                            <p class="active-dest-desc">{{ Str::limit($firstDest->description ?? 'Jelajahi keindahan alam Kalimantan Timur.', 150) }}</p>
-                            <div class="active-dest-rating">
-                                @php $rating = $firstDest->rating ?? 5; @endphp
-                                @for($i=1; $i<=5; $i++)
-                                    <i class="{{ $i <= $rating ? 'fas' : 'far' }} fa-star"></i>
-                                @endfor
-                            </div>
-                            <a href="{{ url('/detail?id=' . ($firstDest->id ?? '')) }}" class="explore-btn gallery-explore-btn">
-                                Lihat Detail <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
+        @php 
+            // Updated facilities data for better tourist appeal
+            $displayFacilities = (isset($facilities) && !$facilities->isEmpty()) ? $facilities : collect([
+                (object)[ 'id' => 1, 'name' => 'Kolam Infinity', 'description' => 'Nikmati kesegaran air di kolam renang dengan pemandangan hutan tropis yang memukau.' ],
+                (object)[ 'id' => 2, 'name' => 'Kuliner Otentik', 'description' => 'Jelajahi cita rasa lokal Kalimantan Timur dan masakan internasional di restoran tepi sungai kami.' ],
+                (object)[ 'id' => 3, 'name' => 'Tur Terpadu', 'description' => 'Layanan transportasi eksklusif untuk menemani perjalanan wisata Anda dengan aman dan nyaman.' ],
+                (object)[ 'id' => 4, 'name' => 'Koneksi Cepat', 'description' => 'Tetap terhubung dengan internet kecepatan tinggi di area digital lounge yang nyaman.' ]
+            ]);
+            $defaultDesc = "Nikmati fasilitas premium yang kami sediakan untuk kenyamanan liburan Anda di Kalimantan Timur.";
+        @endphp
 
-                        <!-- Navigation -->
-                        <div class="gallery-nav">
-                            <button class="nav-btn prev-btn"><i class="fas fa-chevron-left"></i></button>
-                            <button class="nav-btn next-btn"><i class="fas fa-chevron-right"></i></button>
-                            <div class="slide-counter">
-                                <span class="current">01</span>
-                                <span class="divider">/</span>
-                                <span class="total">05</span>
-                            </div>
+        <!-- Immersive Facilities Slider -->
+        <section class="facility-immersive-section" id="fasilitas">
+            <!-- Background Layer with Parallax Attributes -->
+            <div class="facility-bg-layer" data-parallax="true" data-speed="0.2">
+                @foreach($displayFacilities as $index => $item)
+                    @php
+                        $img = ($item instanceof \App\Models\Facility && $item->image) ? asset($item->image) : asset('images/facility-pool.png');
+                    @endphp
+                <div class="bg-img {{ $loop->first ? 'active' : '' }}" data-id="{{ $item->id }}" style="background-image: url('{{ $img }}')"></div>
+                @endforeach
+                <div class="bg-overlay"></div>
+            </div>
+
+            <div class="facility-container">
+                <!-- Left Content: Typography -->
+                <div class="facility-text-content">
+                    <div class="text-top-info reveal reveal-fade-up">
+                        <span class="facility-label">FASILITAS PREMIUM</span>
+                    </div>
+                    
+                    <div class="active-facility-info reveal reveal-fade-up">
+                        @foreach($displayFacilities as $index => $item)
+                        <div class="facility-info-item {{ $loop->first ? 'active' : '' }}" data-id="{{ $item->id }}">
+                            <h2 class="facility-big-title">{{ strtoupper($item->name) }}</h2>
+                            <p class="facility-description">{{ $item->description ?? $defaultDesc }}</p>
                         </div>
+                        @endforeach
                     </div>
 
-                    <!-- Right Column: Carousel -->
-                    <div class="gallery-visuals">
-                        <div class="carousel-track">
-                            @foreach($destinations as $dest)
-                            <div class="carousel-card {{ $loop->first ? 'active' : '' }}" 
-                                 data-id="{{ $dest->id }}"
-                                 data-title="{{ $dest->name }}" 
-                                 data-desc="{{ Str::limit($dest->description, 150) }}"
-                                 data-rating="{{ $dest->rating ?? 5 }}">
-                                <img src="{{ $dest->thumbnail ? asset($dest->thumbnail) : asset('images/beach.jpeg') }}" alt="{{ $dest->name }}">
-                                <div class="card-overlay"></div>
+
+                </div>
+
+                <!-- Right Content: Card Carousel -->
+                <div class="facility-visual-slider">
+                    <div class="card-stack">
+                        @foreach($displayFacilities as $index => $item)
+                            @php
+                                $img = ($item instanceof \App\Models\Facility && $item->image) ? asset($item->image) : asset('images/facility-pool.png');
+                            @endphp
+                        <div class="facility-card {{ $loop->first ? 'active' : '' }}" data-id="{{ $item->id }}">
+                            <div class="card-inner">
+                                <img src="{{ $img }}" alt="{{ $item->name }}">
+                                <div class="card-text">
+                                    <span class="card-subtitle">Fasilitas {{ $index + 1 }}</span>
+                                    <h4 class="card-title">{{ $item->name }}</h4>
+                                </div>
                             </div>
-                            @endforeach
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                <!-- Bottom Navigation & Progress -->
+                <div class="facility-controls">
+                    <div class="nav-arrows">
+                        <button class="control-btn prev"><i class="fas fa-chevron-left"></i></button>
+                        <button class="control-btn next"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="progress-wrapper">
+                        <div class="progress-bar">
+                            <div class="progress-line"></div>
+                        </div>
+                        <div class="slide-count">
+                            <span class="current-num">01</span>
+                            <span class="total-num">/ {{ sprintf('%02d', count($displayFacilities)) }}</span>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
         </section>
 
 
@@ -281,43 +692,56 @@
                 <!-- Left Content Area (White) -->
                 <div class="contact-left-content">
                     <div class="contact-header">
-                        <span class="contact-label">HUBUNGI KAMI</span>
-                        <h2 class="contact-main-title">Ayo Jelajahi Dunia<br>Bersama <span>Kami.</span></h2>
+                        <span class="contact-label">CONTACT & RATING</span>
+                        <h2 class="contact-main-title">Kepuasan Anda Adalah<br><span>Prioritas Kami.</span></h2>
                         <p class="contact-subtitle-text">
-                            Pesan tiket perjalanan Anda sekarang dan temukan keindahan Kalimantan Timur serta seluruh penjuru Indonesia.
+                            Bergabunglah dengan ribuan wisatawan yang telah merasakan pengalaman luar biasa bersama kami. Hubungi kami untuk konsultasi perjalanan Anda.
                         </p>
                     </div>
 
                     <div class="modern-form-wrapper">
-                        <form action="#" class="airplane-form">
+                        <form id="holiday-rating-form" class="airplane-form">
+                            @csrf
+                            <input type="hidden" name="destination_id" value=""> 
                             <div class="airplane-form-grid">
+                                @guest
                                 <div class="airplane-form-group">
-                                    <label>Nama Lengkap</label>
+                                    <label>Nama Wisatawan</label>
                                     <div class="airplane-input-box">
-                                        <input type="text" placeholder="Masukkan nama Anda">
+                                        <input type="text" name="name" placeholder="Masukkan nama lengkap" required>
                                     </div>
                                 </div>
                                 <div class="airplane-form-group">
-                                    <label>Alamat Email</label>
+                                    <label>Email / Kontak</label>
                                     <div class="airplane-input-box">
-                                        <input type="email" placeholder="email@contoh.com">
+                                        <input type="email" name="email" placeholder="Alamat email aktif" required>
+                                    </div>
+                                </div>
+                                @else
+                                <input type="hidden" name="name" value="{{ Auth::user()->name }}">
+                                <input type="hidden" name="email" value="{{ Auth::user()->email }}">
+                                @endguest
+                                <div class="airplane-form-group">
+                                    <label>Destinasi Wisata</label>
+                                    <div class="airplane-input-box">
+                                        <input type="text" name="destinasi_name" placeholder="Wisata yang dikunjungi" required>
                                     </div>
                                 </div>
                                 <div class="airplane-form-group">
-                                    <label>Destinasi Tujuan</label>
-                                    <div class="airplane-input-box">
-                                        <input type="text" placeholder="Pilih destinasi">
+                                    <label>Skor Rating Liburan</label>
+                                    <div class="star-rating-input" id="holiday-stars">
+                                        <i class="fas fa-star star-item" data-value="1"></i>
+                                        <i class="fas fa-star star-item" data-value="2"></i>
+                                        <i class="fas fa-star star-item" data-value="3"></i>
+                                        <i class="fas fa-star star-item" data-value="4"></i>
+                                        <i class="fas fa-star star-item" data-value="5"></i>
                                     </div>
-                                </div>
-                                <div class="airplane-form-group">
-                                    <label>Tanggal Rencana</label>
-                                    <div class="airplane-input-box">
-                                        <input type="text" placeholder="Bulan/Tahun">
-                                    </div>
+                                    <input type="hidden" name="rating" id="rating-value" value="0">
+                                    <span class="rating-label-hint" id="rating-text">Ketuk untuk memberi bintang</span>
                                 </div>
                             </div>
                             <button type="submit" class="airplane-submit-btn">
-                                <i class="fas fa-search"></i> Kirim Pesan
+                                <i class="fas fa-star"></i> Kirim Rating Liburan
                             </button>
                         </form>
                     </div>
@@ -325,11 +749,17 @@
                     <div class="airplane-contact-info">
                         <div class="info-item">
                             <i class="fab fa-whatsapp"></i>
-                            <span>+62 812 3456 7890</span>
+                            <div>
+                                <strong>WhatsApp Chat</strong>
+                                <span>+62 812 3456 7890</span>
+                            </div>
                         </div>
                         <div class="info-item">
                             <i class="fas fa-envelope"></i>
-                            <span>halo@wisatakaltim.com</span>
+                            <div>
+                                <strong>Official Email</strong>
+                                <span>halo@wisatakaltim.com</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -338,15 +768,7 @@
                 <div class="contact-right-visual">
                     <img src="{{ asset('images/tropical-bg.png') }}" alt="Tropical Islands Background" class="airplane-bg-img">
                     <div class="visual-overlay"></div>
-                    <div class="airplane-float-card glass-panel">
-                        <div class="float-card-content">
-                            <i class="fas fa-plane-departure"></i>
-                            <div>
-                                <h4>Top Destination</h4>
-                                <p>{{ $firstDest->name ?? 'Explore Kaltim' }}</p>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
 
@@ -431,14 +853,9 @@
                 }
             });
 
-            // Show 'Wisata Lainnya' button only on 'all' filter and empty search
-            if (activeFilter === 'all' && searchTerm === '') {
-                moreDestBtn.style.display = 'block';
-                setTimeout(() => moreDestBtn.style.opacity = '1', 10);
-            } else {
-                moreDestBtn.style.opacity = '0';
-                setTimeout(() => moreDestBtn.style.display = 'none', 400);
-            }
+            // Show 'Wisata Lainnya' button always
+            moreDestBtn.style.display = 'block';
+            setTimeout(() => moreDestBtn.style.opacity = '1', 10);
         }
 
         if (searchInput) {
@@ -532,6 +949,17 @@
                 nav.classList.remove('scrolled');
             }
 
+            // Enhanced Parallax for Facilities Section
+            const facilBg = document.querySelector('.facility-bg-layer[data-parallax="true"]');
+            if (facilBg) {
+                const rect = facilBg.closest('section').getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    const speed = 0.3;
+                    const yPos = -(rect.top * speed);
+                    facilBg.style.transform = `translateY(${yPos}px) scale(1.1)`;
+                }
+            }
+
             // Update side dots based on scroll position - Smooth active state
             const sections = document.querySelectorAll('section');
             const dots = document.querySelectorAll('.side-dots .dot');
@@ -592,194 +1020,242 @@
         const contactSec = document.querySelector('.contact-section');
         if (contactSec) airplaneObserver.observe(contactSec);
 
-        // Carousel Functionality - Split Layout
-        const carouselTrack = document.querySelector('.carousel-track');
-        const slides = document.querySelectorAll('.carousel-card');
-        const prevBtn = document.querySelector('.carousel-prev') || document.querySelector('.prev-btn');
-        const nextBtn = document.querySelector('.carousel-next') || document.querySelector('.next-btn');
-        const slideCounterCurrent = document.querySelector('.slide-counter .current') || document.querySelector('.current-slide');
-        const slideCounterTotal = document.querySelector('.slide-counter .total') || document.querySelector('.total-slides');
-        
-        // Text Content Elements
-        const titleEl = document.querySelector('.active-dest-title');
-        const descEl = document.querySelector('.active-dest-desc');
-        const ratingEl = document.querySelector('.active-dest-rating');
-        const infoContainer = document.querySelector('.destination-info');
-        const exploreBtn = document.querySelector('.gallery-explore-btn'); // Get explore button
-
-        let currentSlide = 0;
-        const totalSlides = slides.length;
-        let isAnimating = false;
-
-        // Initialize
-        function initCarousel() {
-            if (slideCounterTotal) slideCounterTotal.textContent = String(totalSlides).padStart(2, '0');
-            updateSlideClasses();
-            updateContent(0);
-        }
-
-        // Update Text Content with Fade Effect
-        function updateContent(index) {
-            if (!titleEl || !slides[index]) return;
+        // Immersive Facilities Slider Logic
+        const facilitySection = document.getElementById('fasilitas');
+        if (facilitySection) {
+            const bgImages = facilitySection.querySelectorAll('.bg-img');
+            const infoItems = facilitySection.querySelectorAll('.facility-info-item');
+            const facilityCards = facilitySection.querySelectorAll('.facility-card');
+            const prevControl = facilitySection.querySelector('.control-btn.prev');
+            const nextControl = facilitySection.querySelector('.control-btn.next');
+            const progressLine = facilitySection.querySelector('.progress-line');
+            const currentNum = facilitySection.querySelector('.current-num');
             
-            // Fade out
-            if (infoContainer) infoContainer.style.opacity = '0';
-            
-            setTimeout(() => {
-                const slide = slides[index];
-                
-                // Update text
-                titleEl.textContent = slide.dataset.title;
-                descEl.textContent = slide.dataset.desc;
-                
-                // Update Button Link
-                if (exploreBtn) {
-                    const destId = slide.dataset.id || 'derawan'; // Fallback
-                    exploreBtn.href = `/detail?id=${destId}`;
-                }
-                
-                // Update rating
-                const rating = parseFloat(slide.dataset.rating);
-                if (ratingEl) {
-                    ratingEl.innerHTML = '';
-                    for (let i = 1; i <= 5; i++) {
-                        const icon = document.createElement('i');
-                        if (i <= rating) {
-                            icon.className = 'fas fa-star';
-                        } else if (i - 0.5 === rating) {
-                            icon.className = 'fas fa-star-half-alt';
-                        } else {
-                            icon.className = 'far fa-star';
+            let curIndex = 0;
+            const total = facilityCards.length;
+            let isMoving = false;
+
+            function updateFacilitySlider(index) {
+                if (isMoving) return;
+                isMoving = true;
+
+                // Update Backgrounds
+                bgImages.forEach(img => img.classList.remove('active'));
+                bgImages[index].classList.add('active');
+
+                // Update Text Info
+                infoItems.forEach(item => item.classList.remove('active'));
+                infoItems[index].classList.add('active');
+
+                // Update Card Stack Visibility
+                facilityCards.forEach((card, i) => {
+                    card.classList.remove('active', 'visible-1', 'visible-2', 'visible-3');
+                    
+                    if (i === index) {
+                        card.classList.add('active');
+                    } else {
+                        // Logic to show next 3 cards in stack
+                        let pos = (i - index + total) % total;
+                        if (pos > 0 && pos <= 3) {
+                            card.classList.add(`visible-${pos}`);
                         }
-                        ratingEl.appendChild(icon);
                     }
-                }
-                
-                // Fade in
-                if (infoContainer) infoContainer.style.opacity = '1';
-            }, 300);
-        }
+                });
 
-        // Update Classes for Visuals (Active, Prev, Next, Next-2)
-        function updateSlideClasses() {
-            slides.forEach(slide => {
-                slide.className = 'carousel-card'; // Reset
+                // Update Controls
+                if (currentNum) currentNum.textContent = String(index + 1).padStart(2, '0');
+                if (progressLine) {
+                    const progress = ((index + 1) / total) * 100;
+                    progressLine.style.width = `${progress}%`;
+                }
+
+                setTimeout(() => {
+                    isMoving = false;
+                }, 1200);
+            }
+
+            if (nextControl) {
+                nextControl.addEventListener('click', () => {
+                    curIndex = (curIndex + 1) % total;
+                    updateFacilitySlider(curIndex);
+                });
+            }
+
+            if (prevControl) {
+                prevControl.addEventListener('click', () => {
+                    curIndex = (curIndex - 1 + total) % total;
+                    updateFacilitySlider(curIndex);
+                });
+            }
+
+            // Click on card to go to that slide
+            facilityCards.forEach((card, i) => {
+                card.addEventListener('click', () => {
+                    if (i !== curIndex) {
+                        curIndex = i;
+                        updateFacilitySlider(curIndex);
+                    }
+                });
             });
 
-            // Active
-            slides[currentSlide].classList.add('active');
+            // Auto init progress
+            if (progressLine) progressLine.style.width = `${(1 / total) * 100}%`;
 
-            // Previous
-            const prevIndex = (currentSlide - 1 + totalSlides) % totalSlides;
-            slides[prevIndex].classList.add('prev');
+            // Star Rating Interaction
+            const stars = document.querySelectorAll('#holiday-stars .star-item');
+            const ratingInput = document.getElementById('rating-value');
+            const ratingText = document.getElementById('rating-text');
+            const ratingLabels = ["Buruk", "Kurang", "Cukup", "Bagus", "Luar Biasa!"];
 
-            // Next
-            const nextIndex = (currentSlide + 1) % totalSlides;
-            slides[nextIndex].classList.add('next');
+            stars.forEach((star, idx) => {
+                star.addEventListener('mouseenter', () => {
+                    highlightStars(idx);
+                });
 
-            // Next + 2 (For the deep stack effect)
-            const next2Index = (currentSlide + 2) % totalSlides;
-            if (next2Index !== prevIndex && next2Index !== currentSlide) {
-                slides[next2Index].classList.add('next-2');
+                star.addEventListener('mouseleave', () => {
+                    highlightStars(ratingInput.value - 1);
+                });
+
+                star.addEventListener('click', () => {
+                    const val = idx + 1;
+                    ratingInput.value = val;
+                    ratingText.textContent = `Anda memberikan skor: ${val} (${ratingLabels[idx]})`;
+                    ratingText.style.color = "#ffcc00";
+                    highlightStars(idx);
+                });
+            });
+
+            function highlightStars(index) {
+                stars.forEach((s, i) => {
+                    if (i <= index) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
             }
+
+            // Toast Logic
+            const ratingForm = document.getElementById('holiday-rating-form');
             
-            // Update Counter
-            if (slideCounterCurrent) {
-                slideCounterCurrent.textContent = String(currentSlide + 1).padStart(2, '0');
+            // Create Toast Container
+            const contactSection = document.getElementById('contact');
+            const toastContainer = document.createElement('div');
+            toastContainer.className = 'rating-toast-container';
+            
+            if (contactSection) {
+                contactSection.style.position = 'relative';
+                contactSection.appendChild(toastContainer);
+            } else {
+                document.body.appendChild(toastContainer);
             }
-        }
 
-        // Go to slide
-        function goToSlide(index) {
-            if (isAnimating || index === currentSlide) return;
-            isAnimating = true;
+            const toast = document.createElement('div');
+            toast.id = 'rating-toast';
+            toast.innerHTML = `
+                <i class="fas fa-check-circle" id="toast-icon"></i>
+                <div class="toast-content">
+                    <h5 id="toast-title">Berhasil Terkirim!</h5>
+                    <p id="toast-msg"></p>
+                </div>
+            `;
+            toastContainer.appendChild(toast);
 
-            currentSlide = index;
+            if (ratingForm) {
+                ratingForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    
+                    const rating = ratingInput.value;
+                    if (rating == 0) {
+                        alert('Silakan pilih bintang rating terlebih dahulu!');
+                        return;
+                    }
+
+                    const formData = new FormData(ratingForm);
+
+                    fetch("{{ route('reviews.store') }}", {
+                        method: "POST",
+                        body: formData,
+                        headers: {
+                            "X-Requested-With": "XMLHttpRequest"
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const name = formData.get('name') || "Pengunjung";
+                            const destinasi = formData.get('destinasi_name') || "Wisata";
+
+                            document.getElementById('toast-icon').className = 'fas fa-check-circle';
+                            document.getElementById('toast-title').textContent = 'Berhasil Terkirim!';
+                            const msg = `Terima kasih <strong>${name}</strong>! Rating ${rating}/5 Anda untuk <strong>${destinasi}</strong> telah kami simpan di database.`;
+                            document.getElementById('toast-msg').innerHTML = msg;
+
+                            // Show Toast
+                            toast.classList.add('show');
+                            
+                            setTimeout(() => {
+                                toast.classList.remove('show');
+                            }, 5000);
+
+                            // Reset
+                            ratingForm.reset();
+                            ratingInput.value = 0;
+                            highlightStars(-1);
+                            ratingText.textContent = "Ketuk untuk memberi bintang";
+                            ratingText.style.color = "";
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        alert("Terjadi kesalahan saat mengirim rating. Silakan coba lagi.");
+                    });
+                });
+            }
+
+            // Live Review Feed Logic
+            const publicReviews = @json($reviews ?? []);
+            const mockReviews = [
+                { user: { name: "Budi Santoso" }, destination: { name: "Pulau Kumala" }, rating: 5 },
+                { user: { name: "Siti Aminah" }, destination: { name: "Derawan" }, rating: 4 },
+                { user: { name: "Andi Wijaya" }, destination: { name: "Bukit Bangkirai" }, rating: 5 }
+            ];
             
-            updateSlideClasses();
-            updateContent(currentSlide);
+            const displayReviews = publicReviews.length > 0 ? publicReviews : mockReviews;
+            let reviewIdx = 0;
 
-            setTimeout(() => {
-                isAnimating = false;
-            }, 800); // Match CSS transition
+            function showNextReview() {
+                // Don't show if the manual toast is currently visible
+                if (toast.classList.contains('show')) {
+                    setTimeout(showNextReview, 5000);
+                    return;
+                }
+
+                const rev = displayReviews[reviewIdx];
+                const starsHtml = '⭐'.repeat(rev.rating);
+                
+                // Fallback for Guest Data
+                const reviewerName = rev.user ? rev.user.name : (rev.guest_name || "Wisatawan");
+                const targetDest = rev.destination ? rev.destination.name : (rev.guest_destination || "Destinasi");
+
+                document.getElementById('toast-icon').className = 'fas fa-user-circle';
+                document.getElementById('toast-title').textContent = 'Ulasan Wisatawan';
+                document.getElementById('toast-msg').innerHTML = `<strong>${reviewerName}</strong> baru saja memberi ${starsHtml} untuk <strong>${targetDest}</strong>.`;
+
+                toast.classList.add('show');
+
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    reviewIdx = (reviewIdx + 1) % displayReviews.length;
+                    
+                    // Interval between reviews
+                    setTimeout(showNextReview, 8000); 
+                }, 4500);
+            }
+
+            // Start the cycle after 5 seconds
+            setTimeout(showNextReview, 5000);
         }
-
-        function nextSlide() {
-            goToSlide((currentSlide + 1) % totalSlides);
-        }
-
-        function prevSlide() {
-            goToSlide((currentSlide - 1 + totalSlides) % totalSlides);
-        }
-
-        // Event Listeners
-        if (prevBtn) prevBtn.addEventListener('click', prevSlide);
-        if (nextBtn) nextBtn.addEventListener('click', nextSlide);
-
-        // Keyboard
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') prevSlide();
-            if (e.key === 'ArrowRight') nextSlide();
-        });
-
-        // Init
-        initCarousel();
     </script>
-
-    <!-- Enhanced Styles for Custom Buttons -->
-    <style>
-        .btn-more-dest {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            padding: 18px 45px;
-            background: linear-gradient(135deg, #d4f05c 0%, #b8d64a 100%);
-            color: #050505;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 14px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            border-radius: 100px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 15px 35px rgba(212, 240, 92, 0.25);
-            border: 2px solid transparent;
-        }
-
-        .btn-more-dest:hover {
-            transform: translateY(-8px) scale(1.05);
-            box-shadow: 0 25px 45px rgba(212, 240, 92, 0.4);
-            background: #ffffff;
-            color: #d4f05c;
-            border-color: #d4f05c;
-        }
-
-        .btn-more-dest i {
-            font-size: 16px;
-            transition: transform 0.4s ease;
-        }
-
-        .btn-more-dest:hover i {
-            transform: translateX(8px);
-        }
-
-        /* Pulsing effect for the button container to make it pop */
-        .more-dest-wrapper {
-            position: relative;
-            padding-bottom: 20px;
-        }
-
-        .more-dest-wrapper::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
-            opacity: 0.5;
-        }
-    </style>
 </body>
 </html>

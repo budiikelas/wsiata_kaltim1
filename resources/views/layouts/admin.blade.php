@@ -38,26 +38,25 @@
                     </a>
                 </div>
                 <div class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('admin.consumers') }}" class="nav-link {{ request()->routeIs('admin.consumers') ? 'active' : '' }}">
                         <i class="fas fa-users"></i>
                         <span>Consumers</span>
                     </a>
                 </div>
+
                 <div class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-chart-pie"></i>
-                        <span>Statistics</span>
-                    </a>
-                </div>
-                <div class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-cog"></i>
-                        <span>Settings</span>
+                    <a href="{{ route('admin.facilities') }}" class="nav-link {{ request()->routeIs('admin.facilities') ? 'active' : '' }}">
+                        <i class="fas fa-concierge-bell"></i>
+                        <span>Fasilitas</span>
                     </a>
                 </div>
             </nav>
 
             <div class="sidebar-footer">
+                <a href="{{ url('/') }}" class="nav-link">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Kembali ke Beranda</span>
+                </a>
                 <form action="{{ route('logout') }}" method="POST" id="admin-logout-form" style="display: none;">
                     @csrf
                 </form>

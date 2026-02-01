@@ -14,8 +14,10 @@ class LandingController extends Controller
         $destinations = Destination::with(['category'])
             ->orderBy('rating', 'desc')
             ->get();
+        $facilities = \App\Models\Facility::all();
+        $reviews = \App\Models\Review::with(['user', 'destination'])->latest()->take(10)->get();
         
-        return view('landing', compact('categories', 'destinations'));
+        return view('landing', compact('categories', 'destinations', 'facilities', 'reviews'));
     }
 
     public function packages()
@@ -57,5 +59,12 @@ class LandingController extends Controller
         $nextDestination = Destination::where('id', '>', $destination->id)->first() ?? Destination::first();
 
         return view('detail', compact('destination', 'nextDestination'));
+    }
+
+    public function fasilitas()
+    {
+        $categories = \App\Models\Category::all();
+        $facilities = \App\Models\Facility::all();
+        return view('fasilitas', compact('categories', 'facilities'));
     }
 }

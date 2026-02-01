@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Facility extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'description', 'image'];
 
     public function destinations()
     {
