@@ -10,16 +10,7 @@ use App\Http\Controllers\ReviewController;
 use Illuminate\Http\Request;
 
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+
 Route::resource('categories', CategoryController::class);
 Route::resource('destinations', DestinationController::class);
 Route::resource('facilities', FacilityController::class);
