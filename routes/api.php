@@ -7,11 +7,7 @@ use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\ReviewController;
 
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\DestinationController;
-use App\Http\Controllers\FacilityController;
-use App\Http\Controllers\GalleryController;
-use App\Http\Controllers\ReviewController;
+
 use Illuminate\Http\Request;
 
 

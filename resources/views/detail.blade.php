@@ -381,7 +381,7 @@
                     <ul>
                         <li class="active"><a href="{{ url('/') }}"><i class="fas fa-home"></i> Beranda</a></li>
                         <li><a href="{{ url('/fasilitas') }}"><i class="fas fa-list-check"></i> Fasilitas</a></li>
-                        <li><a href="{{ url('/packages') }}"><i class="fas fa-cube"></i> Paket Wisata</a></li>
+
                     </ul>
                 </nav>
 
@@ -395,7 +395,7 @@
                 <div class="header-nav">
                     <button class="mobile-menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
                     <div class="breadcrumb-text">
-                        <span>Packages</span> <i class="fas fa-chevron-right"></i> <span>Popular Destination</span>
+                        <span>Detail Wisata</span> <i class="fas fa-chevron-right"></i> <span>Popular Destination</span>
                     </div>
                 </div>
                 
@@ -600,20 +600,7 @@
                             </div>
                         @endauth
                         
-                        <!-- Next Destination Mini Card -->
-                        <div class="panel-card next-queue">
-                            <div class="queue-header">
-                                <span>Rekomendasi Berikutnya</span>
-                                <a href="#">Buka Antrean</a>
-                            </div>
-                            <a href="{{ url('/detail?id=' . $nextDestination->id) }}" class="queue-item">
-                                <img src="{{ $nextDestination->thumbnail ? asset($nextDestination->thumbnail) : asset('images/beach.jpeg') }}" alt="">
-                                <div class="queue-info">
-                                    <span class="queue-name text-truncate">{{ $nextDestination->name }}</span>
-                                    <span class="queue-sub text-truncate">{{ $nextDestination->location }}</span>
-                                </div>
-                            </a>
-                        </div>
+
                     </div>
                 </div>
             </div>

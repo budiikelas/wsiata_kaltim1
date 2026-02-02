@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Admin Dashboard') - Wisata Kaltim</title>
+    <title>@yield('title', 'Admin Panel') - Wisata Kaltim</title>
     
     <!-- CSS -->
     @vite(['resources/css/admin.css'])
@@ -21,7 +21,7 @@
         <aside class="sidebar">
             <div class="sidebar-brand">
                 <i class="fas fa-crown"></i>
-                <h2>ADMIN DASHBOARD</h2>
+                <h2>ADMIN PANEL</h2>
             </div>
 
             <nav class="nav-menu">
@@ -77,10 +77,7 @@
                 </div>
 
                 <div class="header-right">
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" placeholder="Search data...">
-                    </div>
+
                     <div class="admin-profile">
                         <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=d4af37&color=000" alt="Admin">
                         <span>{{ Auth::user()->name }}</span>

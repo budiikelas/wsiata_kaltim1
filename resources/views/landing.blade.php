@@ -432,11 +432,6 @@
             <li><a href="{{ url('/#contact') }}">Kontak</a></li>
         </ul>
         <div class="nav-items-right">
-            <div class="nav-social">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
-            </div>
             <div class="nav-auth">
                 @guest
                     <a href="{{ url('/login') }}" class="btn-auth btn-login">Masuk</a>
@@ -454,17 +449,11 @@
                                 <span class="header-name">{{ Auth::user()->name }}</span>
                                 <span class="header-email">{{ Auth::user()->email }}</span>
                             </div>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-user-circle"></i> <span>Profil Saya</span>
-                            </a>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-heart"></i> <span>Favorit</span>
-                            </a>
+
                             @if(Auth::user()->is_admin)
                             <div class="dropdown-divider"></div>
                             <a href="{{ url('/admin') }}" class="dropdown-item" style="color: var(--color-accent);">
-                                <i class="fas fa-crown"></i> <span>Dashboard Admin</span>
+                                <i class="fas fa-crown"></i> <span>Admin Panel</span>
                             </a>
                             @endif
                             <div class="dropdown-divider"></div>
@@ -582,7 +571,7 @@
                     @empty
                     <div style="grid-column: 1/-1; text-align: center; padding: 50px; color: rgba(255,255,255,0.5);">
                         <i class="fas fa-map-marked-alt" style="font-size: 40px; margin-bottom: 20px; display: block;"></i>
-                        <p>Belum ada destinasi yang tersedia. Silakan tambahkan melalui Dashboard Admin.</p>
+                        <p>Belum ada destinasi yang tersedia. Silakan tambahkan melalui Admin Panel.</p>
                     </div>
                     @endforelse
                 </div>
