@@ -266,21 +266,7 @@ section {
     width: 100%;
 }
 
-.nav-social {
-    display: flex;
-    gap: 20px;
-}
 
-.nav-social a {
-    color: var(--color-white);
-    font-size: 16px;
-    transition: all 0.3s ease;
-}
-
-.nav-social a:hover {
-    color: var(--color-accent);
-    transform: translateY(-3px);
-}
 
 /* Hero Section */
 .hero-section {

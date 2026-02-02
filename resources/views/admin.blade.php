@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Admin Dashboard')
+@section('title', 'Admin Panel')
 
 @section('header_title')
     <h1>Selamat Datang, Admin</h1>
