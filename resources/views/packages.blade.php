@@ -236,8 +236,76 @@
 
         .hero-desc {
             font-size: 14px;
-            color: rgba(255,255,255,0.6);
-            max-width: 450px;
+            line-height: 1.6;
+            opacity: 0.7;
+            margin-bottom: 25px;
+            display: -webkit-box;
+            /* -webkit-line-clamp: 3; */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .package-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .package-price {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .price-label {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-bottom: 2px;
+        }
+
+        .price-value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .price-value span {
+            font-size: 12px;
+            font-weight: 400;
+            opacity: 0.7;
+        }
+
+        .btn-learn-more {
+            padding: 12px 25px;
+            background: var(--color-white);
+            color: var(--color-black);
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-learn-more:hover {
+            background: var(--color-accent);
+            color: var(--color-white);
+        }
+
+        /* NexTrip Footer Style */
+        .nextrip-footer {
+            background: #111;
+            color: #fff;
+            padding: 80px 0 40px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 700;
             margin-bottom: 30px;
             line-height: 1.6;
         }

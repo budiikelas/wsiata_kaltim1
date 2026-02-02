@@ -58,8 +58,12 @@ class DestinationController extends Controller
 
     public function show($id)
     {
-        return Destination::with(['category', 'facilities', 'galleries', 'reviews'])->findOrFail($id);
+        $destination = Destination::with(['category', 'facilities', 'galleries', 'reviews'])
+            ->findOrFail($id);
+
+        return view('detail', compact('destination'));
     }
+
 
     public function update(Request $request, $id)
     {
