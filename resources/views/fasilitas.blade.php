@@ -168,11 +168,12 @@
             position: relative;
             z-index: 10;
             height: 100%;
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 0 60px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
         }
 
         .facility-text-content {
@@ -238,8 +239,8 @@
         }
 
         .facility-visual-slider {
-            width: 450px;
-            height: 500px;
+            width: 380px;
+            height: 420px;
             position: relative;
         }
 
@@ -252,13 +253,16 @@
 
         .facility-card {
             position: absolute;
-            width: 300px;
-            height: 450px;
-            border-radius: 25px;
+            width: 250px;
+            height: 380px;
+            border-radius: 20px;
             overflow: hidden;
             transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             cursor: pointer;
             box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
         }
 
         .facility-card.active {
@@ -267,9 +271,9 @@
             transform: translateX(-150px) scale(0.8);
         }
 
-        .facility-card.visible-1 { z-index: 5; transform: translateX(0) scale(1); opacity: 1; }
-        .facility-card.visible-2 { z-index: 4; transform: translateX(350px) scale(0.9); opacity: 0.7; }
-        .facility-card.visible-3 { z-index: 3; transform: translateX(700px) scale(0.8); opacity: 0.4; }
+        .facility-card.visible-1 { z-index: 5; transform: translateX(0) scale(1); opacity: 1; visibility: visible; pointer-events: auto; }
+        .facility-card.visible-2 { z-index: 4; transform: translateX(280px) scale(0.9); opacity: 0.7; visibility: visible; pointer-events: auto; }
+        .facility-card.visible-3 { z-index: 3; transform: translateX(560px) scale(0.8); opacity: 0.4; visibility: visible; pointer-events: auto; }
 
         .card-inner { position: relative; width: 100%; height: 100%; }
         .card-inner img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease; }
@@ -385,8 +389,7 @@
                         <div class="active-facility-info">
                             @foreach($displayFacilities as $index => $item)
                             <div class="facility-info-item {{ $loop->first ? 'active' : '' }}" data-id="{{ $item->id }}">
-                                <h2 class="facility-big-title">KALIMANTAN<br>TIMUR</h2>
-                                <h3 style="font-size: 24px; color: var(--color-accent); margin-bottom: 20px;">{{ $item->name }}</h3>
+                                <h2 class="facility-big-title">{{ strtoupper($item->name) }}</h2>
                                 <p class="facility-description">{{ $item->description ?? "Fasilitas terbaik untuk kenyamanan Anda." }}</p>
                             </div>
                             @endforeach

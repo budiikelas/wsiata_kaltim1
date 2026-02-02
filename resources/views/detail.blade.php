@@ -75,7 +75,7 @@
         .verified-badge { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; margin-bottom: 12px; color: white; }
         .verified-badge i { color: #4cb3ff; font-size: 20px; }
         .destination-title { font-size: 64px; font-weight: 900; margin-bottom: 8px; letter-spacing: -2px; line-height: 1; color: white; text-shadow: 0 4px 12px rgba(0,0,0,0.5); }
-        .destination-description { font-size: 14px; color: #b3b3b3; margin-bottom: 24px; max-width: 600px; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; font-weight: 500; }
+        .destination-description { font-size: 14px; color: #b3b3b3; margin-bottom: 24px; max-width: 600px; line-height: 1.6; font-weight: 500; }
         .destination-stats { font-size: 16px; font-weight: 700; margin-bottom: 32px; color: white; display: flex; align-items: center; gap: 12px; }
         
         .banner-actions { display: flex; align-items: center; gap: 20px; }
@@ -198,9 +198,12 @@
             z-index: 10;
             height: 100%;
             width: 100%;
+            max-width: 1300px;
+            margin: 0 auto;
             padding: 60px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             min-height: 700px;
         }
 
@@ -268,8 +271,8 @@
         }
 
         .facility-visual-slider {
-            width: 400px;
-            height: 400px;
+            width: 350px;
+            height: 350px;
             position: relative;
         }
 
@@ -282,13 +285,16 @@
 
         .facility-card {
             position: absolute;
-            width: 280px;
-            height: 420px;
-            border-radius: 20px;
+            width: 240px;
+            height: 350px;
+            border-radius: 15px;
             overflow: hidden;
             transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             cursor: pointer;
             box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
         }
 
         .facility-card.active {
@@ -297,9 +303,9 @@
             transform: translateX(-150px) scale(0.8);
         }
 
-        .facility-card.visible-1 { z-index: 5; transform: translateX(0) scale(1); opacity: 1; }
-        .facility-card.visible-2 { z-index: 4; transform: translateX(100px) scale(0.9); opacity: 0.7; }
-        .facility-card.visible-3 { z-index: 3; transform: translateX(200px) scale(0.8); opacity: 0.4; }
+        .facility-card.visible-1 { z-index: 5; transform: translateX(0) scale(1); opacity: 1; visibility: visible; pointer-events: auto; }
+        .facility-card.visible-2 { z-index: 4; transform: translateX(80px) scale(0.9); opacity: 0.7; visibility: visible; pointer-events: auto; }
+        .facility-card.visible-3 { z-index: 3; transform: translateX(160px) scale(0.8); opacity: 0.4; visibility: visible; pointer-events: auto; }
 
         .card-inner { position: relative; width: 100%; height: 100%; }
         .card-inner img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease; }
@@ -426,7 +432,7 @@
                                 <i class="fas fa-check-circle"></i> Destination Verified
                             </div>
                             <h1 class="destination-title text-truncate">{{ $destination->name }}</h1>
-                            <p class="destination-description">{{ Str::limit($destination->description ?? 'Nikmati pesona alam Kalimantan Timur yang memukau. Destinasi ini menawarkan perpaduan sempurna antara ketenangan alam, petualangan seru, dan keindahan visual yang tak terlupakan bagi setiap pengunjung.', 180) }}</p>
+                            <p class="destination-description">{{ $destination->description ?? 'Nikmati pesona alam Kalimantan Timur yang memukau. Destinasi ini menawarkan perpaduan sempurna antara ketenangan alam, petualangan seru, dan keindahan visual yang tak terlupakan bagi setiap pengunjung.' }}</p>
                             <p class="destination-stats">
                                 <i class="fas fa-star"></i> {{ number_format($destination->reviews->avg('rating') ?: 5.0, 1) }} 
                                 • {{ $destination->reviews->count() }} ulasan

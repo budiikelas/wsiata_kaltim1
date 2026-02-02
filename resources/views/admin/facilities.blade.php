@@ -63,7 +63,6 @@
                 </tr>
                 @empty
                 <tr>
-                <tr>
                     <td colspan="4" style="text-align: center; color: var(--text-dim); padding: 50px;">
                         <i class="fas fa-concierge-bell" style="font-size: 40px; margin-bottom: 15px; display: block; opacity: 0.3;"></i>
                         Belum ada fasilitas. Silakan tambahkan fasilitas baru.
@@ -73,6 +72,17 @@
             </tbody>
         </table>
     </div>
+
+    @if ($errors->any())
+    <div style="background: rgba(231, 76, 60, 0.2); border-left: 4px solid #e74c3c; padding: 15px; margin-bottom: 20px; border-radius: 8px; color: white;">
+        <strong><i class="fas fa-exclamation-circle"></i> Terjadi Kesalahan:</strong>
+        <ul style="margin: 5px 0 0 20px; padding: 0;">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 
     <!-- Modal Tambah/Edit Fasilitas -->
     <div class="modal-overlay" id="facilityModal">
