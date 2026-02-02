@@ -10,11 +10,9 @@ use App\Http\Controllers\ReviewController;
 
 use App\Http\Controllers\LandingController;
 
-/*
-|--------------------------------------------------------------------------
-| Public Routes
-|--------------------------------------------------------------------------
-*/
+
+//  Public Routes
+
 Route::get('/', [LandingController::class, 'index']);
 Route::post('reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
@@ -25,9 +23,9 @@ Route::get('/register', [AuthController::class, 'showRegister'])->name('register
 Route::post('/register', [AuthController::class, 'register']);
 
 /*
-|--------------------------------------------------------------------------
-| Protected Routes (Login Required)
-|--------------------------------------------------------------------------
+
+Protected routes (harus login)
+
 */
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
