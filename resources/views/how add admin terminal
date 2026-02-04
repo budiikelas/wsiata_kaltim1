@@ -1,0 +1,6 @@
+\App\Models\User::create([
+    'name' => 'Admin Wisata',
+    'email' => 'admin@wisata.com',
+    'password' => bcrypt('password123'),
+    'is_admin' => true,
+]);

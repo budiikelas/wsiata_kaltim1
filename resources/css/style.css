@@ -797,7 +797,7 @@ section {
 
 .active-facility-info {
     position: relative;
-    height: 350px;
+    min-height: 250px;
     /* Buffer for transitions */
 }
 
@@ -821,7 +821,7 @@ section {
     font-family: var(--font-display);
     font-size: clamp(60px, 8vw, 110px);
     line-height: 0.95;
-    margin-bottom: 40px;
+    margin-bottom: 25px;
     text-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
     letter-spacing: -2px;
 }
@@ -831,7 +831,7 @@ section {
     line-height: 1.8;
     color: rgba(255, 255, 255, 0.7);
     max-width: 500px;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
 .btn-discover {
@@ -1144,7 +1144,7 @@ section {
 
 .schedule-header {
     text-align: center;
-    margin-bottom: 80px;
+    margin-bottom: 40px;
 }
 
 .schedule-subtitle {
@@ -1806,7 +1806,7 @@ section {
     letter-spacing: 2px;
     line-height: 1.8;
     color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 50px;
+    margin-bottom: 30px;
     max-width: 600px;
 }
 

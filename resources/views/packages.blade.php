@@ -628,12 +628,13 @@
                 <div class="recommend-shelf" id="recommend-shelf-container">
                     <div class="shelf-header">
                         <h3 class="shelf-title">You might like</h3>
-                        <a href="#" style="font-size: 13px; color: var(--color-accent); text-decoration: none; font-weight: 600;">See all</a>
+                        <a href="#" id="btn-see-all" style="font-size: 13px; color: var(--color-accent); text-decoration: none; font-weight: 600;">See all</a>
                     </div>
 
                     <div class="shelf-grid" id="pkg-grid">
-                        @foreach($destinations as $dest)
-                        <div class="small-card package-item" data-category="{{ Str::slug($dest->category->name ?? 'other') }}">
+                        @foreach($destinations as $index => $dest)
+                        <div class="small-card package-item" data-category="{{ Str::slug($dest->category->name ?? 'other') }}"
+                             @if($index >= 8) style="display: none; opacity: 0;" data-hidden="true" @endif>
                             <div class="small-card-img-box">
                                 <img src="{{ $dest->thumbnail ? asset($dest->thumbnail) : asset('images/beach.jpeg') }}" alt="{{ $dest->name }}">
                                 <div class="play-overlay">
@@ -684,8 +685,19 @@
             const heroSection = document.getElementById('featured-hero-section');
             const noResults = document.getElementById('no-results');
             const continueShelf = document.getElementById('continue-browsing-shelf');
+            const btnSeeAll = document.getElementById('btn-see-all');
             
             let currentFilter = 'all';
+            let isExpanded = false;
+
+            if (btnSeeAll) {
+                btnSeeAll.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    isExpanded = true;
+                    btnSeeAll.style.display = 'none';
+                    performFilter(); // Re-run filter to show everything
+                });
+            }
 
             function performFilter() {
                 const term = pkgSearch.value.toLowerCase().trim();
@@ -701,16 +713,39 @@
                     const matchesSearch = title.includes(term);
                     const matchesCategory = currentFilter === 'all' || category === currentFilter;
 
+                    // Visibility Logic:
+                    // 1. If searching or filtering by category -> Show all matches (ignore limit)
+                    // 2. If "See All" was clicked -> Show all matches
+                    // 3. Otherwise (Default view) -> Show only first 8 matches
+
                     if (matchesSearch && matchesCategory) {
-                        item.style.display = 'block';
-                        // Use a slightly shorter timeout for better responsiveness
-                        setTimeout(() => { 
-                            if (item.style.display === 'block') {
-                                item.style.opacity = '1'; 
-                                item.style.transform = 'scale(1)'; 
+                        // Check if we should show this item
+                        let shouldShow = true;
+                        
+                        if (term === '' && currentFilter === 'all' && !isExpanded) {
+                            if (foundInGrid >= 8) {
+                                shouldShow = false;
                             }
-                        }, 50);
-                        foundInGrid++;
+                        }
+
+                        if (shouldShow) {
+                            item.style.display = 'block';
+                            setTimeout(() => { 
+                                if (item.style.display === 'block') {
+                                    item.style.opacity = '1'; 
+                                    item.style.transform = 'scale(1)'; 
+                                }
+                            }, 50);
+                            foundInGrid++;
+                        } else {
+                            item.style.opacity = '0';
+                            item.style.transform = 'scale(0.95)';
+                             setTimeout(() => { 
+                                if (item.style.opacity === '0') {
+                                    item.style.display = 'none'; 
+                                }
+                            }, 400);
+                        }
                     } else {
                         item.style.opacity = '0';
                         item.style.transform = 'scale(0.95)';

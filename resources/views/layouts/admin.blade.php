@@ -16,6 +16,7 @@
 <body>
 
     <div class="admin-wrapper">
+        <div class="sidebar-overlay"></div>
         
         <!-- Sidebar Navigation -->
         <aside class="sidebar">
@@ -40,7 +41,7 @@
                 <div class="nav-item">
                     <a href="{{ route('admin.consumers') }}" class="nav-link {{ request()->routeIs('admin.consumers') ? 'active' : '' }}">
                         <i class="fas fa-users"></i>
-                        <span>Consumers</span>
+                        <span>Users</span>
                     </a>
                 </div>
 
@@ -70,10 +71,14 @@
         <!-- Main Content -->
         <main class="main-dashboard">
             
-            <!-- Header -->
             <header class="dashboard-header">
                 <div class="header-left">
-                    @yield('header_title')
+                    <div class="admin-burger">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                    <div class="header-title-text">
+                        @yield('header_title')
+                    </div>
                 </div>
 
                 <div class="header-right">
@@ -99,5 +104,36 @@
     </div>
 
     @stack('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const burger = document.querySelector('.admin-burger');
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            const body = document.body;
+
+            if (burger && sidebar && overlay) {
+                burger.addEventListener('click', (e) => {
+                    sidebar.classList.add('active');
+                    overlay.classList.add('active');
+                    body.style.overflow = 'hidden';
+                });
+
+                overlay.addEventListener('click', () => {
+                    sidebar.classList.remove('active');
+                    overlay.classList.remove('active');
+                    body.style.overflow = '';
+                });
+            }
+
+            // Close sidebar on window resize if it gets larger than 900px
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 900) {
+                    sidebar.classList.remove('active');
+                    overlay.classList.remove('active');
+                    body.style.overflow = '';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

@@ -1,87 +1,89 @@
 @extends('layouts.admin')
 
-@section('title', 'Kelola Konsumen')
+@section('title', 'Kelola Users')
 
 @section('header_title')
-    <h1>Kelola Konsumen</h1>
+    <h1>Kelola Users</h1>
     <span>Daftar Pengguna Terdaftar</span>
 @endsection
 
 @section('content')
     <div class="table-card">
         <div class="card-header">
-            <h4>Semua Konsumen</h4>
+            <h4>Semua Users</h4>
             <div style="display: flex; align-items: center; gap: 15px;">
                 <span style="color: var(--text-dim); font-size: 13px;">Total: {{ $consumers->count() }} pengguna</span>
             </div>
         </div>
-        <table class="modern-table">
-            <thead>
-                <tr>
-                    <th>Nama Pengguna</th>
-                    <th>Email</th>
-                    <th>Tanggal Daftar</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($consumers as $consumer)
-                <tr>
-                    <td>
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--gold-accent), #f39c12); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #000;">
-                                {{ strtoupper(substr($consumer->name, 0, 1)) }}
+        <div class="table-container">
+            <table class="modern-table">
+                <thead>
+                    <tr>
+                        <th>Nama Pengguna</th>
+                        <th>Email</th>
+                        <th>Tanggal Daftar</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($consumers as $consumer)
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--gold-accent), #f39c12); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #000;">
+                                    {{ strtoupper(substr($consumer->name, 0, 1)) }}
+                                </div>
+                                <div>{{ $consumer->name }}</div>
                             </div>
-                            <div>{{ $consumer->name }}</div>
-                        </div>
-                    </td>
-                    <td>
-                        <span style="color: var(--text-dim);">{{ $consumer->email }}</span>
-                    </td>
-                    <td>{{ $consumer->created_at->format('d M Y') }}</td>
-                    <td>
-                        @if($consumer->email_verified_at)
-                            <span class="status-badge status-success">Terverifikasi</span>
-                        @else
-                            <span class="status-badge status-pending">Aktif</span>
-                        @endif
-                    </td>
-                    <td>
-                        <div class="action-btns">
-                            <button class="btn-action btn-edit" 
-                                    data-id="{{ $consumer->id }}"
-                                    data-name="{{ $consumer->name }}"
-                                    data-email="{{ $consumer->email }}">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                            <form action="{{ route('admin.consumers.delete', $consumer->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus konsumen ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn-action btn-delete">
-                                    <i class="fas fa-trash-alt"></i> Hapus
+                        </td>
+                        <td>
+                            <span style="color: var(--text-dim);">{{ $consumer->email }}</span>
+                        </td>
+                        <td>{{ $consumer->created_at->format('d M Y') }}</td>
+                        <td>
+                            @if($consumer->email_verified_at)
+                                <span class="status-badge status-success">Terverifikasi</span>
+                            @else
+                                <span class="status-badge status-pending">Aktif</span>
+                            @endif
+                        </td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn-action btn-edit" 
+                                        data-id="{{ $consumer->id }}"
+                                        data-name="{{ $consumer->name }}"
+                                        data-email="{{ $consumer->email }}">
+                                    <i class="fas fa-edit"></i> Edit
                                 </button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="5" style="text-align: center; color: var(--text-dim); padding: 50px;">
-                        <i class="fas fa-users" style="font-size: 40px; margin-bottom: 15px; display: block; opacity: 0.3;"></i>
-                        Belum ada konsumen terdaftar.
-                    </td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
+                                <form action="{{ route('admin.consumers.delete', $consumer->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus konsumen ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-action btn-delete">
+                                        <i class="fas fa-trash-alt"></i> Hapus
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5" style="text-align: center; color: var(--text-dim); padding: 50px;">
+                            <i class="fas fa-users" style="font-size: 40px; margin-bottom: 15px; display: block; opacity: 0.3;"></i>
+                            Belum ada konsumen terdaftar.
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- Modal Edit Konsumen -->
     <div class="modal-overlay" id="consumerModal">
         <div class="modal-content glass-panel">
             <div class="modal-header">
-                <h3>Edit Konsumen</h3>
+                <h3>Edit Users</h3>
                 <button class="close-modal" id="btnCloseModal">&times;</button>
             </div>
             <form id="consumerForm" method="POST" class="admin-form">

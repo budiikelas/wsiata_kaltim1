@@ -94,7 +94,7 @@
 
         .active-facility-info {
             position: relative;
-            height: 350px;
+            min-height: 250px;
         }
 
         .facility-info-item {
@@ -115,7 +115,7 @@
         .facility-big-title {
             font-size: clamp(60px, 8vw, 110px);
             line-height: 0.95;
-            margin-bottom: 40px;
+            margin-bottom: 25px;
             text-shadow: 0 20px 40px rgba(0,0,0,0.5);
             letter-spacing: -2px;
             font-weight: 900;
@@ -127,7 +127,7 @@
             line-height: 1.8;
             color: rgba(255,255,255,0.7);
             max-width: 500px;
-            margin-bottom: 50px;
+            margin-bottom: 30px;
         }
 
         .btn-discover {
@@ -405,6 +405,158 @@
             font-size: 13px;
             color: rgba(255,255,255,0.8);
         }
+
+        /* Mobile Navigation Styles */
+        .burger-menu {
+            display: none;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        @media (max-width: 768px) {
+            .burger-menu {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: rgba(0,0,0,0.95);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: right 0.4s ease;
+                z-index: 2000;
+                display: flex !important;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .nav-items-right {
+                display: none; /* Simplify mobile header for now */
+            }
+
+            /* Mobile Logout Button */
+            .btn-mobile-logout {
+                background: rgba(255, 69, 58, 0.1); 
+                border: 1px solid rgba(255, 69, 58, 0.3);
+                color: #ff453a; 
+                padding: 10px 25px;
+                border-radius: 100px;
+                cursor: pointer;
+                text-transform: uppercase;
+                font-size: 12px;
+                font-weight: 600;
+                letter-spacing: 2px;
+                transition: all 0.3s ease;
+                margin-top: 10px;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .btn-mobile-logout:hover {
+                background: #ff453a;
+                color: white;
+                box-shadow: 0 10px 20px rgba(255, 69, 58, 0.3);
+                transform: translateY(-2px);
+                border-color: #ff453a;
+            }
+
+            .mobile-only-nav {
+                display: block;
+                margin-top: 20px;
+                text-align: center;
+                width: 100%;
+                border-top: 1px solid rgba(255,255,255,0.1);
+                padding-top: 20px;
+            }
+            .mobile-only-nav li {
+                margin: 10px 0;
+            }
+
+            /* Mobile Profile Card */
+            .mobile-profile-card {
+                background: rgba(255, 255, 255, 0.05);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 15px;
+                padding: 20px;
+                margin: 20px 20px 10px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .mobile-avatar {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                background: var(--color-accent);
+                color: #000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 24px;
+                font-weight: 800;
+                box-shadow: 0 0 20px rgba(212, 240, 92, 0.3);
+            }
+
+            .mobile-user-name {
+                font-size: 16px;
+                font-weight: 700;
+                color: white;
+                letter-spacing: 1px;
+            }
+
+            .mobile-role-badge {
+                font-size: 10px;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                color: rgba(255, 255, 255, 0.6);
+                background: rgba(255, 255, 255, 0.1);
+                padding: 4px 12px;
+                border-radius: 20px;
+            }
+
+            .admin-panel-btn {
+                font-size: 11px;
+                color: #000;
+                background: var(--color-accent);
+                text-decoration: none;
+                margin-top: 10px;
+                padding: 8px 20px;
+                border-radius: 20px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                box-shadow: 0 0 15px rgba(212, 240, 92, 0.4);
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .admin-panel-btn:active {
+                transform: scale(0.95);
+                box-shadow: 0 0 5px rgba(212, 240, 92, 0.4);
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-only-nav {
+                display: none;
+            }
+        }
     </style>
     
     <!-- Font Awesome for Icons -->
@@ -429,11 +581,51 @@
                 <span>Wisata</span>
             </a>
         </div>
-        <ul class="nav-links">
+        
+        <div class="burger-menu" id="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <ul class="nav-links" id="nav-links-list">
             <li><a href="{{ url('/#beranda') }}">Beranda</a></li>
             <li><a href="{{ url('/#wisata') }}">Destinasi</a></li>
             <li><a href="{{ url('/#fasilitas') }}">Fasilitas</a></li>
             <li><a href="{{ url('/#contact') }}">Kontak</a></li>
+
+            <!-- Mobile Auth Menu -->
+            <div class="mobile-only-nav">
+                @guest
+                    <li><a href="{{ url('/login') }}">Masuk</a></li>
+                    <li><a href="{{ url('/register') }}">Daftar</a></li>
+                @endguest
+
+                @auth
+                    <div class="mobile-profile-card">
+                        <div class="mobile-avatar">
+                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                        </div>
+                        <div class="mobile-user-name">{{ Auth::user()->name }}</div>
+                        <div class="mobile-role-badge">
+                            {{ Auth::user()->is_admin ? 'Administrator' : 'Explorer' }}
+                        </div>
+                        
+                        @if(Auth::user()->is_admin)
+                            <a href="{{ route('admin.dashboard') }}" class="admin-panel-btn">
+                                <i class="fas fa-user-shield"></i> Admin Panel
+                            </a>
+                        @endif
+                    </div>
+
+                    <li>
+                        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                            @csrf
+                            <button type="submit" class="btn-mobile-logout">
+                                Keluar
+                            </button>
+                        </form>
+                    </li>
+                @endauth
+            </div>
         </ul>
         <div class="nav-items-right">
             <div class="nav-auth">
@@ -549,7 +741,7 @@
                     <div class="schedule-card" 
                          data-category="{{ Str::slug($dest->category->name) }}" 
                          data-name="{{ strtolower($dest->name) }}"
-                         @if($loop->iteration > 8) style="display: none; opacity: 0;" @endif>
+                         @if($loop->iteration > 4) style="display: none; opacity: 0;" @endif>
                         <div class="card-image-wrapper">
                             <img src="{{ $dest->thumbnail ? asset($dest->thumbnail) : asset('images/beach.jpeg') }}" alt="{{ $dest->name }}" class="card-image">
                             <div class="card-badge">
@@ -625,6 +817,9 @@
                         <div class="facility-info-item {{ $loop->first ? 'active' : '' }}" data-id="{{ $item->id }}">
                             <h2 class="facility-big-title">{{ strtoupper($item->name) }}</h2>
                             <p class="facility-description">{{ $item->description ?? $defaultDesc }}</p>
+                            <a href="{{ url('/fasilitas') }}" class="btn-discover">
+                                Selengkapnya <i class="fas fa-arrow-right"></i>
+                            </a>
                         </div>
                         @endforeach
                     </div>
@@ -826,7 +1021,7 @@
                 // Logic: If activeFilter is 'all', only show first 4 that match search
                 if (matchesSearch && matchesCategory) {
                     if (activeFilter === 'all' && searchTerm === '') {
-                        if (visibleCount < 8) {
+                        if (visibleCount < 4) {
                             card.style.display = 'block';
                             setTimeout(() => card.style.opacity = '1', 10);
                             visibleCount++;
@@ -1249,6 +1444,54 @@
             // Start the cycle after 5 seconds
             setTimeout(showNextReview, 5000);
         }
+
+        // Mobile Menu Toggle (DOMContentLoaded wrapper added)
+        document.addEventListener('DOMContentLoaded', () => {
+            const burgerBtn = document.getElementById('mobile-menu-btn');
+            const navLinks = document.getElementById('nav-links-list');
+            
+            console.log('Mobile menu initialized', burgerBtn, navLinks);
+
+            if (burgerBtn && navLinks) {
+                burgerBtn.addEventListener('click', (e) => {
+                    e.preventDefault(); // Prevent default behavior
+                    e.stopPropagation(); // Stop bubbling
+                    
+                    navLinks.classList.toggle('active');
+                    console.log('Burger clicked, menu active:', navLinks.classList.contains('active'));
+                    
+                    // Toggle Icon
+                    const icon = burgerBtn.querySelector('i');
+                    if (navLinks.classList.contains('active')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+                
+                // Close menu when clicking a link
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        navLinks.classList.remove('active');
+                        const icon = burgerBtn.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    });
+                });
+
+                // Close menu when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!burgerBtn.contains(e.target) && !navLinks.contains(e.target) && navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
+                        const icon = burgerBtn.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+            }
+        });
     </script>
 </body>
 </html>

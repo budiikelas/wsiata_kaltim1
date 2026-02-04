@@ -15,62 +15,103 @@
                 <i class="fas fa-plus"></i> Tambah Fasilitas
             </button>
         </div>
-        <table class="modern-table">
-            <thead>
-                <tr>
-                    <th>Gambar</th>
-                    <th>Nama Fasilitas</th>
-                    <th>Deskripsi</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($facilities as $facility)
-                <tr>
-                    <td>
-                        <div class="facility-preview-img">
-                            @if($facility->image)
-                                <img src="{{ asset($facility->image) }}" alt="{{ $facility->name }}">
-                            @else
-                                <div class="placeholder-img"><i class="fas fa-image"></i></div>
-                            @endif
-                        </div>
-                    </td>
-                    <td>
-                        <div style="font-weight: 600;">{{ $facility->name }}</div>
-                    </td>
-                    <td>
-                        <span style="color: var(--text-dim);">{{ Str::limit($facility->description ?? '-', 60) }}</span>
-                    </td>
-                    <td>
-                        <div class="action-btns">
-                            <button class="btn-action btn-edit" 
-                                    data-id="{{ $facility->id }}"
-                                    data-name="{{ $facility->name }}"
-                                    data-description="{{ $facility->description }}"
-                                    data-image="{{ $facility->image ? asset($facility->image) : '' }}">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                            <form action="{{ route('admin.facilities.delete', $facility->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus fasilitas ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn-action btn-delete">
-                                    <i class="fas fa-trash-alt"></i> Hapus
+        <div class="table-container">
+            <table class="modern-table">
+                <thead>
+                    <tr>
+                        <th>Gambar</th>
+                        <th>Nama Fasilitas</th>
+                        <th>Deskripsi</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($facilities as $facility)
+                    <tr>
+                        <td>
+                            <div class="facility-preview-img">
+                                @if($facility->image)
+                                    <img src="{{ asset($facility->image) }}" alt="{{ $facility->name }}">
+                                @else
+                                    <div class="placeholder-img"><i class="fas fa-image"></i></div>
+                                @endif
+                            </div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 600;">{{ $facility->name }}</div>
+                        </td>
+                        <td>
+                            <span style="color: var(--text-dim);">{{ Str::limit($facility->description ?? '-', 60) }}</span>
+                        </td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn-action btn-edit" 
+                                        data-id="{{ $facility->id }}"
+                                        data-name="{{ $facility->name }}"
+                                        data-description="{{ $facility->description }}"
+                                        data-image="{{ $facility->image ? asset($facility->image) : '' }}">
+                                    <i class="fas fa-edit"></i> Edit
                                 </button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="4" style="text-align: center; color: var(--text-dim); padding: 50px;">
-                        <i class="fas fa-concierge-bell" style="font-size: 40px; margin-bottom: 15px; display: block; opacity: 0.3;"></i>
-                        Belum ada fasilitas. Silakan tambahkan fasilitas baru.
-                    </td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
+                                <form action="{{ route('admin.facilities.delete', $facility->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus fasilitas ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-action btn-delete">
+                                        <i class="fas fa-trash-alt"></i> Hapus
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: var(--text-dim); padding: 50px;">
+                            <i class="fas fa-concierge-bell" style="font-size: 40px; margin-bottom: 15px; display: block; opacity: 0.3;"></i>
+                            Belum ada fasilitas. Silakan tambahkan fasilitas baru.
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Mobile List View -->
+        <div class="mobile-list-view">
+            @forelse($facilities as $facility)
+            <div class="mobile-card">
+                <div class="mobile-card-header">
+                    @if($facility->image)
+                        <img src="{{ asset($facility->image) }}" alt="thumb">
+                    @else
+                        <div class="facility-preview-img"><div class="placeholder-img"><i class="fas fa-image"></i></div></div>
+                    @endif
+                    <div class="mobile-card-title">
+                        <h4>{{ $facility->name }}</h4>
+                        <p>{{ Str::limit($facility->description ?? '-', 40) }}</p>
+                    </div>
+                </div>
+                <div class="mobile-card-actions">
+                    <button class="btn-action btn-edit" 
+                            data-id="{{ $facility->id }}"
+                            data-name="{{ $facility->name }}"
+                            data-description="{{ $facility->description }}"
+                            data-image="{{ $facility->image ? asset($facility->image) : '' }}">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <form action="{{ route('admin.facilities.delete', $facility->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus fasilitas ini?')" style="flex: 1;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn-action btn-delete" style="width: 100%; justify-content: center;">
+                            <i class="fas fa-trash-alt"></i> Hapus
+                        </button>
+                    </form>
+                </div>
+            </div>
+            @empty
+            <div style="text-align: center; padding: 40px; color: var(--text-dim);">
+                Belum ada fasilitas.
+            </div>
+            @endforelse
+        </div>
     </div>
 
     @if ($errors->any())
@@ -128,172 +169,6 @@
 @endsection
 
 @push('styles')
-<style>
-    .btn-action {
-        padding: 8px 16px;
-        border: none;
-        border-radius: 8px;
-        font-size: 13px;
-        font-weight: 600;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.3s ease;
-    }
-    .btn-edit {
-        background: rgba(212, 175, 55, 0.1);
-        color: var(--gold-accent);
-        border: 1px solid rgba(212, 175, 55, 0.2);
-    }
-    .btn-edit:hover {
-        background: var(--gold-accent);
-        color: black;
-    }
-    .btn-delete {
-        background: rgba(231, 76, 60, 0.1);
-        color: #e74c3c;
-        border: 1px solid rgba(231, 76, 60, 0.2);
-    }
-    .btn-delete:hover {
-        background: #e74c3c;
-        color: white;
-    }
-    .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.8);
-        backdrop-filter: blur(5px);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 2000;
-    }
-    .modal-content {
-        width: 100%;
-        max-width: 500px;
-        max-height: 90vh;
-        overflow-y: auto;
-        background: #111;
-        border: 1px solid var(--glass-border);
-        border-radius: 24px;
-        padding: 30px;
-    }
-    .modal-overlay.active {
-        display: flex;
-    }
-    .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 25px;
-    }
-    .close-modal {
-        background: none;
-        border: none;
-        color: white;
-        font-size: 24px;
-        cursor: pointer;
-    }
-    .admin-form .form-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-    }
-    .admin-form .form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-    .admin-form label {
-        font-size: 13px;
-        color: var(--text-dim);
-    }
-    .admin-form input, .admin-form textarea {
-        background: rgba(255,255,255,0.05);
-        border: 1px solid var(--glass-border);
-        border-radius: 12px;
-        padding: 12px;
-        color: white;
-        font-family: inherit;
-        outline: none;
-        resize: vertical;
-    }
-    .admin-form input:focus, .admin-form textarea:focus {
-        border-color: var(--gold-accent);
-    }
-    .modal-footer {
-        margin-top: 30px;
-        display: flex;
-        justify-content: flex-end;
-        gap: 15px;
-    }
-    .btn-cancel {
-        background: transparent;
-        border: 1px solid var(--glass-border);
-        color: white;
-        padding: 12px 25px;
-        border-radius: 12px;
-        cursor: pointer;
-    }
-    .btn-save {
-        background: var(--gold-accent);
-        color: black;
-        border: none;
-        padding: 12px 25px;
-        border-radius: 12px;
-        font-weight: 700;
-        cursor: pointer;
-    }
-
-    /* PREVIEW IMG TABLE */
-    .facility-preview-img {
-        width: 80px;
-        height: 50px;
-        border-radius: 10px;
-        overflow: hidden;
-        background: rgba(255,255,255,0.05);
-        border: 1px solid var(--glass-border);
-    }
-    .facility-preview-img img { width: 100%; height: 100%; object-fit: cover; }
-    .facility-preview-img .placeholder-img { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.2); font-size: 20px; }
-
-    /* IMAGE UPLOAD STYLE */
-    .image-upload-wrapper { display: flex; flex-direction: column; gap: 12px; }
-    .image-preview-box {
-        height: 180px;
-        background: rgba(255,255,255,0.03);
-        border: 2px dashed var(--glass-border);
-        border-radius: 16px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-    }
-    .image-preview-box:hover { border-color: var(--gold-accent); }
-    .image-preview-box i { font-size: 32px; color: var(--gold-accent); margin-bottom: 10px; }
-    .image-preview-box span { font-size: 12px; color: var(--text-dim); }
-    .image-preview-box img { position: absolute; width: 100%; height: 100%; object-fit: cover; }
-    .btn-upload-trigger {
-        background: rgba(255,255,255,0.05);
-        color: white;
-        border: 1px solid var(--glass-border);
-        padding: 8px 15px;
-        border-radius: 10px;
-        font-size: 12px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-    }
-</style>
 @endpush
 
 @push('scripts')

@@ -14,10 +14,10 @@ class AdminController extends Controller
     public function index()
     {
         $stats = [
-            ['label' => 'Total Users', 'value' => User::count(), 'icon' => 'fas fa-users', 'growth' => '+0%'],
-            ['label' => 'Total Destinations', 'value' => Destination::count(), 'icon' => 'fas fa-map-marker-alt', 'growth' => '+0%'],
-            ['label' => 'Categories', 'value' => Category::count(), 'icon' => 'fas fa-list', 'growth' => '+0%'],
-            ['label' => 'Reviews', 'value' => \App\Models\Review::count(), 'icon' => 'fas fa-star', 'growth' => '+0%'],
+            $this->getStat('Total Users', User::class, 'fas fa-users'),
+            $this->getStat('Total Destinations', Destination::class, 'fas fa-map-marker-alt'),
+            $this->getStat('Categories', Category::class, 'fas fa-list'),
+            $this->getStat('Reviews', \App\Models\Review::class, 'fas fa-star'),
         ];
 
         $consumers = User::latest()->take(5)->get()->map(function($user) {
@@ -30,7 +30,18 @@ class AdminController extends Controller
             ];
         });
 
-        $popularDestinations = Destination::orderBy('rating', 'desc')->take(3)->get();
+        $popularDestinations = Destination::orderBy('rating', 'desc')->take(3)->get()->map(function($dest, $index) {
+            // Mock Data for UI
+            $dest->visits = rand(1200, 5000);
+            $maxVisits = 6000;
+            $dest->percentage = ($dest->visits / $maxVisits) * 100;
+            
+            // Distinct Colors for Top 3
+            $colors = ['#FFD700', '#00FFFF', '#d4f05c']; // Gold, Cyan, Lime
+            $dest->bar_color = $colors[$index] ?? '#ffffff';
+            
+            return $dest;
+        });
 
         return view('admin', compact('stats', 'consumers', 'popularDestinations'));
     }
@@ -160,5 +171,34 @@ class AdminController extends Controller
         $facility->delete();
 
         return redirect()->route('admin.facilities')->with('success', 'Fasilitas berhasil dihapus!');
+    }
+
+    private function getStat($label, $modelClass, $icon)
+    {
+        $currentMonth = $modelClass::whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->count();
+            
+        $lastMonth = $modelClass::whereMonth('created_at', now()->subMonth()->month)
+            ->whereYear('created_at', now()->subMonth()->year)
+            ->count();
+
+        $total = $modelClass::count();
+        
+        $growth = 0;
+        if ($lastMonth > 0) {
+            $growth = (($currentMonth - $lastMonth) / $lastMonth) * 100;
+        } elseif ($currentMonth > 0) {
+            $growth = 100;
+        }
+
+        $growthStr = ($growth >= 0 ? '+' : '') . round($growth, 1) . '%';
+
+        return [
+            'label' => $label,
+            'value' => $total,
+            'icon' => $icon,
+            'growth' => $growthStr . ' this month'
+        ];
     }
 }
