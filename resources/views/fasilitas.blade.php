@@ -353,9 +353,8 @@
                 
                 <nav class="side-nav">
                     <ul>
+                        <li><a href="{{ url('/') }}"><i class="fas fa-home"></i> Beranda</a></li>
                         <li><a href="{{ url('/detail?id=1') }}"><i class="fas fa-map-marker-alt"></i> Detail Wisata</a></li>
-                        <li class="active"><a href="{{ url('/fasilitas') }}"><i class="fas fa-list-check"></i> Fasilitas</a></li>
-
                     </ul>
                 </nav>
             </div>

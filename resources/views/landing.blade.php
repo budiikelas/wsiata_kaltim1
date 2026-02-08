@@ -589,7 +589,7 @@
         <ul class="nav-links" id="nav-links-list">
             <li><a href="{{ url('/#beranda') }}">Beranda</a></li>
             <li><a href="{{ url('/#wisata') }}">Destinasi</a></li>
-            <li><a href="{{ url('/#fasilitas') }}">Fasilitas</a></li>
+            <li><a href="{{ url('/#contact') }}">Kontak</a></li>
             <li><a href="{{ url('/#contact') }}">Kontak</a></li>
 
             <!-- Mobile Auth Menu -->
