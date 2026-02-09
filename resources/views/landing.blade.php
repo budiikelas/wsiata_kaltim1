@@ -955,11 +955,11 @@
                     <ul class="footer-contact">
                         <li>
                             <i class="fas fa-map-marker-alt"></i>
-                            <span>Jl. Ahmad Yani No. 123, Samarinda, Kalimantan Timur, Indonesia</span>
-                        </li>
+                            <span>Jl. pepeelge, Samarinda, Kalimantan Timur, Indonesia</span>
+                        </li> 
                         <li>
                             <i class="fas fa-phone-alt"></i>
-                            <span>+62 812 3456 7890</span>
+                            <span>+62 822 5574 3565</span>
                         </li>
                         <li>
                             <i class="fas fa-envelope"></i>
@@ -971,7 +971,7 @@
 
             <div class="footer-bottom">
                 <p>&copy; {{ date('Y') }} Wisata Kaltim. All rights reserved.</p>
-                <p>Designed with <i class="fas fa-heart" style="color: #ff453a;"></i> in Kaltim</p>
+                <p>Designed with Kelompok 8</i> in Kaltim</p>
             </div>
         </footer>
 

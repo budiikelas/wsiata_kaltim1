@@ -833,7 +833,7 @@
                                             <div class="row-user-info">
                                                 <div class="row-avatar">{{ strtoupper(substr($review->user->name, 0, 1)) }}</div>
                                                 <div class="row-names">
-                                                    <span class="row-username text-truncate">{{ $review->user->name }}</span>
+                                                    <span class="row-username text-truncate">{{ $review->user ? $review->user->name : ($review->guest_name ?: 'Guest') }}</span>
                                                     <span class="row-rating-stars">
                                                         @for($i=0; $i<5; $i++)
                                                             <i class="{{ $i < $review->rating ? 'fas' : 'far' }} fa-star"></i>
@@ -871,6 +871,13 @@
                                     <textarea name="comment" placeholder="Bagikan kesan Anda..." rows="3" required></textarea>
                                     <button type="submit" class="btn-spotify-submit">KIRIM ULASAN</button>
                                 </form>
+                            </div>
+                        @else
+                            <div class="panel-card rating-panel" style="text-align: center; padding: 30px;">
+                                <i class="fas fa-lock" style="font-size: 32px; color: var(--spotify-light-grey); margin-bottom: 16px; opacity: 0.5;"></i>
+                                <h3 style="margin-bottom: 12px;">Ingin memberi ulasan?</h3>
+                                <p style="font-size: 13px; color: var(--spotify-light-grey); margin-bottom: 20px;">Silakan masuk untuk membagikan pengalaman Anda.</p>
+                                <a href="{{ route('login') }}" class="btn-spotify-submit" style="text-decoration: none; display: inline-block;">MASUK SEKARANG</a>
                             </div>
                         @endauth
                         
@@ -921,7 +928,7 @@
                             }
                         }
                     } else if (response.status === 401) {
-                        window.location.href = '{{ url('/') }}';
+                        window.location.href = '{{ route('login') }}';
                     }
                 } catch (error) {
                     console.error('Error:', error);

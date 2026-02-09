@@ -19,7 +19,7 @@ class ReviewController extends Controller
         Review::create([
             'user_id' => auth()->id(),
             'destination_id' => $request->destination_id,
-            'guest_name' => auth()->check() ? auth()->user()->name : $request->name,
+            'guest_name' => auth()->user()->name,
             'guest_destination' => $request->destinasi_name,
             'rating' => $request->rating,
             'comment' => $request->comment ?? 'Holiday Rating'

@@ -14,7 +14,10 @@ use App\Http\Controllers\LandingController;
 //  Public Routes
 
 Route::get('/', [LandingController::class, 'index']);
-Route::post('reviews', [ReviewController::class, 'store'])->name('reviews.store');
+Route::get('/detail', [LandingController::class, 'detail']);
+Route::get('/packages', [LandingController::class, 'packages']);
+Route::get('/trending', [LandingController::class, 'trending'])->name('trending');
+Route::get('/fasilitas', [LandingController::class, 'fasilitas'])->name('fasilitas');
 
 // Authentication Access
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -31,14 +34,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     
     // Pages
-    Route::get('/packages', [LandingController::class, 'packages']);
-    Route::get('/trending', [LandingController::class, 'trending'])->name('trending');
     Route::get('/favorites', [LandingController::class, 'favorites'])->name('favorites');
-    Route::get('/fasilitas', [LandingController::class, 'fasilitas'])->name('fasilitas');
-    Route::get('/detail', [LandingController::class, 'detail']);
 
     // Action Logic
     Route::post('favorites/toggle', [\App\Http\Controllers\FavoriteController::class, 'toggle'])->name('favorites.toggle');
+    Route::post('reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
     // Resource Management
     Route::resource('categories', CategoryController::class);
