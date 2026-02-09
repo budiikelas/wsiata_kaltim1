@@ -412,8 +412,6 @@
             </div>
 
             <div class="sidebar-footer">
-                <a href="#" class="nav-icon"><i class="fas fa-bell"></i></a>
-                <a href="#" class="nav-icon"><i class="fas fa-cog"></i></a>
                 <div style="width: 35px; height: 35px; border-radius: 12px; overflow: hidden; border: 2px solid var(--color-accent);">
                     <img src="https://ui-avatars.com/api/?name={{ Auth::check() ? Auth::user()->name : 'Guest' }}&background=d4f05c&color=000" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
@@ -485,13 +483,9 @@
                                 {{ Str::limit($dest->description, 80) }}
                             </div>
                             <div class="small-card-meta">
-                                <span style="color: var(--color-accent); font-weight: 700;">
-                                    <i class="fas fa-clock" style="font-size: 10px; margin-right: 5px;"></i>
-                                    {{ $dest->duration ?? rand(2, 7) . ' Days' }}
-                                </span>
                                 <span style="color: #ffc107; font-weight: 700; display: flex; align-items: center; gap: 4px;">
                                     <i class="fas fa-star" style="font-size: 10px;"></i>
-                                    {{ number_format(rand(45, 50) / 10, 1) }} {{-- Slightly higher for trending --}}
+                                    {{ number_format($dest->rating ?? 4.8, 1) }}
                                 </span>
                             </div>
                             <a href="{{ url('/detail?id='.$dest->id) }}" class="btn-detail" style="margin-top: 5px; background: rgba(255,255,255,0.05); color: #fff; text-decoration: none; padding: 8px; border-radius: 12px; font-size: 11px; font-weight: 600; text-align: center; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px;">

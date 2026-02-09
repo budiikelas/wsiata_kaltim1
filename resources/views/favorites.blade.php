@@ -289,7 +289,6 @@
             </div>
 
             <div class="sidebar-footer">
-                <a href="#" class="nav-icon"><i class="fas fa-bell"></i></a>
                 <div style="width: 35px; height: 35px; border-radius: 12px; overflow: hidden; border: 2px solid var(--color-accent);">
                     <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}&background=d4f05c&color=000" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
@@ -322,11 +321,8 @@
                         <div class="small-card-content">
                             <div class="small-card-title search-title">{{ $dest->name }}</div>
                             <div class="small-card-meta">
-                                <span style="color: var(--color-accent); font-weight: 700;">
-                                    <i class="fas fa-clock"></i> {{ $dest->duration ?? rand(2, 7) . ' Days' }}
-                                </span>
                                 <span style="color: #ffc107; font-weight: 700;">
-                                    <i class="fas fa-star"></i> {{ number_format(rand(46, 50) / 10, 1) }}
+                                    <i class="fas fa-star"></i> {{ number_format($dest->rating ?? 4.8, 1) }}
                                 </span>
                             </div>
                             <a href="{{ url('/detail?id='.$dest->id) }}" class="btn-detail">
