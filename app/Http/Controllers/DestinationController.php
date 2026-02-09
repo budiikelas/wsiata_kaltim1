@@ -21,6 +21,9 @@ class DestinationController extends Controller
             'location' => 'required',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
+            'ticket_price' => 'nullable|numeric',
+            'operational_hours' => 'nullable|string',
+            'status' => 'required|in:aktif,nonaktif',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'gallery_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
         ]);
@@ -53,6 +56,11 @@ class DestinationController extends Controller
             }
         }
 
+        // Handle Facilities
+        if ($request->has('facilities')) {
+            $destination->facilities()->sync($request->facilities);
+        }
+
         return redirect()->back()->with('success', 'Destinasi dan galeri berhasil ditambahkan!');
     }
 
@@ -60,6 +68,10 @@ class DestinationController extends Controller
     {
         $destination = Destination::with(['category', 'facilities', 'galleries', 'reviews'])
             ->findOrFail($id);
+
+        if (request()->wantsJson() || request()->ajax()) {
+            return response()->json($destination);
+        }
 
         return view('detail', compact('destination'));
     }
@@ -76,6 +88,9 @@ class DestinationController extends Controller
             'location' => 'required',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
+            'ticket_price' => 'nullable|numeric',
+            'operational_hours' => 'nullable|string',
+            'status' => 'required|in:aktif,nonaktif',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'gallery_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
         ]);
@@ -115,6 +130,15 @@ class DestinationController extends Controller
                     ]);
                 }
             }
+        }
+
+
+
+        // Handle Facilities
+        if ($request->has('facilities')) {
+            $destination->facilities()->sync($request->facilities);
+        } else {
+            $destination->facilities()->detach();
         }
 
         return redirect()->back()->with('success', 'Destinasi berhasil diperbarui!');

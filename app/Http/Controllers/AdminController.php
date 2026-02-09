@@ -50,7 +50,8 @@ class AdminController extends Controller
     {
         $destinations = Destination::with('category')->get();
         $categories = Category::all();
-        return view('admin.destinations', compact('destinations', 'categories'));
+        $facilities = Facility::all();
+        return view('admin.destinations', compact('destinations', 'categories', 'facilities'));
     }
 
     public function consumers()
@@ -198,7 +199,7 @@ class AdminController extends Controller
             'label' => $label,
             'value' => $total,
             'icon' => $icon,
-            'growth' => $growthStr . ' this month'
+            'growth' => $growthStr
         ];
     }
 }

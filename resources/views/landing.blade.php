@@ -590,7 +590,6 @@
             <li><a href="{{ url('/#beranda') }}">Beranda</a></li>
             <li><a href="{{ url('/#wisata') }}">Destinasi</a></li>
             <li><a href="{{ url('/#contact') }}">Kontak</a></li>
-            <li><a href="{{ url('/#contact') }}">Kontak</a></li>
 
             <!-- Mobile Auth Menu -->
             <div class="mobile-only-nav">
@@ -757,9 +756,6 @@
                                 {{ Str::limit($dest->description, 80) }}
                             </p>
                             <div class="card-footer">
-                                <span class="trip-duration">
-                                    <i class="far fa-clock"></i> {{ $dest->duration ?? '2 Hari 1 Malam' }}
-                                </span>
                                 <a href="{{ url('/detail?id=' . $dest->id) }}" class="card-btn">Lihat Detail</a>
                             </div>
                         </div>
@@ -777,91 +773,6 @@
                     <a href="{{ url('/packages') }}" class="btn-more-dest">
                         Wisata Lainnya <i class="fas fa-arrow-right"></i>
                     </a>
-                </div>
-            </div>
-        </section>
-
-        @php 
-            // Updated facilities data for better tourist appeal
-            $displayFacilities = (isset($facilities) && !$facilities->isEmpty()) ? $facilities : collect([
-                (object)[ 'id' => 1, 'name' => 'Kolam Infinity', 'description' => 'Nikmati kesegaran air di kolam renang dengan pemandangan hutan tropis yang memukau.' ],
-                (object)[ 'id' => 2, 'name' => 'Kuliner Otentik', 'description' => 'Jelajahi cita rasa lokal Kalimantan Timur dan masakan internasional di restoran tepi sungai kami.' ],
-                (object)[ 'id' => 3, 'name' => 'Tur Terpadu', 'description' => 'Layanan transportasi eksklusif untuk menemani perjalanan wisata Anda dengan aman dan nyaman.' ],
-                (object)[ 'id' => 4, 'name' => 'Koneksi Cepat', 'description' => 'Tetap terhubung dengan internet kecepatan tinggi di area digital lounge yang nyaman.' ]
-            ]);
-            $defaultDesc = "Nikmati fasilitas premium yang kami sediakan untuk kenyamanan liburan Anda di Kalimantan Timur.";
-        @endphp
-
-        <!-- Immersive Facilities Slider -->
-        <section class="facility-immersive-section" id="fasilitas">
-            <!-- Background Layer with Parallax Attributes -->
-            <div class="facility-bg-layer" data-parallax="true" data-speed="0.2">
-                @foreach($displayFacilities as $index => $item)
-                    @php
-                        $img = ($item instanceof \App\Models\Facility && $item->image) ? asset($item->image) : asset('images/facility-pool.png');
-                    @endphp
-                <div class="bg-img {{ $loop->first ? 'active' : '' }}" data-id="{{ $item->id }}" style="background-image: url('{{ $img }}')"></div>
-                @endforeach
-                <div class="bg-overlay"></div>
-            </div>
-
-            <div class="facility-container">
-                <!-- Left Content: Typography -->
-                <div class="facility-text-content">
-                    <div class="text-top-info reveal reveal-fade-up">
-                        <span class="facility-label">FASILITAS PREMIUM</span>
-                    </div>
-                    
-                    <div class="active-facility-info reveal reveal-fade-up">
-                        @foreach($displayFacilities as $index => $item)
-                        <div class="facility-info-item {{ $loop->first ? 'active' : '' }}" data-id="{{ $item->id }}">
-                            <h2 class="facility-big-title">{{ strtoupper($item->name) }}</h2>
-                            <p class="facility-description">{{ $item->description ?? $defaultDesc }}</p>
-                            <a href="{{ url('/fasilitas') }}" class="btn-discover">
-                                Selengkapnya <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                        @endforeach
-                    </div>
-
-
-                </div>
-
-                <!-- Right Content: Card Carousel -->
-                <div class="facility-visual-slider">
-                    <div class="card-stack">
-                        @foreach($displayFacilities as $index => $item)
-                            @php
-                                $img = ($item instanceof \App\Models\Facility && $item->image) ? asset($item->image) : asset('images/facility-pool.png');
-                            @endphp
-                        <div class="facility-card {{ $loop->first ? 'active' : '' }}" data-id="{{ $item->id }}">
-                            <div class="card-inner">
-                                <img src="{{ $img }}" alt="{{ $item->name }}">
-                                <div class="card-text">
-                                    <span class="card-subtitle">Fasilitas {{ $index + 1 }}</span>
-                                    <h4 class="card-title">{{ $item->name }}</h4>
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-
-                <!-- Bottom Navigation & Progress -->
-                <div class="facility-controls">
-                    <div class="nav-arrows">
-                        <button class="control-btn prev"><i class="fas fa-chevron-left"></i></button>
-                        <button class="control-btn next"><i class="fas fa-chevron-right"></i></button>
-                    </div>
-                    <div class="progress-wrapper">
-                        <div class="progress-bar">
-                            <div class="progress-line"></div>
-                        </div>
-                        <div class="slide-count">
-                            <span class="current-num">01</span>
-                            <span class="total-num">/ {{ sprintf('%02d', count($displayFacilities)) }}</span>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>

@@ -21,6 +21,10 @@
                     <tr>
                         <th>Nama Destinasi</th>
                         <th>Kategori</th>
+                        <th>Rating</th>
+                        <th>Jam Buka</th>
+                        <th>Tiket</th>
+                        <th>Status</th>
                         <th>Lokasi</th>
                         <th>Actions</th>
                     </tr>
@@ -36,13 +40,32 @@
                             </div>
                         </td>
                         <td><span class="status-badge" style="background: rgba(212, 175, 55, 0.1); color: var(--gold-accent);">{{ $dest->category->name }}</span></td>
-                        <td>{{ $dest->location }}</td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 4px; color: var(--gold-accent);">
+                                <i class="fas fa-star" style="font-size: 12px;"></i>
+                                <span style="font-weight: 700;">{{ number_format($dest->rating ?? 4.5, 1) }}</span>
+                            </div>
+                        </td>
+                        <td>{{ $dest->operational_hours ?? '-' }}</td>
+                        <td>Rp {{ number_format($dest->ticket_price, 0, ',', '.') }}</td>
+                        <td>
+                            @if($dest->status == 'aktif')
+                                <span class="status-badge" style="background: rgba(46, 204, 113, 0.1); color: #2ecc71;">Aktif</span>
+                            @else
+                                <span class="status-badge" style="background: rgba(231, 76, 60, 0.1); color: #e74c3c;">Nonaktif</span>
+                            @endif
+                        </td>
+                        <td>{{ Str::limit($dest->location, 20) }}</td>
                         <td>
                             <div class="action-btns">
                                 <button class="btn-action btn-edit" 
                                         data-id="{{ $dest->id }}"
                                         data-name="{{ $dest->name }}"
                                         data-category="{{ $dest->category_id }}"
+                                        data-rating="{{ $dest->rating ?? 4.5 }}"
+                                        data-operational_hours="{{ $dest->operational_hours }}"
+                                        data-ticket_price="{{ $dest->ticket_price }}"
+                                        data-status="{{ $dest->status }}"
                                         data-location="{{ $dest->location }}"
                                         data-latitude="{{ $dest->latitude }}"
                                         data-longitude="{{ $dest->longitude }}"
@@ -89,6 +112,10 @@
                             data-id="{{ $dest->id }}"
                             data-name="{{ $dest->name }}"
                             data-category="{{ $dest->category_id }}"
+                            data-rating="{{ $dest->rating ?? 4.5 }}"
+                            data-operational_hours="{{ $dest->operational_hours }}"
+                            data-ticket_price="{{ $dest->ticket_price }}"
+                            data-status="{{ $dest->status }}"
                             data-location="{{ $dest->location }}"
                             data-latitude="{{ $dest->latitude }}"
                             data-longitude="{{ $dest->longitude }}"
@@ -138,6 +165,42 @@
                     <div class="form-group" style="grid-column: span 2;">
                         <label>Lokasi (Pilih di Peta)</label>
                         <input type="text" name="location" id="in_location" placeholder="Lokasi akan terisi otomatis saat anda memilih di peta" required readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Rating Destinasi</label>
+                        <input type="number" name="rating" id="in_rating" placeholder="4.5" min="0" max="5" step="0.1" value="4.5">
+                        <small style="color: var(--text-dim); font-size: 11px;">Rating 0.0 - 5.0 (contoh: 4.5)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Jam Operasional</label>
+                        <input type="text" name="operational_hours" id="in_operational_hours" placeholder="Contoh: 08:00 - 17:00 WITA">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Harga Tiket (Rp)</label>
+                        <input type="number" name="ticket_price" id="in_ticket_price" placeholder="0" min="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select name="status" id="in_status" required>
+                            <option value="aktif">Aktif</option>
+                            <option value="nonaktif">Nonaktif</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>Fasilitas Tersedia</label>
+                        <div class="facilities-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; max-height: 150px; overflow-y: auto; padding: 10px; border: 1px solid var(--glass-border); border-radius: 8px;">
+                            @foreach($facilities as $facility)
+                                <label class="checkbox-label" style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px;">
+                                    <input type="checkbox" name="facilities[]" value="{{ $facility->id }}" class="facility-checkbox">
+                                    <span>{{ $facility->name }}</span>
+                                </label>
+                            @endforeach
+                        </div>
                     </div>
                     <div class="form-group" style="grid-column: span 2;">
                         <div class="map-search-wrapper" style="position: relative; margin-bottom: 10px;">
@@ -199,6 +262,10 @@
 
     const inName = document.getElementById('in_name');
     const inCategory = document.getElementById('in_category');
+    const inRating = document.getElementById('in_rating');
+    const inOperational = document.getElementById('in_operational_hours');
+    const inTicket = document.getElementById('in_ticket_price');
+    const inStatus = document.getElementById('in_status');
     const inLocation = document.getElementById('in_location');
     const inDescription = document.getElementById('in_description');
 
@@ -210,6 +277,9 @@
         methodField.innerHTML = '';
         destForm.reset();
         
+        // Reset Checkboxes
+        document.querySelectorAll('.facility-checkbox').forEach(cb => cb.checked = false);
+
         // Reset Map & Search State
         if (mapSearchInput) mapSearchInput.value = '';
         inLatitude.value = '';
@@ -234,10 +304,34 @@
             
             inName.value = btn.dataset.name;
             inCategory.value = btn.dataset.category;
+            inRating.value = btn.dataset.rating || 4.5;
+            inOperational.value = btn.dataset.operational_hours || '';
+            inTicket.value = btn.dataset.ticket_price || 0;
+            inStatus.value = btn.dataset.status || 'aktif';
             inLocation.value = btn.dataset.location;
             inDescription.value = btn.dataset.description;
             if (mapSearchInput) mapSearchInput.value = '';
             
+            // Reset Checkboxes first
+            document.querySelectorAll('.facility-checkbox').forEach(cb => cb.checked = false);
+
+            // Fetch Destination Data including Facilities
+            fetch(`/destinations/${id}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.facilities) {
+                    data.facilities.forEach(fac => {
+                        const cb = document.querySelector(`.facility-checkbox[value="${fac.id}"]`);
+                        if (cb) cb.checked = true;
+                    });
+                }
+            });
+
             // Set Lat Lng
             const lat = btn.dataset.latitude;
             const lng = btn.dataset.longitude;

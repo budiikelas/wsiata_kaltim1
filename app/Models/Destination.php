@@ -14,7 +14,10 @@ class Destination extends Model
         'latitude',
         'longitude',
         'ticket_price',
-        'thumbnail'
+        'rating',
+        'operational_hours',
+        'thumbnail',
+        'status'
     ];
 
     public function category()

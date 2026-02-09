@@ -18,7 +18,11 @@
             <div class="stat-info">
                 <h3>{{ $stat['value'] }}</h3>
                 <p>{{ $stat['label'] }}</p>
-                <small style="color: var(--gold-accent)">{{ $stat['growth'] }} this month</small>
+                @php
+                    $isGrowth = str_contains($stat['growth'], '+');
+                    $color = $isGrowth ? '#27ae60' : '#e74c3c';
+                @endphp
+                <small style="color: {{ $color }};">{{ $stat['growth'] }} this month</small>
             </div>
         </div>
         @endforeach
@@ -44,7 +48,7 @@
                 <div class="bar" style="height: 60%;"></div>
                 <div class="bar" style="height: 95%;"></div>
             </div>
-            <div class="chart-labels" style="display: flex; justify-content: space-between; padding: 10px 10px 0; color: rgba(255,255,255,0.5); font-size: 10px;">
+            <div class="chart-labels">
                 <span>Jan</span>
                 <span>Feb</span>
                 <span>Mar</span>
@@ -58,14 +62,14 @@
             <div class="card-header">
                 <h4>Most Visited</h4>
             </div>
-            <div class="popular-list" style="display: flex; flex-direction: column; gap: 15px;">
+            <div class="popular-list">
                 @forelse($popularDestinations as $dest)
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-size: 13px;">{{ $dest->name }}</span>
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <span style="font-size: 11px; color: rgba(255,255,255,0.6);">{{ number_format($dest->visits) }}</span>
-                        <div style="width: 100px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;">
-                            <div style="width: {{ $dest->percentage }}%; height: 100%; background: {{ $dest->bar_color }}; box-shadow: 0 0 10px {{ $dest->bar_color }};"></div>
+                <div class="popular-item">
+                    <span style="font-size: 13px; font-weight: 500;">{{ $dest->name }}</span>
+                    <div class="popular-item-info">
+                        <span class="popular-item-visits">{{ number_format($dest->visits) }}</span>
+                        <div class="bar-progress-container">
+                            <div class="bar-progress-fill" style="width: {{ $dest->percentage }}%; background: {{ $dest->bar_color }}; box-shadow: 0 0 10px {{ $dest->bar_color }}44;"></div>
                         </div>
                     </div>
                 </div>
@@ -76,11 +80,12 @@
         </div>
     </div>
 
-    <!-- Recent Consumers Table -->
     <div class="table-card">
         <div class="card-header">
             <h4>Recent Users Activities</h4>
-            <button class="btn-add">Add New Data</button>
+            <button class="btn-add">
+                <i class="fas fa-plus"></i> Add New Data
+            </button>
         </div>
         <div class="table-container">
             <table class="modern-table">

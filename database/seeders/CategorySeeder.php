@@ -17,6 +17,7 @@ class CategorySeeder extends Seeder
             ['name' => 'Gunung', 'description' => 'Destinasi wisata pegunungan dan trekking'],
             ['name' => 'Hutan', 'description' => 'Destinasi wisata alam liar dan hutan hujan'],
             ['name' => 'Budaya', 'description' => 'Destinasi wisata sejarah dan kearifan lokal'],
+            ['name' => 'Air Terjun', 'description' => 'Destinasi wisata air terjun dan sungai'],
         ];
 
         foreach ($categories as $category) {

@@ -66,7 +66,7 @@
         .top-row-grid { display: grid; grid-template-columns: 1.2fr 300px; gap: 24px; margin-bottom: 32px; align-items: stretch; }
         
         /* Banner Card Style */
-        .banner-card { position: relative; height: 380px; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; justify-content: center; padding: 50px; background: #282828; }
+        .banner-card { position: relative; min-height: 450px; height: auto; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; justify-content: center; padding: 50px; background: #282828; }
         .banner-bg { position: absolute; top:0; left:0; width:100%; height:100%; z-index: 1; }
         .banner-bg img { width:100%; height:100%; object-fit:cover; filter: brightness(0.6); }
         .banner-bg::after { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, transparent 100%); z-index: 2; }
@@ -152,7 +152,7 @@
         /* PREMIUM FACILITIES SLIDER (SYNCED FROM LANDING) */
         .facility-immersive-section {
             position: relative;
-            min-height: 700px;
+            min-height: 450px;
             margin: 32px 0;
             border-radius: 24px;
             overflow: hidden;
@@ -200,11 +200,11 @@
             width: 100%;
             max-width: 1300px;
             margin: 0 auto;
-            padding: 60px;
+            padding: 40px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            min-height: 700px;
+            min-height: 450px;
         }
 
         .facility-text-content {
@@ -234,7 +234,7 @@
 
         .active-facility-info {
             position: relative;
-            height: 250px;
+            height: 180px;
         }
 
         .facility-info-item {
@@ -271,8 +271,8 @@
         }
 
         .facility-visual-slider {
-            width: 350px;
-            height: 350px;
+            width: 280px;
+            height: 280px;
             position: relative;
         }
 
@@ -285,8 +285,8 @@
 
         .facility-card {
             position: absolute;
-            width: 240px;
-            height: 350px;
+            width: 180px;
+            height: 260px;
             border-radius: 15px;
             overflow: hidden;
             transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -357,6 +357,99 @@
             .facility-info-item { position: relative; width: 100%; }
             .facility-controls { position: relative; bottom: 0; left: 0; right: 0; justify-content: center; margin-top: 30px; }
         }
+
+        /* NEW PREMIUM STYLES */
+        .info-pill {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .info-pill:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+            border-color: var(--accent-yellow);
+        }
+        .info-pill i { color: var(--accent-yellow); font-size: 16px; }
+
+        .facilities-grid-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .facility-card-item {
+            background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .facility-card-item::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(253, 188, 59, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .facility-card-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(253, 188, 59, 0.3);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .facility-card-item:hover::before { opacity: 1; }
+        
+        .facility-icon-placeholder {
+            width: 50px; height: 50px;
+            border-radius: 12px;
+            background: rgba(253, 188, 59, 0.1);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--accent-yellow);
+            font-size: 20px;
+            margin-bottom: 5px;
+            transition: transform 0.3s ease;
+        }
+        .facility-card-item:hover .facility-icon-placeholder {
+            transform: scale(1.1) rotate(5deg);
+            background: var(--accent-yellow);
+            color: #000;
+        }
+        .facility-img {
+            width: 50px; height: 50px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-bottom: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        .facility-card-item:hover .facility-img { transform: scale(1.1); }
+        .facility-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: rgba(255,255,255,0.9);
+            z-index: 1;
+        }
     </style>
     
     <!-- External Libraries -->
@@ -418,67 +511,24 @@
 
             <!-- Scrollable Area -->
             <div class="scroll-area">
-                <!-- Top Row: Banner Card + Map Card -->
-                <div class="top-row-grid">
-                    <!-- Hero Banner Card -->
-                    <div class="banner-card">
-                        <div class="banner-bg">
-                            <img src="{{ $destination->thumbnail ? asset($destination->thumbnail) : asset('images/beach.jpeg') }}" alt="Background">
-                        </div>
-                        <div class="banner-content">
-                            <div class="verified-badge">
-                                <i class="fas fa-check-circle"></i> Destination Verified
-                            </div>
-                            <h1 class="destination-title text-truncate">{{ $destination->name }}</h1>
-                            <p class="destination-description">{{ $destination->description ?? 'Nikmati pesona alam Kalimantan Timur yang memukau. Destinasi ini menawarkan perpaduan sempurna antara ketenangan alam, petualangan seru, dan keindahan visual yang tak terlupakan bagi setiap pengunjung.' }}</p>
-                            <p class="destination-stats">
-                                <i class="fas fa-star"></i> {{ number_format($destination->reviews->avg('rating') ?: 5.0, 1) }} 
-                                • {{ $destination->reviews->count() }} ulasan
-                            </p>
-                            <div class="banner-actions">
-                                @auth
-                                    @php $isFavorited = Auth::user()->favorites()->where('destination_id', $destination->id)->exists(); @endphp
-                                    <button class="btn-play-large" id="love-btn-main"><i class="{{ $isFavorited ? 'fas' : 'far' }} fa-heart"></i></button>
-                                @else
-                                    <button class="btn-play-large" id="love-btn-main"><i class="far fa-heart"></i></button>
-                                @endauth
-                                <button class="btn-outline-text" id="fav-btn" data-id="{{ $destination->id }}">
-                                    @auth
-                                        @php $isFavorited = Auth::user()->favorites()->where('destination_id', $destination->id)->exists(); @endphp
-                                        {{ $isFavorited ? 'DIFAVORITKAN' : 'FAVORITKAN' }}
-                                    @else
-                                        FAVORITKAN
-                                    @endauth
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Popular Card (Map) -->
-                    <div class="popular-card">
-                        <h3>Popular Location</h3>
-                        <div class="map-preview-spotify">
-                            <img src="{{ asset('images/gps-map-final.jpg') }}" alt="Map">
-                            <div class="map-pulse"></div>
-                            @php
-                                $mapUrl = "https://www.google.com/maps/search/?api=1&query=" . urlencode($destination->name . ' ' . $destination->location);
-                                if($destination->latitude && $destination->longitude) {
-                                    $mapUrl = "https://www.google.com/maps/search/?api=1&query={$destination->latitude},{$destination->longitude}";
-                                }
-                            @endphp
-                            <a href="{{ $mapUrl }}" target="_blank" class="btn-open-spotify-map">BUKA PETA</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- DESTINATION PHOTOS GALLERY (REPLACED FACILITIES) -->
+                <!-- DESTINATION PHOTOS GALLERY -->
                 @php 
-                    $galleryImages = $destination->galleries->isEmpty() ? collect([
-                        (object)[ 'id' => 1, 'image' => $destination->thumbnail ?: 'images/beach.jpeg', 'caption' => 'Pemandangan Utama' ],
-                        (object)[ 'id' => 2, 'image' => 'images/islandia.png', 'caption' => 'Sudut Panorama' ],
-                        (object)[ 'id' => 3, 'image' => 'images/kyoto.png', 'caption' => 'Suasana Destinasi' ],
-                        (object)[ 'id' => 4, 'image' => 'images/retreat.png', 'caption' => 'Keindahan Alam' ]
-                    ]) : $destination->galleries;
+                    // Start with destination thumbnail as the first image
+                    $galleryImages = collect([
+                        (object)[ 'id' => 0, 'image' => $destination->thumbnail ?: 'images/beach.jpeg', 'caption' => 'Pemandangan Utama - ' . $destination->name ]
+                    ]);
+                    
+                    // Then add all gallery images from database
+                    if(!$destination->galleries->isEmpty()) {
+                        $galleryImages = $galleryImages->merge($destination->galleries);
+                    } else {
+                        // If no galleries, add default placeholder images
+                        $galleryImages = $galleryImages->merge(collect([
+                            (object)[ 'id' => 2, 'image' => 'images/islandia.png', 'caption' => 'Sudut Panorama' ],
+                            (object)[ 'id' => 3, 'image' => 'images/kyoto.png', 'caption' => 'Suasana Destinasi' ],
+                            (object)[ 'id' => 4, 'image' => 'images/retreat.png', 'caption' => 'Keindahan Alam' ]
+                        ]));
+                    }
                 @endphp
 
                 <section class="facility-immersive-section" id="fasilitas">
@@ -541,6 +591,144 @@
                         </div>
                     </div>
                 </section>
+
+                <!-- Top Row: Banner Card + Map Card -->
+                <div class="top-row-grid">
+                    <!-- Hero Banner Card -->
+                    <div class="banner-card">
+                        <div class="banner-bg">
+                            <img src="{{ $destination->thumbnail ? asset($destination->thumbnail) : asset('images/beach.jpeg') }}" alt="Background">
+                        </div>
+                        <div class="banner-content">
+                            <div class="verified-badge">
+                                <i class="fas fa-check-circle"></i> Destination Verified
+                            </div>
+                            <h1 class="destination-title text-truncate">{{ $destination->name }}</h1>
+                            <p class="destination-description">{{ $destination->description ?? 'Nikmati pesona alam Kalimantan Timur yang memukau. Destinasi ini menawarkan perpaduan sempurna antara ketenangan alam, petualangan seru, dan keindahan visual yang tak terlupakan bagi setiap pengunjung.' }}</p>
+                            <p class="destination-stats">
+                                <i class="fas fa-star"></i> {{ number_format($destination->reviews->avg('rating') ?: 5.0, 1) }} 
+                                • {{ $destination->reviews->count() }} ulasan
+                            </p>
+                            
+                            <div class="destination-info-pills" style="display: flex; gap: 16px; margin-bottom: 28px; flex-wrap: wrap;">
+                                <div class="info-pill">
+                                    <i class="far fa-clock"></i>
+                                    <div style="display: flex; flex-direction: column; gap: 2px;">
+                                        <span style="font-size: 10px; opacity: 0.7; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Jam Operasional</span>
+                                        <span style="font-size: 14px; font-weight: 700;">{{ $destination->operational_hours ?? '08:00 - 17:00' }}</span>
+                                    </div>
+                                </div>
+                                <div class="info-pill">
+                                    <i class="fas fa-tag"></i>
+                                    <div style="display: flex; flex-direction: column; gap: 2px;">
+                                        <span style="font-size: 10px; opacity: 0.7; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Harga Tiket</span>
+                                        <span style="font-size: 14px; font-weight: 700;">Rp {{ number_format($destination->ticket_price, 0, ',', '.') }} <small style="opacity: 0.7; font-weight: 400; font-size: 11px;">/ orang</small></span>
+                                    </div>
+                                </div>
+                                <div class="info-pill">
+                                    @if($destination->status == 'aktif')
+                                        <i class="fas fa-check-circle" style="color: #2ecc71;"></i>
+                                        <div style="display: flex; flex-direction: column; gap: 2px;">
+                                            <span style="font-size: 10px; opacity: 0.7; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Status</span>
+                                            <span style="font-size: 14px; font-weight: 700; color: #2ecc71;">Aktif</span>
+                                        </div>
+                                    @else
+                                        <i class="fas fa-times-circle" style="color: #e74c3c;"></i>
+                                        <div style="display: flex; flex-direction: column; gap: 2px;">
+                                            <span style="font-size: 10px; opacity: 0.7; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Status</span>
+                                            <span style="font-size: 14px; font-weight: 700; color: #e74c3c;">Nonaktif</span>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="banner-actions">
+                                @auth
+                                    @php $isFavorited = Auth::user()->favorites()->where('destination_id', $destination->id)->exists(); @endphp
+                                    <button class="btn-play-large" id="love-btn-main"><i class="{{ $isFavorited ? 'fas' : 'far' }} fa-heart"></i></button>
+                                @else
+                                    <button class="btn-play-large" id="love-btn-main"><i class="far fa-heart"></i></button>
+                                @endauth
+                                <button class="btn-outline-text" id="fav-btn" data-id="{{ $destination->id }}">
+                                    @auth
+                                        @php $isFavorited = Auth::user()->favorites()->where('destination_id', $destination->id)->exists(); @endphp
+                                        {{ $isFavorited ? 'DIFAVORITKAN' : 'FAVORITKAN' }}
+                                    @else
+                                        FAVORITKAN
+                                    @endauth
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Popular Card (Map) -->
+                    <div class="popular-card">
+                        <h3>Popular Location</h3>
+                        <div class="map-preview-spotify">
+                            <img src="{{ asset('images/gps-map-final.jpg') }}" alt="Map">
+                            <div class="map-pulse"></div>
+                            @php
+                                $mapUrl = "https://www.google.com/maps/search/?api=1&query=" . urlencode($destination->name . ' ' . $destination->location);
+                                if($destination->latitude && $destination->longitude) {
+                                    $mapUrl = "https://www.google.com/maps/search/?api=1&query={$destination->latitude},{$destination->longitude}";
+                                }
+                            @endphp
+                            <a href="{{ $mapUrl }}" target="_blank" class="btn-open-spotify-map">BUKA PETA</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Facilities Section -->
+                <div class="facilities-list-container" style="margin-bottom: 50px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <h3 class="area-title" style="margin-bottom: 0;">Fasilitas Tersedia</h3>
+                            <span style="background: rgba(253, 188, 59, 0.2); color: var(--accent-yellow); padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 700;">{{ $destination->facilities->count() }} Fasilitas</span>
+                        </div>
+                        <div style="height: 1px; flex: 1; margin-left: 20px; background: linear-gradient(90deg, rgba(255,255,255,0.1), transparent);"></div>
+                    </div>
+                    
+                    <div class="facilities-grid-display">
+                        @forelse($destination->facilities as $facility)
+                            <div class="facility-card-item">
+                                @if($facility->image)
+                                    <img src="{{ asset($facility->image) }}" alt="{{ $facility->name }}" class="facility-img">
+                                @else
+                                    <div class="facility-icon-placeholder">
+                                        @php
+                                            $iconMap = [
+                                                'parkir' => 'fa-parking',
+                                                'toilet' => 'fa-restroom',
+                                                'mushola' => 'fa-mosque',
+                                                'wifi' => 'fa-wifi',
+                                                'restoran' => 'fa-utensils',
+                                                'cafe' => 'fa-coffee',
+                                                'gazebo' => 'fa-campground',
+                                                'playground' => 'fa-child',
+                                                'kolam' => 'fa-swimming-pool',
+                                                'default' => 'fa-check-circle'
+                                            ];
+                                            $facilityLower = strtolower($facility->name);
+                                            $icon = 'fa-check-circle';
+                                            foreach($iconMap as $key => $value) {
+                                                if(str_contains($facilityLower, $key)) {
+                                                    $icon = $value;
+                                                    break;
+                                                }
+                                            }
+                                        @endphp
+                                        <i class="fas {{ $icon }}"></i>
+                                    </div>
+                                @endif
+                                <span class="facility-name">{{ $facility->name }}</span>
+                            </div>
+                        @empty
+                            <div class="empty-message" style="grid-column: 1/-1; color: var(--spotify-light-grey); font-size: 15px; font-style: italic; text-align: center; padding: 40px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px dashed rgba(255,255,255,0.1);">
+                                <i class="far fa-eye-slash" style="font-size: 24px; margin-bottom: 10px; display: block; opacity: 0.5;"></i>
+                                Belum ada data fasilitas untuk destinasi ini.
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
 
                 <!-- Grid: Reviews Area vs Form Sidebar -->
                 <div class="main-body-grid">
