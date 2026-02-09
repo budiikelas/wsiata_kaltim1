@@ -590,12 +590,6 @@
                         <a href="{{ url('/detail?id='.$featured->id) }}" class="btn-main">
                             <i class="fas fa-play"></i> Explore Now
                         </a>
-                        <a href="#" class="btn-sub">
-                            <i class="fas fa-plus"></i>
-                        </a>
-                        <a href="#" class="btn-sub" style="font-size: 14px; width: auto;">
-                            <i class="fas fa-ellipsis-h"></i>
-                        </a>
                     </div>
                 </div>
             </div>

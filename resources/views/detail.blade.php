@@ -142,6 +142,68 @@
             .breadcrumb-text { display: none; }
         }
 
+        /* Sidebar Recommendations Styling */
+        .recommendation-list {
+            margin-top: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            overflow-y: auto;
+            flex: 1;
+            padding: 0 4px;
+        }
+        /* Custom scrollbar for recommendation list */
+        .recommendation-list::-webkit-scrollbar { width: 4px; }
+        .recommendation-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+
+        .recommendation-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px;
+            border-radius: 8px;
+            transition: var(--transition-standard);
+            cursor: pointer;
+            text-decoration: none !important;
+        }
+        .recommendation-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .recommendation-thumb {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: #282828;
+        }
+        .recommendation-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .recommendation-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            overflow: hidden;
+        }
+        .recommendation-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: white;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .recommendation-meta {
+            font-size: 11px;
+            color: var(--spotify-light-grey);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
         @media (max-width: 768px) {
             .destination-title { font-size: 36px; }
             .banner-card { height: auto; padding: 24px; }
@@ -481,6 +543,26 @@
                         <li class="active"><a href="{{ url('/') }}"><i class="fas fa-home"></i> Beranda</a></li>
                     </ul>
                 </nav>
+
+                <div class="side-nav-group" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
+                    <h3 class="section-title">REKOMENDASI</h3>
+                    <div class="recommendation-list">
+                        @foreach($recommendations as $rec)
+                            <a href="{{ url('/detail?id='.$rec->id) }}" class="recommendation-item">
+                                <div class="recommendation-thumb">
+                                    <img src="{{ $rec->thumbnail ? asset($rec->thumbnail) : asset('images/beach.jpeg') }}" alt="{{ $rec->name }}">
+                                </div>
+                                <div class="recommendation-info">
+                                    <span class="recommendation-name">{{ $rec->name }}</span>
+                                    <div class="recommendation-meta">
+                                        <i class="fas fa-star" style="font-size: 9px; color: var(--accent-yellow);"></i> 
+                                        {{ number_format($rec->rating ?? 4.8, 1) }}
+                                    </div>
+                                </div>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
 
             </div>
         </aside>

@@ -277,144 +277,6 @@
             background: linear-gradient(90deg, transparent, #d4f05c, transparent);
             opacity: 0.5;
         }
-        .rating-stars {
-            display: flex;
-            gap: 5px;
-            color: #ffcc00;
-            font-size: 18px;
-            margin-bottom: 8px;
-        }
-
-        .info-item div {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .info-item strong {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--color-accent);
-            opacity: 0.8;
-        }
-        
-        .contact-main-title span {
-            color: var(--color-accent);
-        }
-        
-        .airplane-float-card.glass-panel {
-            min-width: 250px;
-        }
-
-        /* Interactive Star Rating */
-        .star-rating-input {
-            display: flex;
-            gap: 10px;
-            padding: 10px 0;
-        }
-
-        .star-item {
-            font-size: 28px;
-            color: transparent;
-            -webkit-text-stroke: 1px rgba(0,0,0,0.2);
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .star-item:hover {
-            transform: scale(1.2);
-            color: #ffcc00;
-            -webkit-text-stroke: 0;
-        }
-
-        .star-item.active {
-            color: #ffcc00;
-            -webkit-text-stroke: 0;
-            text-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
-            animation: starPulse 0.4s ease;
-        }
-
-        @keyframes starPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.4); }
-            100% { transform: scale(1); }
-        }
-
-        .rating-label-hint {
-            font-size: 12px;
-            color: rgba(255,255,255,0.5);
-            margin-top: 5px;
-            display: block;
-        }
-
-        }
-
-        /* Rating Toast Notification Wrapper */
-        .rating-toast-container {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 500px;
-            height: 200px;
-            overflow: hidden;
-            pointer-events: none;
-            z-index: 9999;
-        }
-
-        #rating-toast {
-            position: absolute;
-            bottom: 30px;
-            right: 30px;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(15px);
-            border-left: 4px solid #ffcc00;
-            color: white;
-            padding: 20px 25px;
-            border-radius: 12px;
-            box-shadow: 0 15px 45px rgba(0,0,0,0.5);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            z-index: 9999;
-            transform: translateY(150%);
-            opacity: 0;
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: none;
-        }
-
-        #rating-toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        #rating-toast i {
-            font-size: 24px;
-            color: #ffcc00;
-        }
-
-        .toast-content h5 {
-            margin: 0;
-            font-size: 15px;
-            font-weight: 700;
-            color: #ffcc00;
-        }
-
-        .toast-content p {
-            margin: 5px 0 0;
-            font-size: 13px;
-            color: rgba(255,255,255,0.8);
-        }
-
-        /* Mobile Navigation Styles */
-        .burger-menu {
-            display: none;
-            font-size: 24px;
-            color: white;
-            cursor: pointer;
-            z-index: 1001;
-        }
-
         @media (max-width: 768px) {
             .burger-menu {
                 display: block;
@@ -557,6 +419,220 @@
                 display: none;
             }
         }
+
+        /* FAQ Styles */
+        .faq-section {
+            padding: 100px 20px;
+            background: #111111;
+        }
+
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .faq-title {
+            font-size: 36px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+
+        .faq-subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 16px;
+        }
+
+        .faq-item {
+            background: #1a1a1a;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .faq-question {
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 18px;
+            color: #ffffff;
+        }
+
+        .faq-question i {
+            transition: transform 0.3s ease;
+            color: #d4f05c;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #1a1a1a;
+        }
+
+        .faq-answer-content {
+            padding: 0 30px 25px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+        }
+
+        /* Footer Styles */
+        .modern-footer {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 80px 20px 30px;
+        }
+
+        .footer-grid {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+
+        .footer-brand .logo {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .footer-brand .logo i {
+            color: #d4f05c;
+        }
+
+        .footer-brand p {
+            color: rgba(255,255,255,0.6);
+            line-height: 1.8;
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            background: #d4f05c;
+            color: #1a1a1a;
+            transform: translateY(-5px);
+        }
+
+        .footer-heading {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+
+        .footer-links li a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 15px;
+        }
+
+        .footer-links li a:hover {
+            color: #d4f05c;
+            padding-left: 5px;
+        }
+
+        .footer-contact {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-contact li {
+            display: flex;
+            gap: 15px;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        .footer-contact i {
+            color: #d4f05c;
+            margin-top: 5px;
+        }
+
+        .footer-bottom {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: rgba(255,255,255,0.4);
+            font-size: 14px;
+        }
+
+        @media (max-width: 1100px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
     </style>
     
     <!-- Font Awesome for Icons -->
@@ -582,23 +658,19 @@
             </a>
         </div>
         
-        <div class="burger-menu" id="mobile-menu-btn">
-            <i class="fas fa-bars"></i>
-        </div>
 
         <ul class="nav-links" id="nav-links-list">
             <li><a href="{{ url('/#beranda') }}">Beranda</a></li>
             <li><a href="{{ url('/#wisata') }}">Destinasi</a></li>
-            <li><a href="{{ url('/#contact') }}">Kontak</a></li>
+            <li><a href="{{ url('/#faq') }}">FAQ</a></li>
 
-            <!-- Mobile Auth Menu -->
-            <div class="mobile-only-nav">
-                @guest
-                    <li><a href="{{ url('/login') }}">Masuk</a></li>
-                    <li><a href="{{ url('/register') }}">Daftar</a></li>
-                @endguest
+            @guest
+                <li class="mobile-only-nav"><a href="{{ url('/login') }}">Masuk</a></li>
+                <li class="mobile-only-nav"><a href="{{ url('/register') }}">Daftar</a></li>
+            @endguest
 
-                @auth
+            @auth
+                <li class="mobile-only-nav">
                     <div class="mobile-profile-card">
                         <div class="mobile-avatar">
                             {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
@@ -614,17 +686,17 @@
                             </a>
                         @endif
                     </div>
+                </li>
 
-                    <li>
-                        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-                            @csrf
-                            <button type="submit" class="btn-mobile-logout">
-                                Keluar
-                            </button>
-                        </form>
-                    </li>
-                @endauth
-            </div>
+                <li class="mobile-only-nav">
+                    <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                        @csrf
+                        <button type="submit" class="btn-mobile-logout">
+                            Keluar
+                        </button>
+                    </form>
+                </li>
+            @endauth
         </ul>
         <div class="nav-items-right">
             <div class="nav-auth">
@@ -779,103 +851,129 @@
 
 
 
-        <!-- Contact Section - Airplane Split Layout with 3D Breakthrough -->
-        <section class="contact-section" id="contact">
-            <div class="contact-bg-wrapper section-bg-wrapper">
-                <div class="contact-bg section-parallax-bg" data-parallax="true">
-                    <img src="{{ asset('images/tropical-bg.png') }}" alt="Contact Section Background">
+        <!-- FAQ Section -->
+        <section class="faq-section" id="faq">
+            <div class="faq-container reveal reveal-fade-up">
+                <div class="faq-header">
+                    <h2 class="faq-title">Pertanyaan Umum</h2>
+                    <p class="faq-subtitle">Segala hal yang perlu Anda ketahui tentang petualangan bersama kami.</p>
                 </div>
-                <div class="contact-overlay section-overlay"></div>
-            </div>
-            <div class="contact-split-container">
-                <!-- Left Content Area (White) -->
-                <div class="contact-left-content">
-                    <div class="contact-header">
-                        <span class="contact-label">CONTACT & RATING</span>
-                        <h2 class="contact-main-title">Kepuasan Anda Adalah<br><span>Prioritas Kami.</span></h2>
-                        <p class="contact-subtitle-text">
-                            Bergabunglah dengan ribuan wisatawan yang telah merasakan pengalaman luar biasa bersama kami. Hubungi kami untuk konsultasi perjalanan Anda.
-                        </p>
-                    </div>
 
-                    <div class="modern-form-wrapper">
-                        <form id="holiday-rating-form" class="airplane-form">
-                            @csrf
-                            <input type="hidden" name="destination_id" value=""> 
-                            <div class="airplane-form-grid">
-                                @guest
-                                <div class="airplane-form-group">
-                                    <label>Nama Wisatawan</label>
-                                    <div class="airplane-input-box">
-                                        <input type="text" name="name" placeholder="Masukkan nama lengkap" required>
-                                    </div>
-                                </div>
-                                <div class="airplane-form-group">
-                                    <label>Email / Kontak</label>
-                                    <div class="airplane-input-box">
-                                        <input type="email" name="email" placeholder="Alamat email aktif" required>
-                                    </div>
-                                </div>
-                                @else
-                                <input type="hidden" name="name" value="{{ Auth::user()->name }}">
-                                <input type="hidden" name="email" value="{{ Auth::user()->email }}">
-                                @endguest
-                                <div class="airplane-form-group">
-                                    <label>Destinasi Wisata</label>
-                                    <div class="airplane-input-box">
-                                        <input type="text" name="destinasi_name" placeholder="Wisata yang dikunjungi" required>
-                                    </div>
-                                </div>
-                                <div class="airplane-form-group">
-                                    <label>Skor Rating Liburan</label>
-                                    <div class="star-rating-input" id="holiday-stars">
-                                        <i class="fas fa-star star-item" data-value="1"></i>
-                                        <i class="fas fa-star star-item" data-value="2"></i>
-                                        <i class="fas fa-star star-item" data-value="3"></i>
-                                        <i class="fas fa-star star-item" data-value="4"></i>
-                                        <i class="fas fa-star star-item" data-value="5"></i>
-                                    </div>
-                                    <input type="hidden" name="rating" id="rating-value" value="0">
-                                    <span class="rating-label-hint" id="rating-text">Ketuk untuk memberi bintang</span>
-                                </div>
-                            </div>
-                            <button type="submit" class="airplane-submit-btn">
-                                <i class="fas fa-star"></i> Kirim Rating Liburan
-                            </button>
-                        </form>
-                    </div>
-
-                    <div class="airplane-contact-info">
-                        <div class="info-item">
-                            <i class="fab fa-whatsapp"></i>
-                            <div>
-                                <strong>WhatsApp Chat</strong>
-                                <span>+62 812 3456 7890</span>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Di mana saja lokasi wisata yang tersedia di platform ini?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Saat ini kami fokus pada destinasi unggulan di Kalimantan Timur, mulai dari wisata bahari di Kepulauan Derawan, wisata budaya di Desa Pampang, hingga wisata alam di Bukit Bangkirai dan Pulau Kumala.
                             </div>
                         </div>
-                        <div class="info-item">
-                            <i class="fas fa-envelope"></i>
-                            <div>
-                                <strong>Official Email</strong>
-                                <span>halo@wisatakaltim.com</span>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Bagaimana cara mendaftarkan destinasi wisata baru?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Jika Anda adalah pengelola destinasi dan ingin bergabung, silakan hubungi tim administrasi kami melalui email mitra@wisatakaltim.com atau melalui kontak WhatsApp yang tertera di footer.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Apakah ada paket tour guide untuk wisatawan asing?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Ya, kami memiliki jaringan pemandu wisata profesional yang fasih berbahasa Inggris dan beberapa bahasa asing lainnya untuk memastikan pengalaman terbaik bagi wisatawan internasional.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Bagaimana jika saya ingin melakukan kerja sama sponsorship?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Kami sangat terbuka untuk kolaborasi yang mendukung kemajuan pariwisata daerah. Silakan kirimkan proposal Anda ke bagian marketing kami melalui alamat email resmi kami.
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Right Visual Area (Tropical Background) -->
-                <div class="contact-right-visual">
-                    <img src="{{ asset('images/tropical-bg.png') }}" alt="Tropical Islands Background" class="airplane-bg-img">
-                    <div class="visual-overlay"></div>
-
-                </div>
-            </div>
-
-            <!-- The 3D Breakthrough Airplane -->
-            <div class="airplane-breakthrough">
-                <img src="{{ asset('images/plane-3d-final.png') }}" alt="3D Airplane Fly-in" class="plane-3d-img">
             </div>
         </section>
+
+        <!-- Modern Footer -->
+        <footer class="modern-footer">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="{{ url('/') }}" class="logo">
+                        <i class="fas fa-mountain"></i>
+                        <span>WISATA</span>
+                    </a>
+                    <p>Membantu Anda menemukan akar budaya dan keindahan alam tersembunyi di seluruh penjuru Kalimantan Timur dan Indonesia.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-nav">
+                    <h4 class="footer-heading">NavigasiCepat</h4>
+                    <ul class="footer-links">
+                        <li><a href="{{ url('/#beranda') }}">Beranda</a></li>
+                        <li><a href="{{ url('/#wisata') }}">Destinasi</a></li>
+                        <li><a href="{{ url('/packages') }}">Paket Wisata</a></li>
+                        <li><a href="{{ url('/trending') }}">Trending</a></li>
+                        <li><a href="{{ url('/#faq') }}">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-nav">
+                    <h4 class="footer-heading">Lainnya</h4>
+                    <ul class="footer-links">
+                        <li><a href="{{ url('/favorites') }}">Favorit Saya</a></li>
+                        <li><a href="{{ url('/login') }}">Masuk Akun</a></li>
+                        <li><a href="{{ url('/register') }}">Daftar Baru</a></li>
+                        <li><a href="#">Syarat & Ketentuan</a></li>
+                        <li><a href="#">Privasi</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-nav">
+                    <h4 class="footer-heading">Kontak Kami</h4>
+                    <ul class="footer-contact">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Jl. Ahmad Yani No. 123, Samarinda, Kalimantan Timur, Indonesia</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone-alt"></i>
+                            <span>+62 812 3456 7890</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>halo@wisatakaltim.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; {{ date('Y') }} Wisata Kaltim. All rights reserved.</p>
+                <p>Designed with <i class="fas fa-heart" style="color: #ff453a;"></i> in Kaltim</p>
+            </div>
+        </footer>
 
         <!-- Scroll to Top -->
         <div class="scroll-top">
@@ -1102,22 +1200,9 @@
             });
         }, observerOptions);
 
-        document.querySelectorAll('.story-section, .gallery-section, .schedule-section, .pricing-section, .contact-section, .cta-section').forEach(el => {
+        document.querySelectorAll('.story-section, .gallery-section, .schedule-section, .pricing-section, .cta-section').forEach(el => {
             observer.observe(el);
         });
-
-        // Special Observer for Airplane Fly-in
-        const airplaneObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const plane = entry.target.querySelector('.airplane-breakthrough');
-                    if (plane) plane.classList.add('fly-in-started');
-                }
-            });
-        }, { threshold: 0.3 });
-
-        const contactSec = document.querySelector('.contact-section');
-        if (contactSec) airplaneObserver.observe(contactSec);
 
         // Immersive Facilities Slider Logic
         const facilitySection = document.getElementById('fasilitas');
@@ -1200,164 +1285,29 @@
             // Auto init progress
             if (progressLine) progressLine.style.width = `${(1 / total) * 100}%`;
 
-            // Star Rating Interaction
-            const stars = document.querySelectorAll('#holiday-stars .star-item');
-            const ratingInput = document.getElementById('rating-value');
-            const ratingText = document.getElementById('rating-text');
-            const ratingLabels = ["Buruk", "Kurang", "Cukup", "Bagus", "Luar Biasa!"];
-
-            stars.forEach((star, idx) => {
-                star.addEventListener('mouseenter', () => {
-                    highlightStars(idx);
-                });
-
-                star.addEventListener('mouseleave', () => {
-                    highlightStars(ratingInput.value - 1);
-                });
-
-                star.addEventListener('click', () => {
-                    const val = idx + 1;
-                    ratingInput.value = val;
-                    ratingText.textContent = `Anda memberikan skor: ${val} (${ratingLabels[idx]})`;
-                    ratingText.style.color = "#ffcc00";
-                    highlightStars(idx);
-                });
-            });
-
-            function highlightStars(index) {
-                stars.forEach((s, i) => {
-                    if (i <= index) {
-                        s.classList.add('active');
-                    } else {
-                        s.classList.remove('active');
-                    }
-                });
-            }
-
-            // Toast Logic
-            const ratingForm = document.getElementById('holiday-rating-form');
-            
-            // Create Toast Container
-            const contactSection = document.getElementById('contact');
-            const toastContainer = document.createElement('div');
-            toastContainer.className = 'rating-toast-container';
-            
-            if (contactSection) {
-                contactSection.style.position = 'relative';
-                contactSection.appendChild(toastContainer);
-            } else {
-                document.body.appendChild(toastContainer);
-            }
-
-            const toast = document.createElement('div');
-            toast.id = 'rating-toast';
-            toast.innerHTML = `
-                <i class="fas fa-check-circle" id="toast-icon"></i>
-                <div class="toast-content">
-                    <h5 id="toast-title">Berhasil Terkirim!</h5>
-                    <p id="toast-msg"></p>
-                </div>
-            `;
-            toastContainer.appendChild(toast);
-
-            if (ratingForm) {
-                ratingForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    
-                    const rating = ratingInput.value;
-                    if (rating == 0) {
-                        alert('Silakan pilih bintang rating terlebih dahulu!');
-                        return;
-                    }
-
-                    const formData = new FormData(ratingForm);
-
-                    fetch("{{ route('reviews.store') }}", {
-                        method: "POST",
-                        body: formData,
-                        headers: {
-                            "X-Requested-With": "XMLHttpRequest"
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            const name = formData.get('name') || "Pengunjung";
-                            const destinasi = formData.get('destinasi_name') || "Wisata";
-
-                            document.getElementById('toast-icon').className = 'fas fa-check-circle';
-                            document.getElementById('toast-title').textContent = 'Berhasil Terkirim!';
-                            const msg = `Terima kasih <strong>${name}</strong>! Rating ${rating}/5 Anda untuk <strong>${destinasi}</strong> telah kami simpan di database.`;
-                            document.getElementById('toast-msg').innerHTML = msg;
-
-                            // Show Toast
-                            toast.classList.add('show');
-                            
-                            setTimeout(() => {
-                                toast.classList.remove('show');
-                            }, 5000);
-
-                            // Reset
-                            ratingForm.reset();
-                            ratingInput.value = 0;
-                            highlightStars(-1);
-                            ratingText.textContent = "Ketuk untuk memberi bintang";
-                            ratingText.style.color = "";
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error:", error);
-                        alert("Terjadi kesalahan saat mengirim rating. Silakan coba lagi.");
-                    });
-                });
-            }
-
-            // Live Review Feed Logic
-            const publicReviews = @json($reviews ?? []);
-            const mockReviews = [
-                { user: { name: "Budi Santoso" }, destination: { name: "Pulau Kumala" }, rating: 5 },
-                { user: { name: "Siti Aminah" }, destination: { name: "Derawan" }, rating: 4 },
-                { user: { name: "Andi Wijaya" }, destination: { name: "Bukit Bangkirai" }, rating: 5 }
-            ];
-            
-            const displayReviews = publicReviews.length > 0 ? publicReviews : mockReviews;
-            let reviewIdx = 0;
-
-            function showNextReview() {
-                // Don't show if the manual toast is currently visible
-                if (toast.classList.contains('show')) {
-                    setTimeout(showNextReview, 5000);
-                    return;
-                }
-
-                const rev = displayReviews[reviewIdx];
-                const starsHtml = '⭐'.repeat(rev.rating);
-                
-                // Fallback for Guest Data
-                const reviewerName = rev.user ? rev.user.name : (rev.guest_name || "Wisatawan");
-                const targetDest = rev.destination ? rev.destination.name : (rev.guest_destination || "Destinasi");
-
-                document.getElementById('toast-icon').className = 'fas fa-user-circle';
-                document.getElementById('toast-title').textContent = 'Ulasan Wisatawan';
-                document.getElementById('toast-msg').innerHTML = `<strong>${reviewerName}</strong> baru saja memberi ${starsHtml} untuk <strong>${targetDest}</strong>.`;
-
-                toast.classList.add('show');
-
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                    reviewIdx = (reviewIdx + 1) % displayReviews.length;
-                    
-                    // Interval between reviews
-                    setTimeout(showNextReview, 8000); 
-                }, 4500);
-            }
-
-            // Start the cycle after 5 seconds
-            setTimeout(showNextReview, 5000);
         }
 
         // Mobile Menu Toggle (DOMContentLoaded wrapper added)
         document.addEventListener('DOMContentLoaded', () => {
+            // FAQ Accordion Logic
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    
+                    // Close all other items
+                    faqItems.forEach(otherItem => {
+                        otherItem.classList.remove('active');
+                    });
+
+                    // Toggle current item
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+
             const burgerBtn = document.getElementById('mobile-menu-btn');
             const navLinks = document.getElementById('nav-links-list');
             

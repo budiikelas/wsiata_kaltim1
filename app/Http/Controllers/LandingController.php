@@ -53,12 +53,20 @@ class LandingController extends Controller
         
         if (!$destination) {
             $destination = Destination::first(); 
+            $id = $destination->id;
         }
 
-        // Get "next" destination for preview (simply next in ID or loop back)
-        $nextDestination = Destination::where('id', '>', $destination->id)->first() ?? Destination::first();
+        // Fetch 5 random recommended destinations excluding the current one
+        $recommendations = Destination::where('id', '!=', $id)
+            ->where('status', 'aktif')
+            ->inRandomOrder()
+            ->limit(5)
+            ->get();
 
-        return view('detail', compact('destination', 'nextDestination'));
+        // Get "next" destination for preview (simply next in ID or loop back)
+        $nextDestination = Destination::where('id', '>', $id)->first() ?? Destination::first();
+
+        return view('detail', compact('destination', 'nextDestination', 'recommendations'));
     }
 
     public function fasilitas()
